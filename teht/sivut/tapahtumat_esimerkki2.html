@@ -1,0 +1,26 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+</head>
+<body>
+<div class="container"><h1>Muokkaa</h1><p><span name="viesti">Tallenna tiedot painikkeella.</span></p>
+
+<form action="muokkaa_tapahtuma.php" method="post">
+<label for="nimi" class="col-sm-2 col-form-label">Nimi</label><input name="nimi" type="text" value= 'Lan-tapahtuma 2020' /><br />
+<label for="paivays" class="col-sm-2 col-form-label">Päiväys</label><input name="paivays" type="date" value= '2020-03-21'/><br />
+<input type="hidden" name="tapahtumaID" value="2" />
+<button class="btn btn-primary" type="submit">Tallenna tiedot</button>
+</form>
+<h4>Osallistujat</h4>
+<table class='table'><thead><tr><th scope='col' >#</th><th scope='col'>Nimi</th><th scope='col' >Paikkakunta</th><th scope='col'>Toiminnot</th></tr></thead><tbody>
+<tr><td>1</td><td>Ankka, Aku</td><td>Tampere</td><td><a href='poista_osallistuja.php?osallistujaID=1&tapahtumaID=2' class='btn btn-danger'>Poista</a></td></tr><tr><td>2</td><td>Ankka, Roope</td><td>Akaa</td><td><a href='poista_osallistuja.php?osallistujaID=10&tapahtumaID=2' class='btn btn-danger'>Poista</a></td></tr><tr><td>3</td><td>Jokunen, Jaska</td><td>Janakkala</td><td><a href='poista_osallistuja.php?osallistujaID=9&tapahtumaID=2' class='btn btn-danger'>Poista</a></td></tr><tr><td>4</td><td>Sirkka, Samu</td><td>Helsinki</td><td><a href='poista_osallistuja.php?osallistujaID=8&tapahtumaID=2' class='btn btn-danger'>Poista</a></td></tr><tr><td>5</td><td>Testinen, Testi</td><td>Lahti</td><td><a href='poista_osallistuja.php?osallistujaID=7&tapahtumaID=2' class='btn btn-danger'>Poista</a></td></tr></tbody></table>
+<p><a class='btn btn-primary disabled' aria-disabled='true' role='button' href='#' >Lisää osallistuja</a></p>
+
+<a href="tapahtumat.php">Palaa pääsivulle</a>
+</div>
+</body>
+</html>

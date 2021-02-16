@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>phpMyAdmin</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<script type="text/javascript" src="header2.js"> </script>
+<body>
+<div id="sisalto">
+  <h1>phpMyAdmin</h1>
+  <h4>Yleistä</h4>
+  
+  <p>Käytetään tällä kurssilla ainakin alussa pääosin opetusverkossa samariumilla sijaitsevaa MySQL-palvelua, osoite <a href="http://samarium/phpmyadmin/">http://samarium/phpmyadmin/</a>.</p>
+ 
+  <h3>Käyttö</h3>
+ 
+  <h4>Viite-eheys</h4>
+ <p>Viite-eheys (referential integrity) tarkoittaa kahden taulun välisten tietojen yhdistämistä avainten avulla. 
+ <ul>
+	<li>Yhteys laaditaan lapsitaulussa (esimerkiksi Tilausrivi), <code>Structure / Relation view</code></li>
+	<li>Lapsitaulun kenttä (tässä TilausID) täytyy olla indeksoitu</li>
+	<li>Yhdistetään lapsitaulun kenttä Tilaus taulun pääavaimeen (TilausID)</li>
+	<p><img src="../Kuvat/mysql_relations.png" /></p>
+ </ul>
+<p>Määriteltäessä taulujen välinen yhteys kerrotaan miten poistettaessa ja päivitettäessä toimitaan lapsitaulun tietueiden kanssa. CASCADE poistaa vastaavat tietueet lapsitaulusta automaattisesti, RESTRICT estää poistamisen mikäli lapsitaulussa olisi jo tietueita. RESTRICT on yleensä oletusasetus.
+</p>
+<p>Esimerkki Tilaus ja Tilausrivi-taulujen yhteydestä, mikäli tilauksella on tilausrivejä niin sitä ei voitaisi poistaa. Ohjelman tulee ensin tyhjentää tilauksen tilausrivit ja vasta tämän jälkeen poistaa tilaus-tietue.
+</p>
+ 
+
+ <h4>Tietojen vienti</h4>
+	<p>Voit luoda varmuuskopion valituista tietokannan tauluista Export-toiminnon avulla.</p>
+	<p>Ohjelma luo .SQL-tiedoston joka sisältää CREATE TABLE-lauseet taulujen luomista varten sekä INSERT-lauseet tietojen lisäämistä varten.</p>
+ <h4>Tietojen tuonti</h4>
+
+ <p>Tarvittaessa voit palauttaa tiedot .SQL-tiedostosta suorittamalla sen Import-toiminnon kautta.</p>
+ 
+ <h4>SHOW CREATE TABLES</h4>
+ 
+</div>
+<script type="text/javascript" src="footer.js"> </script></body>
+</html>

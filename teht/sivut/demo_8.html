@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo 8</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+
+<div id="sisalto">
+
+
+<h1>Demo 8, taulukot ja silmukat</h1>
+
+<h2>8.1 Perustaulukko</h2>
+<p>Laadi for-silmukkaa käyttäen 10 alkion taulukko $numerot, jossa kaikkien alkioiden arvo on aluksi 0.</p>
+<p>Tee seuraavien indeksin ja arvojen muutokset:</p>
+<ul>
+<li> indeksiin 0 arvo 5</li>
+<li> indeksiin 2 arvo 3</li>
+<li> indeksiin 3 arvo 9</li>
+<li> indeksiin 1 arvo 2</li>
+<li> indeksiin 9 arvo 4</li>
+</ul>
+<p>Tulosta taulukko print_r-funktiolla</p>
+<p>Tulosta taulukko var_dump-funktiolla</p>
+<p>Tulosta taulukon arvot for-silmukkaa käyttäen.</p>
+<p>Tulosta taulukon arvot foreach-silmukkaa käyttäen.</p>
+<p>Laske samalla taulukon arvojen summa.</p>
+
+<h2>8.2 assosiatiivinen taulukko</h2>
+<p>Laadi 5 alkion taulukko $koulu.</p>
+<p>Tee seuraavien indeksin ja arvojen muutokset:</p>
+<ul>
+<li> avaimeen "nimi" arvo "TAO"</li>
+<li> avaimeen "osoite" arvo "Sammonkatu 45"</li>
+<li> avaimeen "postinro" arvo "33540"</li>
+<li> avaimeen "postitp" arvo "TAMPERE"</li>
+<li> avaimeen "maa" arvo "Suomi"</li>
+</ul>
+<p>Tulosta taulukon arvot foreach-silmukkaa käyttäen.</p>
+<p>Tulosta taulukko print_r-funktiolla</p>
+<p>Tulosta taulukko var_dump-funktiolla</p>
+
+<hr>
+<h3>Lähdekoodi</h3>
+<code><span style="color: #000000">
+&lt;h2&gt;8.1&lt;/h2&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #FF8000">/*&nbsp;Laadi&nbsp;for-silmukkaa&nbsp;käyttäen&nbsp;10&nbsp;alkion&nbsp;taulukko&nbsp;$numerot,&nbsp;jossa&nbsp;kaikkien&nbsp;alkioiden&nbsp;arvo&nbsp;on&nbsp;aluksi&nbsp;0.
+<br />*/
+<br />
+<br /></span><span style="color: #007700">for(</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;
+<br />}
+<br />
+<br /></span><span style="color: #FF8000">/*&nbsp;Tee&nbsp;seuraavien&nbsp;indeksin&nbsp;ja&nbsp;arvojen&nbsp;muutokset:
+<br />
+<br />indeksiin&nbsp;0&nbsp;arvo&nbsp;5
+<br />indeksiin&nbsp;2&nbsp;arvo&nbsp;3
+<br />indeksiin&nbsp;3&nbsp;arvo&nbsp;9
+<br />indeksiin&nbsp;1&nbsp;arvo&nbsp;2
+<br />indeksiin&nbsp;9&nbsp;arvo&nbsp;4&nbsp;*/
+<br />
+<br />
+<br /></span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">2</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">3</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">9</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">9</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">/*&nbsp;Tulosta&nbsp;taulukko&nbsp;print_r-funktiolla&nbsp;*/
+<br />
+<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$numerot</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #FF8000">/*Tulosta&nbsp;taulukko&nbsp;var_dump-funktiolla*/
+<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$numerot</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #FF8000">/*&nbsp;Tulosta&nbsp;taulukon&nbsp;arvot&nbsp;for-silmukkaa&nbsp;käyttäen.*/
+<br />
+<br /></span><span style="color: #007700">for(</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">sizeof</span><span style="color: #007700">(</span><span style="color: #0000BB">$numerot</span><span style="color: #007700">);&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$numerot</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">].</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br />}
+<br />
+<br /></span><span style="color: #FF8000">/*&nbsp;Tulosta&nbsp;taulukon&nbsp;arvot&nbsp;foreach-silmukkaa&nbsp;käyttäen.
+<br />Laske&nbsp;samalla&nbsp;taulukon&nbsp;arvojen&nbsp;summa.*/
+<br />
+<br /></span><span style="color: #0000BB">$summa&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;
+<br />foreach(</span><span style="color: #0000BB">$numerot&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$arvo</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$arvo</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$summa&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$summa&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$arvo</span><span style="color: #007700">;&nbsp;
+<br />}
+<br />
+<br />echo&nbsp;</span><span style="color: #DD0000">"Arvo&nbsp;yhteensä&nbsp;</span><span style="color: #0000BB">$summa</span><span style="color: #DD0000">&lt;br&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;h2&gt;8.2&lt;/h2&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #FF8000">/*Laadi&nbsp;5&nbsp;alkion&nbsp;taulukko&nbsp;$koulu.*/
+<br /></span><span style="color: #0000BB">$koulu&nbsp;</span><span style="color: #007700">=&nbsp;array();
+<br /></span><span style="color: #FF8000">/*&nbsp;Tee&nbsp;seuraavien&nbsp;indeksin&nbsp;ja&nbsp;arvojen&nbsp;muutokset:
+<br />avaimeen&nbsp;"nimi"&nbsp;arvo&nbsp;"Tredu"
+<br />avaimeen&nbsp;"osoite"&nbsp;arvo&nbsp;"Hepolamminkatu 10"
+<br />avaimeen&nbsp;"postinro"&nbsp;arvo&nbsp;"33720"
+<br />avaimeen&nbsp;"postitp"&nbsp;arvo&nbsp;"TAMPERE"
+<br />avaimeen&nbsp;"maa"&nbsp;arvo&nbsp;"Suomi"*/
+<br />
+<br /></span><span style="color: #0000BB">$koulu</span><span style="color: #007700">[</span><span style="color: #DD0000">"nimi"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"Tredu"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$koulu</span><span style="color: #007700">[</span><span style="color: #DD0000">"osoite"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"Hepolamminkatu 10"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$koulu</span><span style="color: #007700">[</span><span style="color: #DD0000">"postinro"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"33720"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$koulu</span><span style="color: #007700">[</span><span style="color: #DD0000">"postitp"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"TAMPERE"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$koulu</span><span style="color: #007700">[</span><span style="color: #DD0000">"maa"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">"Suomi"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">/*Tulosta&nbsp;taulukon&nbsp;arvot&nbsp;foreach-silmukkaa&nbsp;käyttäen.*/
+<br /></span><span style="color: #007700">foreach(</span><span style="color: #0000BB">$koulu&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$avain</span><span style="color: #007700">=&gt;</span><span style="color: #0000BB">$arvo</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$avain</span><span style="color: #DD0000">&nbsp;on&nbsp;</span><span style="color: #0000BB">$arvo</span><span style="color: #DD0000">&lt;br&gt;"</span><span style="color: #007700">;
+<br />}
+<br />
+<br /></span><span style="color: #FF8000">/*Tulosta&nbsp;taulukko&nbsp;print_r-funktiolla*/
+<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$koulu</span><span style="color: #007700">);
+<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">/*Tulosta&nbsp;taulukko&nbsp;var_dump-funktiolla&nbsp;*/
+<br />
+<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$koulu</span><span style="color: #007700">);</span>
+</span>
+</code>
+
+	</div>
+
+<script type="text/javascript" src="footer.js"> </script>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo 11</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+
+<div id="sisalto">
+
+<h1>Demo 11, funktioita, syötteiden käsittelyä</h1>
+
+<h2>11.1  salasanan suojaus</h2>
+<p>Seuraavien funktioiden (password_hash ja password_verify) avulla suojataan salasanat.<p>
+<p> Siis: Suojaa sana "salasana", tulosta se suojattuna. Vertaa suojattua sanaa toisessa muuttujassa olevaan samaan sanaan ja lisäksi sanaan "salainen".</p>
+<!--
+	$password = password_hash($password, PASSWORD_DEFAULT);
+	tarkista onko se sama
+	boolean password_verify($passwd, $row['account_password'])
+-->
+
+<h2>11.2 filter_var - merkkijono</h2>
+<p>Poista html seuraavasta lauseesta ja tulosta lopputulos:</p>
+<pre>
+&lt;h1>Hei! Kuinka voit tänään?&lt;/h1>
+</pre>
+<!--
+
+$lause = "<h1>Hei! Kuinka voit tänään?</h1>";
+
+
+<!--$sanitizedComment = filter_var($comment, FILTER_SANITIZE_STRING);
+echo $sanitizedComment;Katso myös <a href="https://www.tutorialrepublic.com/php-tutorial/php-filters.php">Tutorialrepublicin filter-materiaali</a></p>-->
+
+<h2>11.3 filter_var - kokonaisluku</h2>
+<p>Tarkista, onko annettu kokonaisluku validi:</p>
+<pre>
+$int = 20;
+</pre>
+<!--
+// Validate sample integer value
+if(filter_var($int, FILTER_VALIDATE_INT)){
+    echo "The <b>$int</b> is a valid integer";
+} else{
+    echo "The <b>$int</b> is not a valid integer";
+}-->
+
+<h2>11.4 filter_var - URL</h2>
+Tarkista, onko annettu URL validi
+<pre>
+172.16.254.1
+</pre>
+
+<!--
+// Sample IP address
+$ip = "172.16.254.1";
+
+// Validate sample IP address
+if(filter_var($ip, FILTER_VALIDATE_IP)){
+    echo "The <b>$ip</b> is a valid IP address";
+} else {
+    echo "The <b>$ip</b> is not a valid IP address";
+}-->
+
+<h2>11.5 filter_var - sähköposti</h2>
+<p>Validoi ja sanitoi seuraava sähköpostiosoite:</p>
+<pre>
+someone@@example.com
+</pre>
+<!--
+// Sample email address
+$email = "someone@@example.com";
+
+
+// Remove all illegal characters from email
+$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+ 
+// Validate e-mail address
+if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+    echo "The <b>$email</b> is a valid email address";
+} else{
+    echo "The <b>$email</b> is not a valid email address";
+}
+-->
+
+<h2>11.6 filter_var - kokonaisluku ja väli</h2>
+<p>Validoi kokonaisluvun arvo ja tarkista, onko se jossain välissä:</p>
+<pre>
+75
+</pre>
+
+<!--
+
+// Sample integer value
+$int = 75;
+
+
+// Validate sample integer value
+if(filter_var($int, FILTER_VALIDATE_INT, array("options" => array("min_range" => 0,"max_range" => 100)))){
+    echo "The <b>$int</b> is within the range of 0 to 100";
+} else{
+    echo "The <b>$int</b> is not within the range of 0 to 100";
+}-->
+
+
+<hr>
+<h3>Lähdekoodi</h3>
+<code><span style="color: #000000">
+&lt;h3&gt;10.1&nbsp;salasanan&nbsp;suojaus&lt;/h3&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #FF8000">/*Seuraavien&nbsp;funktioiden&nbsp;(password_hash&nbsp;ja&nbsp;password_verify)&nbsp;avulla&nbsp;suojataan&nbsp;salasanat.
+<br />Siis:&nbsp;Suojaa&nbsp;sana&nbsp;"salasana",&nbsp;tulosta&nbsp;se&nbsp;suojattuna.&nbsp;Vertaa&nbsp;suojattua&nbsp;sanaa&nbsp;toisessa&nbsp;muuttujassa&nbsp;olevaan&nbsp;samaan&nbsp;sanaan&nbsp;ja&nbsp;lisäksi&nbsp;sanaan&nbsp;"salainen".*/
+<br />
+<br /></span><span style="color: #0000BB">$muuttuja&nbsp;</span><span style="color: #007700">=</span><span style="color: #DD0000">"salasana"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$tokamuuttuja&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"salainen"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #0000BB">$salattumuuttuja&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">password_hash</span><span style="color: #007700">(</span><span style="color: #0000BB">$muuttuja</span><span style="color: #007700">,</span><span style="color: #0000BB">PASSWORD_DEFAULT</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//hajottaa&nbsp;salasanan
+<br />
+<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">$salattumuuttuja</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br />
+<br />if(&nbsp;</span><span style="color: #0000BB">password_verify</span><span style="color: #007700">(</span><span style="color: #DD0000">"salasana"</span><span style="color: #007700">,</span><span style="color: #0000BB">$salattumuuttuja</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Ovat&nbsp;samat&lt;br&gt;"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Eivät&nbsp;osu&lt;br&gt;"</span><span style="color: #007700">;
+<br />
+<br />if(</span><span style="color: #0000BB">password_verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$tokamuuttuja</span><span style="color: #007700">,</span><span style="color: #0000BB">$salattumuuttuja</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Ovat&nbsp;samat&lt;br&gt;"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Eivät&nbsp;osu&lt;br&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;h3&gt;10.2&nbsp;Merkkijonon&nbsp;sanitointi&lt;/h3&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br />$merkit&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"&lt;h1&gt;Hei!&nbsp;Kuinka&nbsp;voit&nbsp;tänään?&lt;/h1&gt;"</span><span style="color: #007700">;
+<br />echo&nbsp;</span><span style="color: #0000BB">$merkit</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$sanitoidutmerkit&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$merkit</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_SANITIZE_STRING</span><span style="color: #007700">);
+<br />echo&nbsp;</span><span style="color: #0000BB">$sanitoidutmerkit</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>&lt;h3&gt;10.3&nbsp;Kokonaisluvun&nbsp;validointi&lt;/h3&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br />$luku&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"ttt"</span><span style="color: #007700">;
+<br />
+<br />if(</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$luku</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_VALIDATE_INT</span><span style="color: #007700">))&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$luku</span><span style="color: #DD0000">&nbsp;on&nbsp;validi&nbsp;kokonaisluku"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$luku</span><span style="color: #DD0000">&nbsp;ei&nbsp;ole&nbsp;validi"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;h3&gt;10.4&nbsp;URL:n&nbsp;validointi&lt;/h3&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br />$url&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"https://www.leeniemi.net"</span><span style="color: #007700">;
+<br />
+<br />if(</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$url</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_VALIDATE_URL</span><span style="color: #007700">)&nbsp;==&nbsp;</span><span style="color: #0000BB">TRUE</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$url</span><span style="color: #DD0000">&nbsp;on&nbsp;validi"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$url</span><span style="color: #DD0000">&nbsp;ei&nbsp;ole&nbsp;validi"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>&lt;h3&gt;10.5&nbsp;EMAIL,&nbsp;validointi&nbsp;ja&nbsp;sanitointi&lt;/h3&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br />$email&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"someone@@example.com"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//sanitointi
+<br /></span><span style="color: #0000BB">$email&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$email</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_SANITIZE_EMAIL</span><span style="color: #007700">);
+<br />echo&nbsp;</span><span style="color: #0000BB">$email</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+<br />
+<br />if(</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$email</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_VALIDATE_EMAIL</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$email</span><span style="color: #DD0000">&nbsp;ok"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #0000BB">$email</span><span style="color: #007700">.</span><span style="color: #DD0000">"&nbsp;ei&nbsp;ole&nbsp;validi"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;h3&gt;10.6&nbsp;validointi:&nbsp;kokonaisluku&nbsp;oikessa&nbsp;välissä&lt;/h3&gt;
+<br /><span style="color: #0000BB">&lt;?php&nbsp;
+<br />$number&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">75</span><span style="color: #007700">;
+<br />
+<br />if(</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$number</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_VALIDATE_INT</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"options"</span><span style="color: #007700">=&gt;array(</span><span style="color: #DD0000">"min_range"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"max_range"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">))))&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$number</span><span style="color: #DD0000">&nbsp;on&nbsp;kokonaisluku&nbsp;ja&nbsp;välillä&nbsp;0&nbsp;-&nbsp;100"</span><span style="color: #007700">;
+<br />}&nbsp;else&nbsp;{&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$number</span><span style="color: #DD0000">&nbsp;ei&nbsp;ole&nbsp;kokonaisluku&nbsp;väliltä&nbsp;0&nbsp;-&nbsp;100"</span><span style="color: #007700">;
+<br />}
+<br /></span>
+</span>
+</code>
+
+	</div>
+
+<script type="text/javascript" src="footer.js"> </script>

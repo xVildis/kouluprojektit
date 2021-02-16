@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHP + MySQL-kyselyt</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<script type="text/javascript" src="header2.js"> </script>
+<body>
+<div id="sisalto">
+
+  
+  <h1>Harjoitus 10. </h1>
+<h4>Tapahtumat ja osallistujat</h4>
+<p>Tässä harjoituksessa laaditaan isompi PHP:n tietokantayhteyttä käyttävä sovellus. Tämä harjoitus sisältää valmiin tietokannan joka löytyy <a href="tapahtumat_sql.sql">tiedostosta tapahtumat_sql.sql</a>. Tarkoitus on tehdä pieni sovellus jota kautta pystyy hallitsemaan tapahtumia ja tapahtumien osallistujia.
+
+<h4>H10.1. Etusivu</h4>
+
+<p>Tee etusivu jossa näytetään kaikki taulusta tapahtumat löytyvät tiedot. Esitä tiedot taulukossa tai listassa. Näytä jokaisen tiedon kohdalla painike "Poista tapahtuma". Lisää hyperlinkki tapahtuman nimeen jota klikkaamalla tapahtumaa pääsee muokkaamaan.
+
+<p>Lisää painike jolla voidaan avata lomake uuden tapahtuman lisäämiseksi.
+
+<p>Kun haet tapahtumat näkyviin taulukkoon niin järjestä ne siten, että ylimpänä näkyvät lähinnä tulevat tapahtumat. Älä näytä taulukossa menneitä tapahtumia.
+
+<p>Esimerkki sivusta: <a href="tapahtumat_esimerkki.html">tapahtumat_esimerkki.html</a>
+
+<h4>H10.2. Tapahtuman lisääminen</h4>
+
+<p>Lisätään tapahtumalle nimi ja päivämäärä. Tallenna-painikkeella tiedot viedään tietokantaan. Sivulla on linkki Palaa pääsivulle joka vie etusivulle.
+
+
+<h4>H10.3. Tapahtuman poistaminen</h4>
+
+<p>Lisää poista_tapahtuma.php jonka avulla poistetaan GET-parametrina tullut tapahtuma.
+
+<h4>H10.4. Tapahtuman muokkaaminen ja osallistujat</h4>
+
+<p>Kun avataan niin näytetään lomakkeen kentissä muokattavat tiedot. Nappia painamalla tiedot päivittyvät tietokantaan. Tietojen alapuolella näytetään lista tapahtumaan osallistuvista henkilöistä. Henkilön voi poistaa nappia painamalla. Yhteen tapahtumaan voi ilmoittautua korkeintaan viisi osallistujaa. Mikäli osallistujia on jo viisi niin lisäyspainike on disabloitu. 
+
+<p>Osallistujan lisääminen avaa uuden sivun jolla voi lisätä osallistujan äsken avoinna olleeseen tilaisuuteen. Osallistujan tietoja ovat etunimi, sukunimi, paikkakunta ja tilaisuusid.
+
+<p>Esimerkki tapahtuman muokkaamisesta: <a href="tapahtumat_esimerkki2.html">tapahtumat_esimerkki2.html</a>
+
+
+
+<h4>Extra</h4>
+
+<h5>Confirm</h5>
+<p>Lisää JavaScript-varoituksen kysyminen käyttäjältä ennen tapahtuman poistamista.
+<!--
+<h5>Bootstrap</h5>
+<p>Kokeile käyttää bootstrap-tyyliä sivullasi.
+<ol>
+<li><a href="https://getbootstrap.com/">Lataaminen tai linkki</a></li>
+<li><a href="https://getbootstrap.com/docs/4.4/content/tables/">Bootstrap ja taulukko</a></li>
+<li><a href="https://getbootstrap.com/docs/4.0/components/buttons/">Bootstrap ja napit</a></li>
+</ol>
+-->
+<p>Käytetty lähde: Taitaja 2018 semifinaalin backend-tehtävä.</p>
+
+</div>
+<script type="text/javascript" src="footer.js"> </script>
+</body>
+</html>
