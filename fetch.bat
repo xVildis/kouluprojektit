@@ -14,14 +14,13 @@ tar -c -f "%date%"-backup.zip *
 move "%date%"-backup.zip C:\Users\viljami.sillanpaa\"OneDrive - Tampereen seudun toisen asteen koulutus"\backup
 
 git add *
-git commit -m "Backup %date%"
 setlocal
 :PROMPT
-SET /P AREYOUSURE=[96mCommit? [37m ([96mY[37m/[92m[N][37m)?
+SET /P AREYOUSURE=[96mCommit? [37m ([96mY[37m/[92m[N][37m)? : 
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
 git commit 
 
-SET /P AREYOUSURE2=[31mPush?[37m ([31mY[37m/[92m[N][37m)?
+SET /P AREYOUSURE2=[31mPush?[37m ([31mY[37m/[92m[N][37m)? : 
 IF /I "%AREYOUSURE2%" NEQ "y" GOTO END
 
 echo [93m100% sure???[37m
