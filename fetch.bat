@@ -1,17 +1,11 @@
 @echo off
-IF exist ".\teht" (
-	echo Removing old files
-	rmdir /S /Q teht
-)
-echo Copying...
-Xcopy /E /I O:\"Palvelut ja liiketalous"\"Eerikki Maula"\2008TiviPOk02_sasp .\teht\
-echo Copying eerikki...
-IF exist .\php\eerikki (
-	echo Removing old examples
-	rmdir /S /Q php\eerikki
-)
-Xcopy /E /I S:\eerikki\php .\php\eerikki\
-echo Backing up for remote
+echo [92mCopying teht...[0m
+robocopy O:\\"Palvelut ja liiketalous"\\"Eerikki Maula"\2008TiviPOk02_sasp .\teht\
+
+echo [92mCopying eerikki...[0m
+
+robocopy S:\eerikki\php .\php\eerikki\
+echo [92mBacking up for remote[0m
 IF exist *-backup.zip (
 	echo Removing old backup
 	del *-backup.zip
@@ -23,17 +17,21 @@ git add *
 git commit -m "Backup %date%"
 setlocal
 :PROMPT
-SET /P AREYOUSURE=Are you sure (Y/[N])?
+SET /P AREYOUSURE=[91mAre you sure[0m ([91mY[0m/[92m[N][0m)?
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
 PAUSE
-echo 100% sure???
+
+echo [93m100% sure???[0m
 PAUSE
-echo alright last one, you sure???
+
+echo [93malright last one, you sure???[0m
 PAUSE
+
 git push
-echo Done!
+echo [92mDone![0m
 
 :END
 endlocal
-echo Not pushed to main
+echo [93mNot pushed to main[0m
+PAUSE
 
