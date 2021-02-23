@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!DOCTYPE kortti [
+    <!ELEMENT kortti (lahettaja,saaja,toivotus)>
+    <!ATTLIST kortti tyyppi (sahko|pahvi) #REQUIRED>
+    <!ELEMENT lahettaja (#PCDATA)>
+    <!ELEMENT saaja (#PCDATA)>
+    <!ELEMENT toivotus (#PCDATA)>
+    <!ATTLIST toivotus tyyli (toiveikas|uhkaava) #IMPLIED>
+]>
+<kortti tyyppi="sahko">
+    <lahettaja>Eerikki Maula</lahettaja>
+    <saaja>Joulupukki</saaja>
+    <toivotus tyyli="toiveikas">Hei rakas joulupukki! Lähestyn sinua näin joulun lähestyessä toivomuslistan kera..</toivotus>
+</kortti>

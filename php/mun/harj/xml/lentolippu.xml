@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!-- dtd -->
+<lentolippu id="1">
+    <lento id="ABC-123">
+        <mista></mista>
+        <minne></minne>
+        <lahtoaika year="2021">
+            <kuu></kuu>
+            <paiva></paiva>
+            <tunti></tunti>
+            <min></min>
+        </lahtoaika>
+    </lento>
+    <matkustaja>
+        <sukunimi></sukunimi>
+        <etunimi></etunimi>
+    </matkustaja>
+    <hintatiedot>
+        <hinta></hinta>
+        <vero></vero>
+    </hintatiedot>
+</lentolippu>

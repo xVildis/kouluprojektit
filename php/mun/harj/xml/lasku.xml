@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!-- dtd -->
+<!DOCTYPE lasku [
+    <!ELEMENT lasku (nimi,pvm,lahettaja,vastaanottaja)>
+    <!ELEMENT nimi (#PCDATA)>
+    <!ELEMENT pvm (#PCDATA)>
+    <!ELEMENT lahettaja  (nimi,laskutusosoite,postiosoite,sahkoposti,puhelinnumero)>
+    <!ELEMENT laskutusosoite (#PCDATA)>
+    <!ELEMENT postiosoite (#PCDATA)>
+    <!ELEMENT sahkoposti (#PCDATA)>
+    <!ELEMENT puhelinnumero (#PCDATA)>
+
+    <!-- sama kuin lähettäjä, puuttuu iban-->
+    <!ELEMENT vastaanottaja (#PCDATA)>
+
+]>
+<lasku>
+    <nimi></nimi>
+    <pvm></pvm>
+    <erapvm></erapvm>
+
+    <lahettaja>
+        <viite></viite>
+        <nimi>Eerikki Maula</nimi>
+        <laskutusosoite></laskutusosoite>
+        <postiosoite></postiosoite>
+        <sahkoposti></sahkoposti>
+        <puhelinnumero></puhelinnumero>
+        <iban></iban>
+    </lahettaja>
+    <vastaanottaja>
+
+    </vastaanottaja>
+    <tuotteet>
+        <tuote>
+            <maara></maara>
+            <hinta></hinta>
+            <yks></yks>
+            <alv></alv>
+            <yht></yht>
+        </tuote>
+    </tuotteet>
+
+</lasku>

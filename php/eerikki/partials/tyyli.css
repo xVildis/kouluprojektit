@@ -1,0 +1,23 @@
+h2 {
+	color:blue;
+	font-family:Verdana;
+}
+
+label {
+	font-weight: bold;
+	display: block;
+	width: 150px;
+	float: left;
+}
+body {
+	font-family:arial;
+}
+input[type=submit] {
+    padding:5px 15px; 
+	color:#ebad10;
+    background:#284573; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}

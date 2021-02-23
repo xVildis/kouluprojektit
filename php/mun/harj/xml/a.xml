@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<videos>
+    <video id="">
+        <title></title>
+        <date></date>
+        <views></views>
+        <likes></likes>
+        <dislikes></dislikes>
+        <channel id=""></channel>
+        <description></description>
+        <category></category>
+        <game></game>
+        <comments>
+            <comment id="">
+                <channel id=""></channel>
+                <date></date>
+                <content></content>
+                <likes></likes>
+                <replies>
+                    <channel id=""></channel>
+                    <date></date>
+                    <content></content>
+                    <likes></likes>
+                </replies>
+            </comment>
+        </comments>
+    </video>
+</videos>
