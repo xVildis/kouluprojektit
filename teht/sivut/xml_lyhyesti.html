@@ -293,6 +293,62 @@ L&auml;hestyn sinua n&auml;in joulun l&auml;hestyess&auml; toivomuslistan kera..
     </tbody>
   </table>
   
+  <hr />
+
+<a name="svg"> <h1>SVG</h1></a>
+  <p>SVG on lyhenne sanoista Scalable Vector Graphics ja on yksi vektorigrafiikan tiedostomuoto. SVG-kuvat on tehty XML-kielellä mutta niitä on mahdollista muokata eräillä kuvanmuokkausohjelmilla (esim. Adobe Illustrator). </p>
+  <p>Viime vuosina tuki SVG-kuvien esittämiselle on laajentunut, esimerkiksi viimeisimmät www-selaimet pystyvät esittämään kuvat oikein. </p>
+  <p><a href="http://upload.wikimedia.org/wikipedia/commons/1/15/Svg.svg">http://upload.wikimedia.org/wikipedia/commons/1/15/Svg.svg</a> </p>
+  <p>Selaintuki tällä hetkellä Mozilla/Firefox ja Opera 9, IE 8 vaatii Adobe SVGViewer -lisäosan mutta IE 9 ei. </p>
+  <p>Mitä hyötyä SVG:stä on? </p>
+  <ul>
+    <li>SVG tiedostot XML- muotoa, eli helposti muokattavissa ohjelmilla jotka voivat käsitellä tekstiä (= ohjelmakoodissa)</li>
+    <li>SVG tiedostot pienempiä ja paremmin pakattavissa kuin esimerkiksi JPEG tai GIF kuvat</li>
+    <li>SVG kuvat täysin vektorigrafiikkaa ja skaalattavissa, kuvia voidaan zoomata ilman laadun muutosta.</li>
+    <li>SVG toimii yhteen Java teknologian ja erilaisten rajapintojen kanssa.</li>
+  </ul>
+  <p>Kuvien käyttö riippuu tilanteesta, toisiin asioihin ne sopivat paremmin ja toisiin huonommin. </p>
+  <h5>Esimerkki</h5>
+  <p>SVG-kuva jossa piirretään ympyrä sekä suorakulmio.</p>
+  <pre>
+&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;
+&lt;!DOCTYPE svg PUBLIC &quot;-//W3C//DTD SVG 1.1//EN&quot; 
+&quot;http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd&quot;&gt;
+&lt;svg width=&quot;100%&quot; height=&quot;100%&quot; version=&quot;1.1&quot; 
+xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt; 
+&lt;rect width=&quot;200&quot; height=&quot;200&quot; x="10" y="10" fill="green" /&gt; 
+&lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot; strokewidth=&quot;2&quot; fill=&quot;red&quot;/&gt; 
+&lt;/svg&gt;
+</pre>
+  <p>Muita muotoja: </p>
+  <p>Ellipsi:</p>
+  <pre>
+&lt;ellipse cx=&quot;300&quot; cy=&quot;150&quot; rx=&quot;200&quot; ry=&quot;80&quot; 
+style=&quot;fill:rgb(200,100,50); stroke:rgb(0,0,100);stroke-width:2&quot;/&gt; 
+</pre>
+  <p>Sijoittelu pois yläkulmasta</p>
+  <pre>
+&lt;rect x=&quot;20&quot; y=&quot;20&quot; width=&quot;250&quot; height=&quot;250&quot; 
+style=&quot;fill:blue;stroke:pink;stroke-width:5; fill-opacity:0.1;strokeopacity:0.9&quot;/&gt; 
+</pre>
+  <p>Pyöristetyt kulmat:</p>
+  <pre>
+&lt;rect x=&quot;20&quot; y=&quot;20&quot; rx=&quot;20&quot; ry=&quot;20&quot; width=&quot;250&quot; height=&quot;100&quot; 
+style=&quot;fill:red;stroke:black; stroke-width:5;opacity:0.5&quot;/&gt; 
+</pre>
+  <h5>Teksti</h5>
+  <p>Teksti esitet&auml;&auml;n text- elementin avulla. Tekstin tyylin voit m&auml;&auml;ritell&auml; CSS-tiedoston tapaan svg-tiedoston alkuun.</p>
+  <pre class="koodi">&lt;text class=&quot;oma&quot; x=&quot;80&quot; y=&quot;10&quot;&gt;Hei, t&auml;ss&auml; omaa teksti&auml;!&lt;/text&gt;   </pre>
+  <p>Tyylin m&auml;&auml;rittely tyylille 'oma':</p>
+  <pre class="koodi">&lt;style type=&quot;text/css&quot;&gt;
+&lt;![CDATA[
+.oma {font-weight:bold; fill:blue; font-family: verdana; text-decoration:none;}
+]]&gt;
+&lt;/style&gt;   </pre>
+  <p>Voit kokeilla k&auml;&auml;nt&auml;&auml; teksti&auml; transform -attribuutin avulla:</p>
+  <pre class="koodi">transform=&quot;rotate(80)&quot;   </pre>
+
+  
   
   </div>
 
