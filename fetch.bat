@@ -1,6 +1,5 @@
 @echo off
 
-
 IF exist ".\teht" (
 	echo Removing old files
 	rmdir /S /Q teht
