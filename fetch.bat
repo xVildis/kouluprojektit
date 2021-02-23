@@ -7,7 +7,7 @@ echo [92mCopying eerikki...[0m
 robocopy S:\eerikki\php .\php\eerikki\
 echo [92mBacking up for remote[0m
 IF exist *-backup.zip (
-	echo Removing old backup
+	echo [92mRemoving old backup[0m
 	del *-backup.zip
 )
 tar -c -f "%date%"-backup.zip *
@@ -17,7 +17,7 @@ git add *
 git commit -m "Backup %date%"
 setlocal
 :PROMPT
-SET /P AREYOUSURE=[91mAre you sure[0m ([91mY[0m/[92m[N][0m)?
+SET /P AREYOUSURE=[41mAre you sure[0m ([41mY[0m/[92m[N][0m)?
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
 PAUSE
 
