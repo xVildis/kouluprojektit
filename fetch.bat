@@ -17,9 +17,12 @@ git add *
 git commit -m "Backup %date%"
 setlocal
 :PROMPT
-SET /P AREYOUSURE=[31mAre you sure[37m ([31mY[37m/[92m[N][37m)?
+SET /P AREYOUSURE=[31mCommit? [37m ([31mY[37m/[92m[N][37m)?
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
-PAUSE
+git commit 
+
+SET /P AREYOUSURE2=[31mPush?[37m ([31mY[37m/[92m[N][37m)?
+IF /I "%AREYOUSURE2%" NEQ "y" GOTO END
 
 echo [93m100% sure???[37m
 PAUSE
