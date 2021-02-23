@@ -1,9 +1,0 @@
-<!DOCTYPE lasku[
-<!ELEMENT lasku (saaja, lahettaja, tuotteet)>
-<!ELEMENT saaja (nimi, osoite)>
-<!ELEMENT nimi (#PCDATA)>
-<!ELEMENT osoite (#PCDATA)>
-jne.
-<!ELEMENT tuotteet (tuote*)>
-
-]>
