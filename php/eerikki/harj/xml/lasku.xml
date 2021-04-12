@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!DOCTYPE lasku SYSTEM "lasku.dtd">
+<lasku id="100">
+	<saaja>
+		<nimi>Olli Örkki!</nimi>
+		<osoite></osoite>
+	</saaja>
+	<food image="./kuvat/kuva1.jpg">
+	<lahettaja>
+	</lahettaja>
+	<tuotteet>
+		<tuote>
+			<alennus></alennus>
+		</tuote>
+		<tuote>
+		<alennus></alennus>
+	</tuote>	<tuote>
+		<alennus></alennus>
+	</tuote>
+	</tuotteet>
+</lasku>

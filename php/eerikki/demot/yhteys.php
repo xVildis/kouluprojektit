@@ -1,9 +1,8 @@
 <?php
-
-$dsn = 'mysql:dbname=20silvil;host=localhost';
-$user = '20silvil';
-$password = 'salasana';
-
+// yhteys.php, tallenna demot-kansioon
+$dsn = 'mysql:dbname=eerikki;host=localhost';
+$user = 'eerikki';
+$password = '33r1kk1';
 
 try {
     $pdo = new PDO($dsn, $user, $password);
