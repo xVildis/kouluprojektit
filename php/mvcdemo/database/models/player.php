@@ -21,7 +21,7 @@ function getAllPlayers()
 {
     global $pdo; //Kohta 1 ota yhteys
 
-    $sql = "SELECT * FROM players";//Kohta 2 rakenna SQL
+    $sql = "SELECT * FROM mvc1_players";//Kohta 2 rakenna SQL
     $stm = $pdo->query($sql); //Kohta 3 suorita sql
 
     $players = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +34,7 @@ function getPlayerById($id)
 {
     global $pdo;
 
-    $sql = "SELECT * FROM players WHERE playerID = ?";
+    $sql = "SELECT * FROM mvc1_players WHERE playerID = ?";
     $stm = $pdo->prepare($sql);
 
     $stm->bindValue(1, $id);
@@ -49,7 +49,7 @@ function getPlayerByNickname($nickname)
 {
     global $pdo;
 
-    $sql = "SELECT * FROM players WHERE nickname = ?";
+    $sql = "SELECT * FROM mvc1_players WHERE nickname = ?";
     $stm = $pdo->prepare($sql);
 
     $stm->bindValue(1, $nickname);
@@ -64,7 +64,7 @@ function addPlayer($data)
 {
     global $pdo;
     var_dump($data);
-    $sql = "INSERT INTO players (nickname,password,email,current_character,lastLogin) VALUES (?,?,?,?,?)";
+    $sql = "INSERT INTO mvc1_players (nickname,password,email,current_character,lastLogin) VALUES (?,?,?,?,?)";
     $stm = $pdo->prepare($sql);
     $ok = $stm->execute($data); //palauttaa true tai false
     return $ok;
@@ -74,7 +74,7 @@ function editPlayer($data)
 {
     global $pdo;
 
-    $sql ="UPDATE players SET nickname = ?, email = ?, current_character = ?, banned = ? WHERE playerID = ?";
+    $sql ="UPDATE mvc1_players SET nickname = ?, email = ?, current_character = ?, banned = ? WHERE playerID = ?";
 
     $stm = $pdo->prepare($sql);
     $ok = $stm->execute($data); //palauttaa true tai false
@@ -85,7 +85,7 @@ function deletePlayer($id)
 {
     global $pdo;
 
-    $sql = "DELETE FROM players WHERE playerID = ?";
+    $sql = "DELETE FROM mvc1_players WHERE playerID = ?";
     $stm = $pdo->prepare($sql);
     $stm->bindValue(1, $id);
 
@@ -98,7 +98,7 @@ function loginPlayer($nickname,$password)
 {
     global $pdo; //yhteys
 
-    $sql = "SELECT nickname,password FROM players WHERE nickname = ?";
+    $sql = "SELECT nickname,password FROM mvc1_players WHERE nickname = ?";
 
     $stm = $pdo->prepare($sql);
     $stm->bindValue(1,$nickname);

@@ -19,7 +19,7 @@ function admincontroller()
 function postregistercontroller()
 {
     if(isset($_POST["nickname"],$_POST["password"],$_POST["password2"],$_POST["email"],$_POST["character"])  &&  $_POST["password"] === $_POST["password2"])   {
-        echo "Formi perillä";
+        echo "Formi perillä\n";
         // duplicate nickname check
         GLOBAL $pdo;
         $nickname = sanit($_POST["nickname"]);
@@ -28,7 +28,7 @@ function postregistercontroller()
         $current_character = sanit($_POST["character"]);
         $lastLogin = date('Y-m-d');
 
-        $sql_check = "SELECT * FROM players WHERE nickname = ? OR email = ?";
+        $sql_check = "SELECT * FROM mvc1_players WHERE nickname = ? OR email = ?";
         $sql_data = array($nickname, $email);
 
         $stmt = $pdo->prepare($sql_check);
