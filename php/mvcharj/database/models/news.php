@@ -29,18 +29,4 @@ function getArticleById($id)
 }
 
 
-function getUserByUsername($username)
-{
-    global $pdo;
-
-    $sql = "SELECT * FROM mvc2_users WHERE username = ?";
-    $stm = $pdo->prepare($sql);
-
-    $stm->bindValue(1, $username);
-    $stm->execute();
-    
-    $user = $stm->fetch(PDO::FETCH_ASSOC);
-    return $user;
-}
-
 ?>

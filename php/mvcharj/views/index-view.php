@@ -8,6 +8,8 @@ include "./views/partials/head.php";
 <?php
 if(isset($message)) echo $message;
 
+$articles = getAllNews();
+
 foreach($articles as $article) {
     echo makeArticle($article);
 }

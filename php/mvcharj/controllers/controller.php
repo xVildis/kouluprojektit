@@ -5,13 +5,11 @@ require "./helpers/helper.php";
 
 function indexcontroller()
 {
-    $articles = getAllNews();
     require "./views/index-view.php";
 }
 
 function admincontroller()
 {
-    $articles = getAllNews();
     require "./views/admin-view.php";
 }
 

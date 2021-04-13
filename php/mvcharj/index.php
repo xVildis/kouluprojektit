@@ -7,7 +7,7 @@ else $action = "index";//mitä tehdään
 
 $method = strtolower($_SERVER["REQUEST_METHOD"]); //onko post vai get
 //otetaan kirjastot käyttöön
-require "./controllers/playercontroller.php";
+require "./controllers/controller.php";
 require "./helpers/auth.php";
 
 switch($action) {
