@@ -21,7 +21,12 @@ if(isset($message)) echo $message;
 <label for="email">Email</label><br>
 <input type="email" name="email" required><br>
 
-<br>
+<label for="character">Hahmo</label><br>
+<select name="character">
+    <option value="hirviö">hirviö</option>
+    <option value ="keiju">keiju</option>
+    <option value="olio">olio</option>
+</select><br><br>
 
 <input type="submit" value="Rekisteröi pelaaja">
 </form>

@@ -1,42 +1,50 @@
 <?php
-session_start();
+session_start(); //aloittaa istunnon
+//pyynnöt ovat muotoa index.php?action=edit&id=5
 
-class Model {
-    private $text;
-    public function __construct($text = 'Hello World') {
-        $this->text = $text;
-    }
-    public function getText() {
-        return $this->text;
-    }
-    public function setText($text) {
-        return new Model($text);
-    }
-}
-class View {
-    public function output(Model $model) {
-        return '<a href="index.php?action=textclicked">' . $model->getText() . '</a>';
-    }
-}
-class Controller {
-    public function notLogged(Model $model): model {
-        return $model->setText('Index page');
-    }
+if(isset($_GET["action"])) $action = $_GET["action"];
+else $action = "index";//mitä tehdään
 
-    public function textClicked(Model $model): Model {
-        return $model->setText('Text Clicked');
-    }
-}
-$model = new Model();
-$controller = new Controller();
-$view = new View();
+$method = strtolower($_SERVER["REQUEST_METHOD"]); //onko post vai get
+//otetaan kirjastot käyttöön
+require "./controllers/playercontroller.php";
+require "./helpers/auth.php";
 
-if (isset($_GET['action'])) {
-    $model = $controller->{$_GET['action']}($model);
-} else {
-    $model = $controller->notLogged($model);
-}
-echo $view->output($model);
+switch($action) {
 
+    case "index":
+        indexcontroller(); //funktio, joka hakee etusivun tarvitsemat asiat
+    break;
+
+    case "register":
+        if($method=="get")
+            require "./views/registerform-view.php";
+        else 
+            postregistercontroller();
+    break;
+
+    case "login":
+        if($method =="get")
+            require "./views/loginform-view.php";
+        else 
+            postlogincontroller();
+    break;
+
+    case "admin":
+        if(islogged())
+            admincontroller();
+        else 
+            require "./views/loginform-view.php";
+    break;
+
+    case "logout":
+        if(islogged()) {
+            logoutcontroller();
+        } else indexcontroller();
+    break;
+
+    default:
+        echo "404";
+} 
 
 ?>

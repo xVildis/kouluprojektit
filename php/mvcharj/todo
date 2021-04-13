@@ -1,0 +1,8 @@
+before logging in:
+    show all news
+
+after logging in:
+    show all news
+    show "manage news" button
+    show all news made by user
+    add edit button
