@@ -8,7 +8,7 @@ include "./views/partials/head.php";
 <?php
 if(isset($message)) echo $message;
 
-foreach($news as $article) {
+foreach($articles as $article) {
     echo makeArticle($article);
 }
 

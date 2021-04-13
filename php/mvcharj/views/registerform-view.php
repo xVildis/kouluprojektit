@@ -23,7 +23,7 @@ if(isset($message)) echo $message;
 
 <br>
 
-<input type="submit" value="Rekisteröi pelaaja">
+<input type="submit" value="Rekisteröidy">
 </form>
 
 <?php

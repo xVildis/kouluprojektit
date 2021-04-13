@@ -5,15 +5,13 @@ require "./helpers/helper.php";
 
 function indexcontroller()
 {
-    $news = getAllNews();
-    //var_dump($players);
+    $articles = getAllNews();
     require "./views/index-view.php";
 }
 
 function admincontroller()
 {
-    $players = getAllNews();
-    //var_dump($players);
+    $articles = getAllNews();
     require "./views/admin-view.php";
 }
 
@@ -23,22 +21,25 @@ function postregistercontroller()
         echo "Formi perillä\n";
         // duplicate nickname check
         GLOBAL $pdo;
-        $nickname = sanit($_POST["nickname"]);
+        $username = sanit($_POST["nickname"]);
         $password = sanitpassword($_POST["password"]);
         $email = sanit($_POST["email"]);
 
-        $lastLogin = date('Y-m-d');
+        // $lastLogin = date('Y-m-d');
 
         $sql_check = "SELECT * FROM mvc2_users WHERE username = ? OR email = ?";
-        $sql_data = array($nickname, $email);
+        $sql_data = array($username, $email);
 
         $stmt = $pdo->prepare($sql_check);
         $stmt->execute($sql_data);
-        $rows = $stmt->fetchAll();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $data = array($nickname,$password,$email);
+        $data = array($username, $password, $email);
 
+        echo "<br>";
+        echo "postregistercontroller: ";
         var_dump($data);
+        echo "<br>";
 
         if(!$rows) {
             $ok = addUser($data);
@@ -64,14 +65,14 @@ function postregistercontroller()
 function postlogincontroller()
 {
    if(isset($_POST["nickname"],$_POST["password"]))  {
-       $nickname = sanit($_POST["nickname"]);
+       $username = sanit($_POST["nickname"]);
        $password = sanit($_POST["password"]);
 
-       $ok = loginUser($nickname,$password); //tietokantamallissa
+       $ok = loginUser($username,$password); //tietokantamallissa
 
        if($ok) {
-           $player = getUserByNickname($nickname);
-           $id = $player[0]["playerID"];
+           $user = getUserByUsername($username);
+           $id = $user["userId"];
            $ip = $_SERVER["REMOTE_ADDR"];
 
            //asetetaan istuntomuuttujan arvot
@@ -95,8 +96,8 @@ function logoutcontroller()
     if(isset($_SESSION["ip"],$_SESSION["id"]))  {
         session_unset(); //poistaa istuntomuuttujat
         session_destroy();//poistaa koko istunnon
-        header("Location:./index.php");
-    } else header("Location:./index.php");
+        header("Location:./");
+    } else header("Location:./");
 
 }
 

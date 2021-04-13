@@ -8,5 +8,5 @@
 </head>
 <body>
 
-<a href="./index.php?action=logout">Kirjaudu ulos</a><br>
+<a href="./?action=logout">Kirjaudu ulos</a><br>
 <hr>

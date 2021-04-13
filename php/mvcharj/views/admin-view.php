@@ -9,10 +9,10 @@ if(isset($message)) echo $message;
 
 
 <?php
-foreach($players as $player) { ?>
-<h4><?=$player["nickname"];?></h4>
-<a href="./index.php?action=editplayer&playerID=<?= $player["playerID"];?>">Muokkaa</a><br>
-<a href="./index.php?action=deleteplayer&playerID=<?= $player["playerID"];?>">Poista</a><br>
+foreach($articles as $article) { ?>
+
+<a href="./?action=editarticle&articleID=<?= $article["articleID"];?>">Muokkaa</a><br>
+<a href="./?action=deletearticle&articleID=<?= $article["articleID"];?>">Poista</a><br>
 
 <?php
 }

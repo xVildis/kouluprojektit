@@ -8,6 +8,6 @@
 </head>
 <body>
 
-<a href="./index.php?action=register">Rekisteröidy</a><br>
-<a href="./index.php?action=login">Kirjaudu</a><br>
+<a href="./?action=register">Rekisteröidy</a><br>
+<a href="./?action=login">Kirjaudu</a><br>
 <hr>

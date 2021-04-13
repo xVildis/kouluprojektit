@@ -13,7 +13,7 @@ require "./helpers/auth.php";
 switch($action) {
 
     case "index":
-        indexcontroller(); //funktio, joka hakee etusivun tarvitsemat asiat
+        indexcontroller(); 
     break;
 
     case "register":
