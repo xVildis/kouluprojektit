@@ -67,7 +67,7 @@ function printArticle($article)
     $title = sanit($article["title"]);
     $content = sanit($article["content"]);
     
-    $beautified = "<div style='border: 1px solid black;' id='$id'>
+    $beautified = "<div style='border: 1px solid black; margin-bottom: 20px; margin-top: 20px' id='$id'>
                     <h2>$title</h2>
                     <p>$content</p>
                    </div>";

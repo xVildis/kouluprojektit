@@ -5,5 +5,4 @@ function islogged()
         return TRUE;
     } else return FALSE;
 } 
-
 ?>
