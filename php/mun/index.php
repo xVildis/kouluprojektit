@@ -46,7 +46,6 @@ require "./partials/navi.php";
 
 <?php
 
-
 if(isset($_GET["sivu"])) $sivu = htmlentities($_GET["sivu"]);
 else $sivu = "demo1"; //oletusarvo, jos ei pyyntöä
 

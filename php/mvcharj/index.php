@@ -1,12 +1,11 @@
 <?php
-session_start(); //aloittaa istunnon
-//pyynnöt ovat muotoa index.php?action=edit&id=5
+session_start(); 
 
 if(isset($_GET["action"])) $action = $_GET["action"];
-else $action = "index";//mitä tehdään
+else $action = "index";
 
-$method = strtolower($_SERVER["REQUEST_METHOD"]); //onko post vai get
-//otetaan kirjastot käyttöön
+$method = strtolower($_SERVER["REQUEST_METHOD"]);
+
 require "./controllers/controller.php";
 require "./helpers/auth.php";
 
@@ -25,16 +24,42 @@ switch($action) {
 
     case "login":
         if($method =="get")
+        {
+            echo "getlogin";
             require "./views/loginform-view.php";
-        else 
+        }
+        else {
+            echo "postlogin";
             postlogincontroller();
+        }
+    break;
+    
+    case "createarticle":
+        if(islogged())
+        {
+            if($method =="get")
+                require "./views/article-view.php";
+            else 
+                articlecontroller();
+        } else {
+            require "./views/loginform-view.php";
+        }
+    break;
+
+    case "deletearticle":
+        if(islogged() && isset($_GET["articleID"]))
+        {
+            deleteArticle($_GET["articleID"]);
+        } else {
+            indexcontroller();
+        }
     break;
 
     case "admin":
-        if(islogged())
-            admincontroller();
+        if($method=="get")
+            require "./views/article-view.php";
         else 
-            require "./views/loginform-view.php";
+            articlecontroller();
     break;
 
     case "logout":

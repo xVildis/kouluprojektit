@@ -8,11 +8,6 @@ function indexcontroller()
     require "./views/index-view.php";
 }
 
-function admincontroller()
-{
-    require "./views/index-view.php";
-}
-
 function postregistercontroller()
 {
     if(isset($_POST["nickname"],$_POST["password"],$_POST["password2"],$_POST["email"]) &&  $_POST["password"] === $_POST["password2"])   {
@@ -62,41 +57,61 @@ function postregistercontroller()
 
 function postlogincontroller()
 {
-   if(isset($_POST["nickname"],$_POST["password"]))  {
-       $username = sanit($_POST["nickname"]);
-       $password = sanit($_POST["password"]);
+    if(isset($_POST["nickname"], $_POST["password"]))  {
+        $username = sanit($_POST["nickname"]);
+        $password = sanit($_POST["password"]);
 
-       $ok = loginUser($username,$password); //tietokantamallissa
+        $ok = loginUser($username, $password); //tietokantamallissa
 
-       if($ok) {
-           $user = getUserByUsername($username);
-           $id = $user["userId"];
-           $ip = $_SERVER["REMOTE_ADDR"];
+        if($ok) {
+            $user = getUserByUsername($username);
+            $id = $user["userId"];
+            $ip = $_SERVER["REMOTE_ADDR"];
 
-           //asetetaan istuntomuuttujan arvot
+            //asetetaan istuntomuuttujan arvot
 
-           $_SESSION["id"] = $id;
-           $_SESSION["ip"] = $ip;
+            $_SESSION["id"] = $id;
+            $_SESSION["ip"] = $ip;
 
-           require "./views/admin-view.php";
-       } else {
-           $message = "Käyttäjää ei löydy";
-           require "./views/loginform-view.php";
-       }
-   } else {
-       $message = "Täytä kaikki tiedot!";
-       require "./views/loginform-view.php";
-   }
+            indexcontroller();
+        } else {
+            $message = "Käyttäjää ei löydy";
+            require "./views/loginform-view.php";
+        }
+    } else {
+        $message = "Täytä kaikki tiedot!";
+        require "./views/loginform-view.php";
+    }
 }
+
 
 function logoutcontroller()
 {
-    if(isset($_SESSION["ip"],$_SESSION["id"]))  {
+    if(isset($_SESSION["ip"], $_SESSION["id"]))  {
         session_unset(); //poistaa istuntomuuttujat
         session_destroy();//poistaa koko istunnon
         header("Location:./");
     } else header("Location:./");
 
+}
+
+function articlecontroller()
+{
+    if(isset($_POST["title"], $_POST["content"]))
+    {
+       
+        $title = $_POST["title"];
+        $content = $_POST["content"];
+
+        $deletionDate = time();
+        if(!isset($_POST["deletionDate"]))
+        {
+            echo "<br>got date<br>";
+            $deletionDate += 1209600;
+        }
+
+        createArticle($title, $content, $deletionDate);
+    }
 }
 
 ?> 

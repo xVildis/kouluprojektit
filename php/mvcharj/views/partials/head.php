@@ -15,6 +15,7 @@ if(islogged())
 ?>
     <p><?=getUserName($_SESSION["id"])?></p>
     <a href="./?action=logout">Kirjaudu ulos</a><br>
+    <a href="./?action=createarticle">Kirjoita uusi artikkeli</a><br>
 <?php 
 } else 
 {?>
