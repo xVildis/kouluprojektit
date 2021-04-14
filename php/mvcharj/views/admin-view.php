@@ -2,7 +2,7 @@
 include "./views/partials/head.php";
 ?>
 
-<h1>Hallintapaneeli</h1>
+<h1>Uutiset</h1>
 
 <?php
 if(isset($message)) echo $message;

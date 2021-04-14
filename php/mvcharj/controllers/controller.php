@@ -10,7 +10,7 @@ function indexcontroller()
 
 function admincontroller()
 {
-    require "./views/admin-view.php";
+    require "./views/index-view.php";
 }
 
 function postregistercontroller()
