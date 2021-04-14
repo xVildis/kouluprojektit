@@ -20,7 +20,7 @@ function makeArticle($article)
     $title = sanit($article["title"]);
     $content = sanit($article["content"]);
 
-    $beautified = "<div style='border: 1px solid black;'><h2>$title</h2><div><p>$content</p>";
+    $beautified = "<div style='border: 1px solid black;margin-bottom: 20px; margin-top: 20px' id='$articleId'><h2>$title</h2><div><p>$content</p>";
 
     if(islogged() && $article["creatorId"] === $_SESSION["id"])
     {
