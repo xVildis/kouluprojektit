@@ -1,4 +1,8 @@
 <?php
+echo "<h2>MVC Harjoitus</h2>";
+echo "<a href='../mvcharj/'>MVC Harjoitus</a>";
+
+
 $paths = array("harj", "demo", "partials");
 foreach($paths as $path) {
 

@@ -24,7 +24,7 @@ function getArticleById($id)
     $stm->bindValue(1, $id);
     $stm->execute();
 
-    $article = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $article = $stm->fetch(PDO::FETCH_ASSOC);
     return $article;
 }
 
@@ -44,7 +44,6 @@ function createArticle($title, $content, $deletionDate)
         require "./views/index-view.php";
 
 }
-
 
 function deleteArticle($articleId)
 {

@@ -36,7 +36,7 @@ if (!$ok) {
 }
 else {
 
-require "./partials/navi.php";
+    require "./partials/navi.php";
 
 ?>
 

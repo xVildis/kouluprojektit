@@ -25,11 +25,11 @@ switch($action) {
     case "login":
         if($method =="get")
         {
-            echo "getlogin";
+            //echo "getlogin";
             require "./views/loginform-view.php";
         }
         else {
-            echo "postlogin";
+            //echo "postlogin";
             postlogincontroller();
         }
     break;
@@ -41,6 +41,18 @@ switch($action) {
                 require "./views/article-view.php";
             else 
                 articlecontroller();
+        } else {
+            require "./views/loginform-view.php";
+        }
+    break;
+
+    case "editarticle":
+        if(islogged())
+        {
+            if($method=="get")
+                require "./views/edit-view.php";
+            else 
+                editcontroller();
         } else {
             require "./views/loginform-view.php";
         }

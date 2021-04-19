@@ -35,4 +35,30 @@ function makeArticle($article)
     return $beautified;
 }
 
+function getSqlDate($date)
+{
+    switch($date)
+    {
+        case "2vk":
+            return 60 * 60 * 24 * 7 * 2;
+        break;
+        case "1kk":
+            return 60 * 60 * 24 * 7 * 4;
+        break;
+        case "3kk":
+            return 60 * 60 * 24 * 7 * 4 * 3;
+        break;
+        case "6kk":
+            return 60 * 60 * 24 * 7 * 4 * 6;
+        break;
+        case "1yr":
+            return 60 * 60 * 24 * 7 * 4 * 12;
+        break;
+        default:
+            return 60 * 60 * 24 * 7 * 2;
+        break;
+        
+    }
+}
+
 ?>

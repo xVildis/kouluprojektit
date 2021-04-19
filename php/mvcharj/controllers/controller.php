@@ -19,7 +19,6 @@ function postregistercontroller()
         $email = sanit($_POST["email"]);
 
         // $lastLogin = date('Y-m-d');
-
         $sql_check = "SELECT * FROM mvc2_users WHERE username = ? OR email = ?";
         $sql_data = array($username, $email);
 
@@ -29,10 +28,10 @@ function postregistercontroller()
 
         $data = array($username, $password, $email);
 
-        echo "<br>";
-        echo "postregistercontroller: ";
-        var_dump($data);
-        echo "<br>";
+        //echo "<br>";
+        //echo "postregistercontroller: ";
+        //var_dump($data);
+        //echo "<br>";
 
         if(!$rows) {
             $ok = addUser($data);
@@ -97,21 +96,39 @@ function logoutcontroller()
 
 function articlecontroller()
 {
-    if(isset($_POST["title"], $_POST["content"]))
+    if(isset($_POST["title"], $_POST["content"], $_POST["deletionDate"]))
     {
        
         $title = $_POST["title"];
         $content = $_POST["content"];
 
-        $deletionDate = time();
-        if(!isset($_POST["deletionDate"]))
-        {
-            echo "<br>got date<br>";
-            $deletionDate += 1209600;
-        }
-
+        $deletionDate = time() + getSqlDate($_POST["deletionDate"]);
+        
         createArticle($title, $content, $deletionDate);
     }
 }
 
+function editcontroller()
+{
+    if(isset($_POST["id"], $_POST["title"], $_POST["content"], $_POST["deletionDate"]))
+    {
+        $deletionDate = date("Y-m-d H:m:s", time() + getSqlDate($_POST["deletionDate"]));
+
+        global $pdo;
+
+        $sql = "UPDATE mvc2_articles SET title = ?, content = ?, deletionDate = ? WHERE articleId = ?";
+        $stm = $pdo->prepare($sql);
+    
+        $data = array($_POST["title"], $_POST["content"], $deletionDate, $_POST["id"]);
+
+        $ok = $stm->execute($data);
+        
+        if($ok)
+            $message = "<p>Uutinen päivitetty</p>";
+        else
+            $message = "<p>Uutista ei voitu päivittää</p>";
+
+        require "./views/index-view.php";
+    }
+}
 ?> 
