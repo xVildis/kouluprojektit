@@ -1,14 +1,30 @@
 <?php
-    $sivu = "etusivu";
-    if(isset($_GET["sivu"])) $sivu = $_GET["sivu"];
+session_start();
 
-    require "./kirjastot/funktiot.php";//ulkoasufunktiot käyttöön
-    require "./tietokanta/yhteys.php";//tietokantayhteys käyttöön
-    require "./tietokanta/tkfunktiot.php";//tietokantafuntiot käyttöön
+if(isset($_GET["a"]))
+    $action = $_GET["a"];
+else
+    $action = "index";
 
-    tulosta_alku();
+switch($action) {
+    case "index":
+        require "views/index.php";
+    break;
+    case "register":
+        if($method === "GET")
+            require "views/register.php";
+        else
+            register_controller();
+    break;
+    case "login":
+        if($method === "GET")
+            require "views/login.php";
+        else
+            login_controller();
+    break;
+    default:
+        http_response_code(404);
+        require "views/404.php";
+}
 
-    tulosta_sisalto($sivu);
-
-    tulosta_loppu();
-?> 
+?>

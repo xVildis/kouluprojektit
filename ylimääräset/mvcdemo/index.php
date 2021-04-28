@@ -13,31 +13,31 @@ require "./helpers/auth.php";
 switch($action) {
 
     case "index":
-    indexcontroller(); //funktio, joka hakee etusivun tarvitsemat asiat
+        indexcontroller(); //funktio, joka hakee etusivun tarvitsemat asiat
     break;
 
     case "register":
-    if($method=="get")
-    require "./views/registerform-view.php";
-    else postregistercontroller();
+        if($method=="get")
+        require "./views/registerform-view.php";
+        else postregistercontroller();
     break;
 
     case "login":
-    if($method =="get")
-    require "./views/loginform-view.php";
-    else postlogincontroller();
+        if($method =="get")
+        require "./views/loginform-view.php";
+        else postlogincontroller();
     break;
 
     case "admin":
-    if(islogged()) {
-        admincontroller();
-    } else require "./views/loginform-view.php";
+        if(islogged()) {
+            admincontroller();
+        } else require "./views/loginform-view.php";
     break;
 
     case "logout":
-    if(islogged()) {
-        logoutcontroller();
-    } else indexcontroller();
+        if(islogged()) {
+            logoutcontroller();
+        } else indexcontroller();
     break;
 
     case "deleteplayer":
@@ -47,18 +47,16 @@ switch($action) {
     break;
 
     case "editplayer":
-    if(islogged()) {
-        if($method == "get") {
-            geteditplayercontroller();
-        }
-        else posteditplayercontroller();
-    } else require "./views/loginform-view.php";
+        if(islogged()) {
+            if($method == "get") {
+                geteditplayercontroller();
+            }
+            else posteditplayercontroller();
+        } else require "./views/loginform-view.php";
     break;
 
-
-
     default:
-    echo "404";
+        echo "404";
 } 
 
 ?>

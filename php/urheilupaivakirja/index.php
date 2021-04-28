@@ -1,56 +1,114 @@
 <?php
 session_start();
 
+if(isset($_GET["a"])) {
+    $action = $_GET["a"];
+} else {
+    $action = "index";
+}
+
+$method = strtolower($_SERVER["REQUEST_METHOD"]);
+
+switch($action) {
+
+    case "index":
+        require "views/index.php"; 
+    break;
+
+    case "register":
+        if($method=="get")
+            require "./views/register.php";
+        else 
+            register_controller();
+    break;
+
+    case "login":
+        if($method =="get")
+            require "./views/login.php";
+        else 
+            login_controller();
+    break;
+
+    case "admin":
+        if(is_logged())
+            require "views/posts.php";
+        else
+            require "views/login.php";
+    break;
+
+    case "logout":
+        if(is_logged())
+            logout_controller();
+        else
+            require "views/index.php";
+    break;
+
+    case "delete":
+        
+    break;
+
+    case "edit":
+        if(is_logged())
+            edit_controller();
+        else
+            require "views/login.php";
+    break;
+
+    default:
+        http_response_code(404);
+        echo "404";
+} 
+
+
+
+/* idk how to use a router yet
 $request = $_SERVER['REQUEST_URI'];
-$request = strpos();
+$request = '/test';
 
 switch ($request) {
     case '/' :
     case '' :
         require __DIR__ . '/views/index.php';
-        break;
+    break;
+    
     case '/about' :
         require __DIR__ . '/views/about.php';
-        break;
+    break;
 
     case "/register":
-        require "views/index.php";
+        if(!is_logged())
+            require "views/register.php";
+        else
+            // send to own posts
     break;
     
     case "/login":
-        if(!islogged())
+        if(!is_logged())
             require "views/login.php";
+        else
+            // send to own posts
     break;
 
     case "/test":
         require "views/test.php";
     break;
 
-    /*
-    dont handle logout here
-    case "logout":
-        if(islogged())
-            // believe there is a better way to do this
-            // require "views/logout.php";
-    break;
-    */
-
     case "/create":
-        if(islogged())
+        if(is_logged())
             require "views/createpost.php";
         else
             require "views/login.php";
     break;
 
     case "/delete":
-        if(islogged())
+        if(is_logged())
             require "views/deletepost.php";
         else
             require "views/login.php";
     break;
     
     case "/edit":
-        if(islogged())
+        if(is_logged())
             require "views/createpost.php";
         else
             require "views/login.php";
@@ -61,4 +119,5 @@ switch ($request) {
         break;
 }
 
+*/
 ?>
