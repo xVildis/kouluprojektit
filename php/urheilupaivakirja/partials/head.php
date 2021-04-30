@@ -1,4 +1,4 @@
-<?php $sitename = "test"; ?>
+<?php $sitename = "about"; ?>
 
 <html lang="en">
 <head>
@@ -8,5 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <?='<link href="public/css/'.$sitename.'.css" rel="stylesheet">'?>
 </head>
 <body>
+
