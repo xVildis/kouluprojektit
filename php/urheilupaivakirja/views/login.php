@@ -1,19 +1,22 @@
 <?php
-include "./views/partials/head.php";
-if(isset($message)) echo $message;
+$sitename = "login";
+include "./partials/head.php";
+// if(isset($message)) echo $message;
 ?>
+<div class="container">
+    <form method ="post">
+        <label for="nickname">Käyttäjätunnus</label><br>
+        <input type="text" name="nickname"><br>
 
-<form method ="post">
+        <label for="password">Salasana</label><br>
+        <input type="password" name="password"><br>
 
-<label for="nickname">Käyttäjätunnus</label><br>
-<input type="text" name="nickname"><br>
-
-<label for="password">Salasana</label><br>
-<input type="password" name="password"><br>
-
-<input type="submit" value="Kirjaudu">
-</form>
+        <input type="submit" value="Kirjaudu">
+    </form>
+    <a href="?a=register">Rekisteröidy</a>
+    <a href="?a=forgot">Salasana unohtunut?</a>
+</div>
 
 <?php
-include "./views/partials/end.php";
+include "./partials/end.php";
 ?> 
