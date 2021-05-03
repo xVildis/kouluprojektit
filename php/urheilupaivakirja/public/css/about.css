@@ -5,22 +5,43 @@
 body {
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+}
+
+hr {
+    margin-top: 2px;
+}
+
+.top-header {
+    border-bottom: 1px solid black;
+
+    width: 100vw;
+    height: 55px;
+
+    position: fixed;
+
+    background-color: white;
 }
 
 .nav-container {
     position: fixed;
-    bottom: 30px;
+    bottom: 0px;
+
+    padding-bottom: 30px;
 
     width: 100vw;
     height: 60px;
+
+    background-color: white;
 }
 
 .main-nav {
-    
     display: flex;
     flex-direction: row;
 
     justify-content: space-evenly;
+
+    z-index: 100;
 }
 
 .btn {
@@ -42,20 +63,10 @@ body {
     color: white;
 }
 
-.btn-login {
-    
-    -webkit-transition: background-color 2s ease-out;
-    -moz-transition: background-color 2s ease-out;
-    -o-transition: background-color 2s ease-out;
-    transition: background-color 2s ease-out;
-
-    -moz-transition: color 2s;
-    -o-transition: color 2s;
-    transition: color 2s;
+.bg-img {
+    width: 100vw; 
 }
 
-.btn-login:hover {
-    
-    color: black;
-    background-color: white;
+@media screen and (max-width: 768px) {
+
 }
