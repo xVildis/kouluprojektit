@@ -17,7 +17,6 @@ foreach($paths as $path) {
         while (false !== ($file = readdir($handle))) {
             if ('.' === $file) continue;
             if ('..' === $file) continue;
-            if ('tyyli.css' === $file) continue;
 
         
             echo "<a href='./?sivu=".preg_replace("(\.php)", "", $file)."&kansio=$path'>".ucfirst(preg_replace("(\.php)", "", $file))."</a><br>";

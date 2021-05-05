@@ -5,6 +5,7 @@
 		$uri = 'http://';
 	}
 	$uri .= $_SERVER['HTTP_HOST'];
-	header('Location: '.$uri.'/2008TiviPOk02/viljami.sillanpaa/php/mun');
+	$uri .= $_SERVER['REQUEST_URI'];
+	header('Location: '.$uri.'php');
 	exit;
 ?>

@@ -20,10 +20,8 @@ else if (isset($_POST["password"])) {
         echo "salasana oikein";
     }
 	elseif($_POST["password"] == "vildis") {
-		$ok = true;
-        $_SESSION["ok"] = true;
-        echo "salasana oikein";
-		header("Location: /kesken");
+		echo "salasana oikein";
+		header('Location: '.$_SERVER["REQUEST_URI"].'/kesken');
 	}
     else {
         echo "salasana väärin";
