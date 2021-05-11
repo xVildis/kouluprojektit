@@ -28,25 +28,25 @@ function hae_id_kannasta($ktunnus,$salasana)
 
     $lause->execute();
 
-    $rivi = $lause->fetchAll(PDO::FETCH_ASSOC);
-    if(!empty($rivi)) $id = $rivi[0]["kid"];
+    $rivi = $lause->fetch(PDO::FETCH_ASSOC);
+    if(!empty($rivi)) $id = $rivi["kid"];
     return $id;
 }
 
 function kayttajan_nimi($kid,$yhteys) 
 {
-    $sql = "SELECT etunimi,sukunimi FROM vier_kayttaja WHERE kid=?";
+    $sql = "SELECT etunimi, sukunimi FROM vier_kayttaja WHERE kid=?";
 
     $teksti = "";
 
     $kysely = $yhteys->prepare($sql);
     $kysely->execute(array($kid));
 
-    $rivi = $kysely->fetchAll(PDO::FETCH_ASSOC);
+    $rivi = $kysely->fetch(PDO::FETCH_ASSOC);
     if(empty($rivi)) $teksti = "Käyttäjää ei löydy.";
     else {
-        $etunimi = $rivi[0]["etunimi"];
-        $sukunimi = $rivi[0]["sukunimi"];
+        $etunimi = $rivi["etunimi"];
+        $sukunimi = $rivi["sukunimi"];
         $teksti.= $etunimi." ".$sukunimi;
     }
     return $teksti;

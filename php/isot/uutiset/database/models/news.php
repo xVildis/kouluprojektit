@@ -5,7 +5,7 @@ require "./database/connection.php";
 function getAllNews()
 {
     global $pdo;
-    $sql = "SELECT * FROM mvc2_articles WHERE deletiondate > CURRENT_DATE";
+    $sql = "SELECT * FROM mvc2_articles WHERE deletiondate > NOW()";
     $stm = $pdo->query($sql);
 
     $articles = $stm->fetchAll(PDO::FETCH_ASSOC);

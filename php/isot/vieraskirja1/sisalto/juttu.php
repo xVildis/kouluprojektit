@@ -15,9 +15,9 @@
     if(empty($rivi)) 
         echo "Juttua ei löydy ";
     else {
-        $lisayspvm = $rivi[0]["lisayspvm"];
-        $otsikko = $rivi[0]["otsikko"];
-        $kpl = $rivi[0]["kpl"];
+        $lisayspvm = $rivi["lisayspvm"];
+        $otsikko = $rivi["otsikko"];
+        $kpl = $rivi["kpl"];
 
         echo "<h1>".$otsikko."</h1>";
         echo "<p>".$lisayspvm."</p>";

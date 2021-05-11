@@ -8,17 +8,17 @@ if (isset($_GET["id"])) {
 	$data = array($_GET["id"]);
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute($data);
-	$rows = $stmt->fetchAll();
+	$rows = $stmt->fetch();
 	//var_dump($rows); // tarkistetaan tuliko jotain?
 	if (!$rows) {
 		echo "No games!";
 	}
 	else {
 		// löytyi peli
-		$name = $rows[0]["name"];
-		$company = $rows[0]["company"];
-		$release = $rows[0]["release"];
-		$gameid = $rows[0]["gameid"];
+		$name = $rows["name"];
+		$company = $rows["company"];
+		$release = $rows["release"];
+		$gameid = $rows["gameid"];
 	}
 }
 

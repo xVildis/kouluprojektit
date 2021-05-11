@@ -1,4 +1,4 @@
-<?php
+ <?php
 /* Tiedosto hakee vanhat käyttäjän tiedot lomakkeelle ja submit-painikkeen painamisen jälkeen lähettää ne palvelimelle. Tietojen oikeellisuus tarkistetaan ja jos kaikki on kunnossa, päivitetään tietokantaan. * Jotta käyttäjän tietoja voi muuttaa, tarvitaan käyttäjäid, jonka saa istunnosta. 
 Taulun kentät
 * kid int(6) auto_increment (on siis autonumber tai laskuri-tyyppinen)
@@ -8,32 +8,32 @@ Taulun kentät
 * salasana varchar(100)
 */
 require "./tietokanta/yhteys.php";
-$kid = $_SESSION["kid"];//hakee kirjautumisen kohdalla luodusta istuntomuuttujasta kirjautuneen käyttäjän kid:n
+$kid=$_SESSION["kid"];//hakee kirjautumisen kohdalla luodusta istuntomuuttujasta kirjautuneen käyttäjän kid:n
 
 
-if(isset($_GET["mode"])) $mode = $_GET["mode"];
-else $mode = "muokkaa";
+if(isset($_GET["mode"])) $mode=$_GET["mode"];
+else $mode="muokkaa";
 
 /*********************************************************************/
-$istuntosalasana = $_SESSION["salasana"];//otetaan muuttujaan salasana, joka käyttäjällä on kirjautuessa
-$tiedotok = false;
-if(!empty($_POST["etunimi"]) && !empty($_POST["sukunimi"]) && !empty($_POST["ktunnus"]) && !empty($_POST["vanhasalasana"]) && muunna_salasana($_POST["vanhasalasana"]) == $istuntosalasana) {
+$istuntosalasana=$_SESSION["salasana"];//otetaan muuttujaan salasana, joka käyttäjällä on kirjautuessa
+$tiedotok=false;
+if(!empty($_POST["etunimi"]) && !empty($_POST["sukunimi"]) && !empty($_POST["ktunnus"]) && !empty($_POST["vanhasalasana"]) && muunna_salasana($_POST["vanhasalasana"])== $istuntosalasana) {
     //otetaan lähetetyt tiedot muuttujiin
-    $etunimi = putsaa($_POST["etunimi"]);
-    $sukunimi = putsaa($_POST["sukunimi"]);
+    $etunimi=putsaa($_POST["etunimi"]);
+    $sukunimi=putsaa($_POST["sukunimi"]);
 
-    $tiedotok = true;
+    $tiedotok=true;
 
     //haetaan uudet salasanat ja tarkistetaan, että ne ovat samat. Jos ovat samat, otetaan uusi salasana muuttujaan $salasana
     if(!empty($_POST["salasana"]) && !empty($_POST["tokasalasana"]))     {
 
         if(putsaa($_POST["salasana"]) == putsaa($_POST["tokasalasana"])) {
 
-            $salasana = muunna_salasana($_POST["salasana"]);
+            $salasana=muunna_salasana($_POST["salasana"]);
         }
         // jos eivät ole samat, mitään muutoksia ei tehdä
         else {
-            $tiedotok = FALSE;
+            $tiedotok=FALSE;
             echo "Uudet salasanat eivät vastaa toisiaan, muutoksia ei tehdä!<br>";
         }
     }
@@ -43,39 +43,39 @@ if(!empty($_POST["etunimi"]) && !empty($_POST["sukunimi"]) && !empty($_POST["ktu
     }
 
     // salasanasuojataan lomakkeella annettu vanha salasana
-    $vanhasalasana = muunna_salasana($_POST["vanhasalasana"]);
+    $vanhasalasana=muunna_salasana($_POST["vanhasalasana"]);
 
     //jos annettu vanha ei vastaa istunnossa olevaa salasanaa, muutosta ei tehdä
-    if($istuntosalasana!= $vanhasalasana) {
-        $tiedotok = FALSE;
+    if($istuntosalasana!=$vanhasalasana) {
+        $tiedotok=FALSE;
         echo "Anna alkuperäinen salasana oikein!<br>";
     }
 
-    if($tiedotok == true) {
+    if($tiedotok==true) {
         //rakennetaan sql-lause
-        $sql="UPDATE vier_kayttaja SET etunimi=:etunimi,sukunimi=:sukunimi,salasana=:salasana WHERE kid=:kid;";
-        $kysely = $yhteys->prepare($sql);
-        $kysely->execute(array(":etunimi" => $etunimi,":sukunimi" => $sukunimi,":salasana" => $salasana,":kid" => $kid));
+        $sql="UPDATE kayttaja SET etunimi=:etunimi,sukunimi=:sukunimi,salasana=:salasana WHERE kid=:kid;";
+        $kysely=$yhteys->prepare($sql);
+        $kysely->execute(array(":etunimi"=>$etunimi,":sukunimi"=>$sukunimi,":salasana"=>$salasana,":kid"=>$kid));
 
         if($kysely) {
             echo "Tiedot muutettu";
-            $tiedotok = true;
-            $_SESSION["salasana"] = $salasana; //vaihdetaan istunnon salasanaa
+            $tiedotok=true;
+            $_SESSION["salasana"]=$salasana; //vaihdetaan istunnon salasanaa
         }
     }
 } 
 
 //jos tietoja puuttuu tai ei ole lähetetty lomaketta, haetaan olemassaolevat tiedot kannasta
-if($tiedotok == false){
+if($tiedotok==false){
 
-    $sql = "SELECT * FROM kayttaja WHERE kid='$kid'";//huom, tieto istunnosta, ei vaarallinen
-    $kysely = $yhteys->query($sql);
+    $sql="SELECT * FROM veir_kayttaja WHERE kid='$kid'";//huom, tieto istunnosta, ei vaarallinen
+    $kysely=$yhteys->query($sql);
     if(!$kysely) echo "Käyttäjää ei löydy.";
-    else {//arvot kannasta muuttujiin 
-        $rivi = $kysely->fetchAll(PDO::FETCH_ASSOC); $etunimi = $rivi[0]["etunimi"];
-        $sukunimi = $rivi[0]["sukunimi"];
-        $ktunnus = $rivi[0]["ktunnus"];
-        $salasana = $rivi[0]["salasana"];
+    else     {//arvot kannasta muuttujiin 
+        $rivi = $kysely->fetch(PDO::FETCH_ASSOC); $etunimi=$rivi["etunimi"];
+        $sukunimi=$rivi["sukunimi"];
+        $ktunnus=$rivi["ktunnus"];
+        $salasana=$rivi["salasana"];
     }
 ?>
 

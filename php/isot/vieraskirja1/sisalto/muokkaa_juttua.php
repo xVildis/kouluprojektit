@@ -66,16 +66,16 @@ if($mode == "muokkaa") {
             $kysely = $yhteys->prepare($sql);
             $kysely->execute(array($jid));
 
-            $rivi = $kysely->fetchAll(PDO::FETCH_ASSOC); 
+            $rivi = $kysely->fetch(PDO::FETCH_ASSOC); 
             if(!$rivi) echo "Juttua ei löydy ";
             else {
-                $jid = $rivi[0]["jid"];
-                $lisayspvm = $rivi[0]["lisayspvm"];
-                $poistamispvm = $rivi[0]["poistamispvm"];
-                $otsikko = $rivi[0]["otsikko"];
+                $jid = $rivi["jid"];
+                $lisayspvm = $rivi["lisayspvm"];
+                $poistamispvm = $rivi["poistamispvm"];
+                $otsikko = $rivi["otsikko"];
 
-                $kpl = $rivi[0]["kpl"];
-                $kid = $rivi[0]["kid"];
+                $kpl = $rivi["kpl"];
+                $kid = $rivi["kid"];
             }
         }
         ?>

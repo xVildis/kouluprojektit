@@ -35,7 +35,7 @@
     function tulosta_admin_sisalto($sivu)
     {
         $sallitut = array('muokkaa_omia_tietoja','lisaa_juttu','muokkaa_juttua','admin_etusivu');
-        if(in_array($sivu,$sallitut))     {
+        if(in_array($sivu, $sallitut))     {
             $sivu = $sivu.".php";
             require "./sisalto/$sivu";
         }

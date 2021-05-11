@@ -19,9 +19,10 @@
         $kpl = $vastaus[$i]["kpl"];
         $kid = $vastaus[$i]["kid"];
 
-        $kirjoittaja = kayttajan_nimi($kid,$yhteys);
+        $kirjoittaja = kayttajan_nimi($kid, $yhteys);
 
         echo "<h1>".$otsikko."</h1>\n";
+        echo "<p>".$kpl."</p>\n";
         echo "<p>$lisayspvm</p>";
         echo "<a href = \"admin.php?sivu=muokkaa_juttua&jid=$jid&mode=muokkaa\">Muokkaa juttua</a><br>\n";
         echo "<a href = \"admin.php?sivu=muokkaa_juttua&jid=$jid&mode=poista\">Poista juttu</a><hr>\n";

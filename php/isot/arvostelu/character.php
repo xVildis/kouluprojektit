@@ -1,6 +1,6 @@
 <?php
 
-require("../mun/partials/yhteys.php");
+require("../../partials/yhteys.php");
 
 class Character {
     private $charId;
@@ -35,7 +35,7 @@ class Character {
     {
         GLOBAL $pdo;
 
-        $sql = "INSERT INTO characters (name, raceId, classId, stats) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO h11_characters (name, raceId, classId, stats) VALUES (?, ?, ?, ?)";
 	    $data = array($this->name, $this->raceId, $this->classId, $this->stats);
 	    $stmt = $pdo->prepare($sql);
         

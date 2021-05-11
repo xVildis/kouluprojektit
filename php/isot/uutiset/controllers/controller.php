@@ -24,7 +24,7 @@ function postregistercontroller()
 
         $stmt = $pdo->prepare($sql_check);
         $stmt->execute($sql_data);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $data = array($username, $password, $email);
 

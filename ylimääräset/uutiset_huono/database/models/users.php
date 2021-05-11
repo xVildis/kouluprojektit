@@ -24,11 +24,11 @@ function loginUser($nickname, $password)
     $stm->bindValue(1, $nickname);
     $stm->execute();
 
-    $player = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $player = $stm->fetch(PDO::FETCH_ASSOC);
 
     //tarkistetaan, vastaavatko salasanat toisiaan
     if($player) {
-        if(password_verify($password, $player[0]["password"]))  {
+        if(password_verify($password, $player["password"]))  {
             return TRUE;
         } else return FALSE;
     } else return FALSE;
