@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+function showUser(str) {
+    console.log("str: " + str)
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("txtHint").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET","getuser.php?q="+str, true);
+    xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<form>
+  <input type="text" name="text" onkeyup="showUser(this.value)">
+</form>
+<br>
+
+<div id="txtHint">
+  <b>Info will be listed here...</b>
+</div>
+
+</body>
+</html> 
