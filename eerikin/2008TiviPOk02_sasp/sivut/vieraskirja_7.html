@@ -1,0 +1,155 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Vieraskirja (7)</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+<h1>7. Toteuta autentikointi</h1>
+<ol>
+<li><a href="vieraskirja_1.html">tehtävä</a></li>
+<li><a href="vieraskirja_2.html">suunnitelma</a></li>
+<li><a href="vieraskirja_3.html">tietokannan toteutus</a></li>
+<li><a href="vieraskirja_4.html">käyttöliittymä</a></li>
+<li><a href="vieraskirja_5.html">runko järjestelmään</a></li>
+<li><a href="vieraskirja_6.html">tietojen lisäys lukijan näkymässä</a></li>
+<li><a href="vieraskirja_7.html">autentikointi</a></li>
+<li><a href="vieraskirja_8.html">jutun lisäys ylläpitonäkymässä</a></li>
+<li><a href="vieraskirja_9.html">tietojen haku lukijan näkymässä</a></li>
+<li><a href="vieraskirja_10.html">tietojen haku ylläpitonäkymässä</a></li>
+<li><a href="vieraskirja_11.html">lisäykset</a></li>
+
+</ol>
+<h2>Tämän tunnin tavoite</h2>
+<p>Tavoitteena on luoda lomake kirjautumiseen, kirjautumisen tarkistus ja uloskirjautuminen. Toteutukseen käytetään istuntoja ja uudelleenohjausta.</p>
+<h2>Päärakenne</h2>
+<ul>
+<li>sivusto on jakaantunut kahteen osaan, lukijan näkymään ja ylläpidon näkymään</li>
+<li>molemmissa on oma pääsivu, joka rakentaa kaikki muut sivut</li>
+</ul>
+
+<h2>Kirjautuminen</h2>
+<ul>
+<li>lukijan sivuston pääsivu generoi kirjautumissivun lomakkeineen</li>
+<li>tiedosto tarkista_kirjautuminen tarkistaa tiedot ja tekee ns. uudelleenohjauksen joko ylläpidon pääsivulle tai takaisin lukijan pääsivulle</li>
+<li>jos ohjaus kohdistuu ylläpidon sivustolle, se luo samalla istuntomuuttujat</li>
+<li>ylläpidon pääsivu tarkistaa joka kerta avautuessaan, että istuntomuuttujat ovat olemassa - jos eivät, se tekee uudelleenohjauksen lukijan pääsivulle</li>
+</ul>
+
+
+<h2>Kirjautuminen ulos</h2>
+<ul>
+<li>tapahtuu ylläpidon päässä linkistä, joka kutsuu kirjaudu_ulos- tiedostoa. Se poistaa kaikki muuttujat ja ohjaa lukijan sivulle</li>
+</ul>
+
+<h2>Laadittavat tiedostot</h2>
+<h3>Lukijan näkymä - kirjaudu.php </h3>
+<p>sisällytetään lukijan näkymässä, kutsutaan linkistä)</p>
+
+<h4>./sisalto/kirjaudu.php</h4>
+<p>Kirjautumiseen käytetään tavallista html-lomaketta. Jos http-pyynnössä (sen lähettää tarkista_kirjautuminen.php) on parametri puuttuu tai vaarin, niistä annetaan varoitus.</p>
+<p>kirjaudu.php tallennetaan kansioon sisalto.</p>
+
+<p class="koodi">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php&nbsp;
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"puuttuu"</span><span style="color: #007700">]))&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;p&gt;Täytä&nbsp;molemmat&nbsp;kentät!&lt;/p&gt;"</span><span style="color: #007700">;
+<br />if(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"vaarin"</span><span style="color: #007700">]))&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;p&gt;Käyttäjätunnus&nbsp;ja&nbsp;salasana&nbsp;eivät&nbsp;vastaa&nbsp;toisiaan&lt;/p&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;form&nbsp;action="./tarkista_kirjautuminen.php"&nbsp;method="post"&gt;
+<br />&lt;h2&gt;Kirjaudu&lt;/h2&gt;
+<br />
+<br />&lt;p&gt;
+<br />&lt;label&nbsp;for="ktunnus"&gt;Käyttäjätunnus&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="text"&nbsp;name="ktunnus"&gt;&lt;br&gt;
+<br />&lt;/p&gt;
+<br />
+<br />&lt;p&gt;
+<br />&lt;label&nbsp;for="salasana"&gt;Salasana&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="password"&nbsp;name="salasana"&gt;&lt;br&gt;
+<br />&lt;/p&gt;
+<br />
+<br />&lt;p&gt;
+<br />&lt;input&nbsp;class="button"&nbsp;type="submit"&nbsp;value="Kirjaudu"&gt;
+<br />&lt;/p&gt;
+<br />&lt;/form&gt;</span>
+?&lt;
+</code></p>
+
+<h3>Siirtyminen ylläpitoon - tarkista_kirjautuminen.php</h3>
+
+<h4>(./tietokanta/tkfunktiot.php) lisää funktio hae_id_kannasta($yhteys,$ktunnus,$salasana)</h4>
+<p>Jotta kirjautuminen voisi onnistua, lisätään tietokantafunktioihin (./tietokanta/tkfunktiot.php) yksi funktio lisää.</p>
+<p class="koodi">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;Funktio&nbsp;palauttaa&nbsp;käyttäjän&nbsp;id:n*/<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">hae_id_kannasta</span><span style="color: #007700">(</span><span style="color: #0000BB">$ktunnus</span><span style="color: #007700">,</span><span style="color: #0000BB">$salasana</span><span style="color: #007700">)&nbsp;<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./tietokanta/yhteys.php"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">=</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$lause&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$yhteys</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;kayttaja&nbsp;WHERE&nbsp;ktunnus=:ktunnus&nbsp;AND&nbsp;salasana&nbsp;=:salasana"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$lause</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #DD0000">':ktunnus'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$tunnari</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$lause</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #DD0000">':salasana'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$passu</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$tunnari&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ktunnus</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$passu&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$salasana</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$lause</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$rivi&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$lause</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchAll</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ASSOC</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;if(!empty(</span><span style="color: #0000BB">$rivi</span><span style="color: #007700">))&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$rivi</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"kid"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+?&lt;
+</code>
+
+<p> Kirjautumislomake kutsuu tarkista_kirjautuminen.php-tiedostoa ja jos tiedot ovat oikeat,  tarkista_kirjautuminen ohjaa selaimen lukemaan admin.php:tä, jos ei, palataan takaisin index.php-sivulle.</p>
+
+<h4>./tarkista_kirjautuminen.php</h4>
+<p>Tallenna tiedosto juurikansioon.</p>
+
+<p class="koodi">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./tietokanta/tkfunktiot.php"</span><span style="color: #007700">;<br />require&nbsp;</span><span style="color: #DD0000">"./kirjastot/funktiot.php"</span><span style="color: #007700">;<br />if(!empty(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"ktunnus"</span><span style="color: #007700">])&nbsp;&amp;&amp;&nbsp;!empty(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"salasana"</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ktunnus&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"ktunnus"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$salasana&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"salasana"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ktunnus&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">putsaa</span><span style="color: #007700">(</span><span style="color: #0000BB">$ktunnus</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$salasana</span><span style="color: #007700">=</span><span style="color: #0000BB">muunna_salasana</span><span style="color: #007700">(</span><span style="color: #0000BB">$salasana</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./tietokanta/yhteys.php"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">hae_id_kannasta</span><span style="color: #007700">(</span><span style="color: #0000BB">$ktunnus</span><span style="color: #007700">,</span><span style="color: #0000BB">$salasana</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;if(!empty(</span><span style="color: #0000BB">$id</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">session_start</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"kid"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"istuntoid"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">session_id</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"salasana"</span><span style="color: #007700">]=</span><span style="color: #0000BB">$salasana</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Pragma:&nbsp;No-Cache"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;admin.php"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die();<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;index.php?sivu=kirjaudu&amp;vaarin=true"</span><span style="color: #007700">);<br />}<br />else&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;index.php?sivu=kirjaudu&amp;puuttuu=true"</span><span style="color: #007700">);</span>
+</span>
+</code></p>
+<h3>Ylläpitonäkymä  (./admin.php) lisää alkuun istunnon tarkistus</h3>
+
+<p>admin.php:tä korjataan istunnon tarkistamisen osalta (istuntomuuttujien olemassaolo tarkistetaan ja istunto generoidaan uudestaan joka kerta, kun joku ylläpitonäkymän osa avataan.</p>
+<p>Tiedoston näyttää lisäämisen jälkeen seuraavalta:</p>
+
+<p class="koodi">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />session_start</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//aloittaa&nbsp;session,&nbsp;huom,&nbsp;pelkkää&nbsp;html:ää&nbsp;ei&nbsp;saa&nbsp;tulostaa&nbsp;ennen&nbsp;tämän&nbsp;lähettämistä
+<br /></span><span style="color: #007700">if(!isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'kid'</span><span style="color: #007700">])&nbsp;||&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'istuntoid'</span><span style="color: #007700">]&nbsp;!=&nbsp;</span><span style="color: #0000BB">session_id</span><span style="color: #007700">())&nbsp;
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;./index.php?sivu=kirjaudu"</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;die();&nbsp;</span><span style="color: #FF8000">//&nbsp;tärkeä,&nbsp;sivua&nbsp;ei&nbsp;voi&nbsp;ladata&nbsp;uudestaan
+<br /></span><span style="color: #007700">}
+<br />else
+<br />{
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"istuntoid"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">session_regenerate_id</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sivu</span><span style="color: #007700">=</span><span style="color: #DD0000">"admin_etusivu"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"sivu"</span><span style="color: #007700">]))&nbsp;</span><span style="color: #0000BB">$sivu</span><span style="color: #007700">=</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"sivu"</span><span style="color: #007700">];
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./kirjastot/funktiot.php"</span><span style="color: #007700">;</span><span style="color: #FF8000">//ulkoasufunktiot&nbsp;käyttöön
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./tietokanta/yhteys.php"</span><span style="color: #007700">;</span><span style="color: #FF8000">//tietokantayhteys&nbsp;käyttöön
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./tietokanta/tkfunktiot.php"</span><span style="color: #007700">;</span><span style="color: #FF8000">//tietokantafuntiot&nbsp;käyttöön
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">tulosta_admin_alku</span><span style="color: #007700">();
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">tulosta_admin_sisalto</span><span style="color: #007700">(</span><span style="color: #0000BB">$sivu</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">tulosta_admin_loppu</span><span style="color: #007700">();
+<br />}
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+</p>
+
+<h3>Siirtyminen ylläpitonäkymästä lukijan näkymään</h3>
+
+<h4>./kirjaudu_ulos.php</h4>
+<p>Tiedostoa kutsutaan linkistä jokaiselta admin-näkymän sivulta.</p>
+<p>Tallenna tiedosto juurikansioon.</p>
+
+<p class="koodi">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />session_start</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//aloittaa&nbsp;session,&nbsp;huom,&nbsp;pelkkää&nbsp;html:ää&nbsp;ei&nbsp;saa&nbsp;tulostaa&nbsp;ennen&nbsp;tämän&nbsp;lähettämistä<br /></span><span style="color: #007700">if(!isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'kid'</span><span style="color: #007700">]))&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;./index.php?sivu=kirjaudu"</span><span style="color: #007700">);<br />else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">session_unset</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//poistaa&nbsp;kaikki&nbsp;muuttujat<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">session_destroy</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">setcookie</span><span style="color: #007700">(</span><span style="color: #0000BB">session_name</span><span style="color: #007700">(),</span><span style="color: #DD0000">''</span><span style="color: #007700">,</span><span style="color: #0000BB">0</span><span style="color: #007700">,</span><span style="color: #DD0000">'/'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//poistaa&nbsp;evästeen&nbsp;selaimesta<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">session_regenerate_id</span><span style="color: #007700">(</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;./index.php?sivu=kirjaudu"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;forward&nbsp;eli&nbsp;uudelleenohjaus<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">die();<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></p>
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artistit-tietokanta</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<script type="text/javascript" src="header2.js"> </script>
+<body>
+<div id="sisalto">
+  <h1>1. Artistit-tietokanta</h1>
+<p><i>Tämä harjoitus tehdään pitkälti yhdessä, samalla tulee uusia asioita SQL-kielestä ja phpMyAdmin-sovelluksesta.</i></p>
+
+<h4>Tietokannan luonti</h4>
+
+<p><img src="../kuvat/mysql_harjoitus_artistit.png" /></p>
+<p>Toteutetaan kuvan mukainen tietokanta ja laaditaan siitä joukko kyselyitä. </p>
+<p><img src="../kuvat/esimerkki_artistit_tietokanta.png" /> 
+<ol>
+<li>Uusi taulu: luo taulu Managerit phpMyAdminin avulla. Mieti mitkä olisivat järkeviä kentän tyyppejä. Muista lisätä pääavain! Pääavaimella muista autoincrement.
+<p><img src="../Kuvat/h1_managerit.png" width="650" />
+
+</li>
+<li>Vierasavain: luo taulu Esiintyjät. Lisää vierasavainta varten INTEGER-kenttä. Lisää yhteys phpMyAdminissa. Vierasavaimelle tarvitaan indeksi (Indeksi - INDEX). Siirry relaationäkymään (Relation view) luodaksesi yhteys.
+<p><img src="../Kuvat/h1_esiintyjat_relaatio.png"  width="400"/>
+
+</li>
+<li>Tietokannan toteutus: lisää muut taulut ja yhteydet samaan tapaan kuin äsken. Kannattaa ensin tehdä taulut ja vasta tämän jälkeen yhteydet. 
+</li>
+<li>Kokeile syöttää hieman tietoa tietokantaasi. Katso alla kyselyitä ja tee sellaisia tietoja joiden avulla kyselyiden tekeminen onnistuu.
+<ul>
+<li>Lisää ainakin kolme manageria.</li>
+<li>Lisää muutama musiikkityyli, tee yhdestä tyylistä "Rock".</li>
+<li>Lisää ainakin kaksi esiintyjää joista jompi kumpi on Rock-tyylin edustaja.</li>
+<li>Lisää ainakin kolme keikkaa, osa keikoista tänä vuonna ja osa viime vuonna.</li>
+<li>Lisää ainakin muutama keikkapaikka.</li>
+</ul>
+
+</li>
+</ol>
+<h4>SQL-kieli</h4>
+
+<p><a href="https://www.w3schools.com/sql/sql_select.asp" target="_blank">SELECT-kyselyn</a> avulla haetaan tietokannan taulusta tietoja. Lisätään kyselyt harjoituskansioon omaksi tehtäväksi, tee niille esimerkiksi sivu <a href="esim_harj_sql_1.html">harj_sql_1.php</a>.
+Lisää sivulle vähintään numerot 1...10 ja kopioi oma ratkaisusi. Ratkaisun voi sijoittaa esim. pre tai code -elementtien sisälle.<ol>
+<li>Hae kaikki keikkapaikat jotka sijaitsevat Tampereella. Aseta ehto WHERE-osaan. Lisää harjoitussivullesi SQL-kysely vastauksena.</li>
+<li>Hae kaikki keikat päivämäärän mukaan nousevaan järjestykseen järjestettynä (ASC). Nyt lisätään kyselyn loppuun <a href="https://www.w3schools.com/sql/sql_orderby.asp" target="_blank">ORDER BY-termi</a>. Lisää SQL-kysely vastaussivullesi.</li>
+<li>Hae kaikki esiintyjät joiden sukunimi alkaa tietyllä kirjaimella. Nyt tarvitset ehdossa <a href="https://www.w3schools.com/sql/sql_like.asp">LIKE-termiä ja katkaisumerkkiä</a>.</li>
+<li>Tee kysely, jonka avulla saat selville kaikkien managerien tiedot nimien mukaisessa aakkosjärjestyksessä (sukunimi ensisijainen ja etunimi toissijainen lajittelukenttä).</li>
+</ol>
+<p>Kun haetaan kahdesta taulusta tietoja yhdistetään ne <a href="https://www.w3schools.com/sql/sql_join_inner.asp">INNER JOIN -määreellä</a> (joskus myös LEFT tai RIGHT JOIN). 
+<p><img src="../kuvat/inner_join.png" width="150" />
+
+<ol start="5">
+<li>Hae tieto esiintyjistä ja heidän musiikkityylistään. Näytä vain kentät taiteilijanimi ja tyyli.</li>
+<li>Hae tieto esiintyjistä ja heidän musiikkityylistään. Näytä vain kentät taiteilijanimi ja tyyli. Rajoita WHERE-termillä vain esiintyjiin joiden tyyli on "Rock".</li>
+<li>Hae kaikki tietyn keikkapaikan keikat. Rajoita WHERE-termillä esim. <pre>WHERE KeikkapaikkaID=1</pre>
+Näytä keikkapaikan lähiosoite ja keikkojen alkamisaika sekä päivämäärä.</li>
+</ol>
+
+<p>Yleensä monimutkaisimmat kyselyt tulevat tietojen hakemisesta. Muu tietokannan tietokannan tietojen käsittely (lisääminen, poistaminen ja muokkaaminen) on helpompaa. Yhdessä tästä käsittelystä käytetään lyhennettä <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>.
+
+<ol start="8">
+<li>Kokeile <a href="https://www.w3schools.com/sql/sql_insert.asp" target="_blank">INSERT-kyselyn</a> tekemistä, lisää tietokantaasi uusi musiikkityyli jonka tyylin nimi on "Testi".</li>
+<li>Tee <a href="https://www.w3schools.com/sql/sql_update.asp" target="_blank">UPDATE-kysely</a> joka muuttaa tyylin "Testi" arvoksi "Kokeilu"</li>
+<li>Tee <a href="https://www.w3schools.com/sql/sql_delete.asp" target="_blank">DELETE-kysely</a> jolla poistat "Kokeilu"-nimisen musiikkityylin. Huom. muista aina DELETE-kyselyissä WHERE-osa, jos se jää pois tyhjennetään koko taulu!</li>
+</ol>
+ 
+<h4>Lisäharjoitukset</h4> 
+ 
+<ol start="11">
+<li>Laadi kysely jolla haet kaikki viime vuoden keikat.</li>
+<li>Lisää edelliseen kyselyyn INNER JOIN tauluihin Keikkapaikat ja Esiintyjät. Näytä seuraavat kentät: Päivämäärä, Lähiosoite, Taitailijanimi.</li>
+</ol> 
+ 
+</div>
+<script type="text/javascript" src="footer.js"> </script></body>
+</html>

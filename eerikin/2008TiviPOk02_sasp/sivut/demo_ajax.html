@@ -1,0 +1,62 @@
+<!DOCTYPE html><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo 16</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+
+
+<div id="sisalto">
+<h1>Demo 16</h1>
+<h4>Ajax-esimerkki</h4>
+<p>Tehdään pieni esimerkki jossa testataan miten JavaScript-funktion avulla kutsutaan PHP-tiedostoa. PHP-tiedosto palauttaa tekstin joka näytetään span-elementin sisällä. Tallenna tämä itsellesi demo16.php -tiedostoon.</p>
+<p><img src="../kuvat/ajax_esim.png" width="431" height="251" alt=""/></p>
+<h5>1. Lomake</h5>
+<div>Tehdään ensin lomake joka kutsuu JavaScript-funktiota laskeTulos.</div>
+<pre>&lt;h1&gt;Kertolasku&lt;/h1&gt;
+&lt;form action=&quot;&quot;&gt;
+   Luku 1:
+   &lt;input type=&quot;text&quot; id=&quot;luku1&quot; name=&quot;luku1&quot; onkeyup=&quot;laskeTulos()&quot;&gt;&lt;br /&gt;
+   Luku 2:
+   &lt;input type=&quot;text&quot; id=&quot;luku2&quot; name=&quot;luku2&quot; onkeyup=&quot;laskeTulos()&quot;&gt;&lt;br /&gt;
+&lt;/form&gt;
+&lt;h4&gt;Tulos&lt;/h4&gt;
+&lt;p&gt;&lt;span id=&quot;txtTulos&quot;&gt;&lt;/span&gt;&lt;/p&gt;</pre>
+<h5>2. laskeTulos</h5>
+<p>Funktiossa kutsutaan php-tiedostoa, tiedosto palauttaa lopputuloksen joka asetetaan txtTulos-spanille.</p>
+<pre>&lt;script&gt;
+   function laskeTulos() {
+ let luku1 = document.getElementById(&quot;luku1&quot;).value;
+ let luku2 = document.getElementById(&quot;luku2&quot;).value;
+ var xmlhttp = new XMLHttpRequest();
+ xmlhttp.onreadystatechange = function() {
+ if (this.readyState == 4 &amp;&amp; this.status == 200) {
+ document.getElementById(&quot;txtTulos&quot;).innerHTML = this.responseText;
+ }
+ };
+ xmlhttp.open(&quot;GET&quot;, &quot;demo16b.php?luku1=&quot; + luku1 + &quot;&amp;luku2=&quot; + luku2, true);
+ xmlhttp.send();
+ }
+ &lt;/script&gt;
+</pre>
+<h5>3. PHP
+  -tiedosto (demo16b.php)</h5>
+<p>PHP:n tarkoitus on käsitellä syöte ja tehdä jokin asia palvelimen puolella. Tavallisesti PHP käsittelisi tiedostoa (json) tai tietokantaa (mysql).</p>
+<pre>&lt;?php
+$luku1 = $_REQUEST[&quot;luku1&quot;];
+$luku2 = $_REQUEST[&quot;luku2&quot;];
+if (filter_var($luku1, FILTER_VALIDATE_INT) &amp;&amp; filter_var($luku2, FILTER_VALIDATE_INT)) {
+   echo &quot;Kertolaskun lopputulos on &quot; . ($luku1 * $luku2);
+} 
+else {
+   echo &quot;Väärä syöte!&quot;;
+}
+?&gt;</pre>
+	
+<h4>w3schools - esimerkki</h4>
+<p>Kokeile miten <a href="https://www.w3schools.com/php/php_ajax_php.asp">w3schools-sivun esimerkki</a> hint-tekstin näyttämisestä tapahtuu. </p>
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

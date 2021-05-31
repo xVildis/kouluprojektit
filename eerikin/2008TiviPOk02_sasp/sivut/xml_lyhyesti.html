@@ -1,0 +1,355 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>XML Lyhyesti</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+
+<h1>XML Lyhyesti</h1>
+  <h4>Mikä on XML?</h4>
+  <p><a href="http://fi.wikipedia.org/wiki/XML" target="_blank">XML</a> (eXtensible Markup Language) on SGML:n pohjalta kehitetty sähköisten dokumenttien merkintäkieli. Web-dokumenttien kuvaukseen kehittynyt HTML-merkintäkieli oli osoittautunut riittämättömäksi todellisten Internet-sovellusten rakentamiseen. XML:aa alettiin kehittää 1996 ja XML-Suositus hyvaksyttiin 10 helmikuuta 1998. Viime vuosina <a href="https://fi.wikipedia.org/wiki/JSON" target="_blank">JSON</a> on vallannut monissa sovelluksissa XML:n merkintätapana.</p>
+  <p>Esimerkki kortti.xml<br />
+  </p>
+  <pre><span class="koodi">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+&lt;kortti tyyppi=&quot;sahko&quot;&gt;
+&lt;lahettaja&gt;Eerikki Maula&lt;/lahettaja&gt;
+&lt;saaja&gt;Joulupukki&lt;/saaja&gt;
+&lt;toivotus tyyli=&quot;toiveikas&quot;&gt;Hei rakas joulupukki!
+L&auml;hestyn sinua n&auml;in joulun l&auml;hestyess&auml; toivomuslistan kera..&lt;/toivotus&gt;
+&lt;/kortti&gt;</span>  </pre>
+  <p><code class="korostus">kortti</code> koostuu joukosta elementtejä: kortti, lahettaja, saaja ja toivotus.</p>
+  <ul>
+    <li>Elementtien tulee olla limittäin, ei päällekkäin (lahettaja on kortin sisällä)</li>
+    <li>Elementeillä voi olla attribuutteja eli ominaisuuksia (tässä tyyli). Attribuutit aina &quot; -merkkien sisällä.</li>
+    <li><b>version</b>: kertoo dokumentissa käytetyn XML-standardin version, vain versio 1.0 on mahdollinen.</li>
+    <li><b>encoding</b>: kertoo dokumentissa käytetyn merkistön. ISO-8859-1-merkistö sisältää skandimerkit. Ellei merkistöä määritetä, oletusarvo on UTF-8, joka ei sisällä skandimerkkejä. Valinnainen attribuutti.</li>
+    <li><b>standalone</b>: kertoo sisältääkö dokumentti ulkopuolisia entiteettejä (=kokonaisuuksia, toisia xml -dokumentteja). Jos dokumentti on itsenäinen arvo on yes. Jjos dokumentissa viitataan ulkopuolisiin entiteetteihin esim. dokumenttiin liitetään jokin toinen xml-dokumentti arvo on no. Valinnainen attribuutti.</li>
+    <li>XML-tiedoston tarkenne on .xml.</li>
+  </ul>
+  <p>XML on siis tarkoitettu dokumenttien kuvailuun, voidaan itse määritellä millaista rakenteista tietoa sivut sisältävät. Se miltä dokumentti näyttää, riippuu sitten käytetystä tyylistä (aluksi tavallinen CSS -tyyli, myöhemmin XLS -tyylit). Sama informaatio voidaan siis helposti koodata erilaisiin tarkoituksiin.<br />
+  </p>
+  <p><img src="../Kuvat/xml_xls.jpg" alt="XML-dokumentin monet muodot" /> </p>
+  <p class="kuvaus">XML-sisältöä hyödynnetään esimerkiksi seuraavissa ohjelmointiympäristöissä:</p>
+  <ul>
+    <li>Windows Phone -kehityksessä (C#) käyttöliittymän esittäminen XAML-tiedostossa.</li>
+    <li>Android-kehityksessä (Java) käyttöliittymän ja sovelluksen käyttämien resurssien (värit, tekstit) esittämisessä.</li>
+    <li>Google API:n käyttö web-sovelluksissa (mm. karttasovellukset).</li>
+  </ul>
+  <hr />
+  <h4>Dtd eli Document Type Definition</h4>
+  <p>XML-dokumenttiin voidaan (=tulee) liittaa rakennekuvaus joka kuvaa minkalaisista elementeista dokumentti koostuu ja mitka elementit ovat pakollisia, mika on elementtien jarjestys sekä minkalaisia attribuutteja elementeilla on? Rakennekuvauksessa elementit maaritetaan ELEMENT-termilla ja attribuutit ATTLIST-termilla. Elementin maarittelyn yleinen muoto on</p>
+  <p>ks.<a href="http://www.w3schools.com/dtd/default.asp">w3schools.com</a>. </p>
+  <p class="korostus">&lt;!ELEMENT elementinNimi (elementinSisaltö)&gt;</p>
+  <ul>
+    <li>Dtd: <a href="http://www.w3schools.com/Dtd/default.asp">www.w3schools.com</a></li>
+    <li>Dtd: <a href="http://www.2kmediat.com/xml/dtdschemat.asp">2kmediat.com</a> </li>
+  </ul>
+  <p>Attribuutin maarittelyn yleinen muoto on</p>
+  <p><span class="korostus">&lt;!ATTLIST elementinNimi attribuutinNimi tyyppi oletusMaaritys&gt;</span></p>
+  <p>Dokumentin rakennekuvaus voi olla:</p>
+  <ol>
+    <li>Dokumentin yhteydessa</li>
+    <li>Erillään dokumentista (esim. kortti.dtd), tällöin dtd -määritellään tähän tapaan:
+      <pre class="koodi">&lt;!DOCTYPE kortti SYSTEM &quot;kortti.dtd&quot;&gt;</pre>
+    </li>
+  </ol>
+  <p>Esimerkki kortti.dtd : </p>
+  <pre><span class="koodi">&lt;!DOCTYPE kortti[
+&lt;!ELEMENT kortti (lahettaja, saaja, toivotus)&gt;
+&lt;!ATTLIST kortti tyyppi (sahko|pahvi) #REQUIRED&gt;
+&lt;!ELEMENT lahettaja (#PCDATA)&gt;
+&lt;!ELEMENT saaja (#PCDATA)&gt;
+&lt;!ELEMENT toivotus (#PCDATA)&gt;
+&lt;!ATTLIST toivotus tyyli (toiveikas|uhkaava) #IMPLIED&gt;
+]&gt;</span>
+</pre>
+  <ul>
+    <li>PCDATA tarkoittaa parsed character dataa, jäsennettävää tekstiä.</li>
+    <li>? Tarkoittaa elementin perässä sitä, että elementti voi joko
+      esiintyä tai olla esiintymättä.</li>
+    <li>#REQUIRED tarkoittaa, että attribuutti on välttämätön</li>
+    <li>#IMPLIED valinnainen</li>
+  </ul>
+  <p>Elementit kuvaavat dokumentin loogisen rakenteen.</p>
+  <table>
+    <tbody>
+      <tr>
+        <td><p>&nbsp;</p></td>
+        <th>Esimerkki</th>
+        <th>Selite</th>
+      </tr>
+      <tr>
+        <th>alielementit:</th>
+        <td>&lt;!ELEMENT
+          henkilo (nimi, osoite, puhelin)&gt;</td>
+        <td>elementtejä</td>
+      </tr>
+      <tr>
+        <th>vaihtoehtoiset alielementit</th>
+        <td>&lt;!ELEMENT
+          henkilo (nimi, (lahiosoite | katuosoite)&gt;</td>
+        <td>osoittteessa voi käyttää lahiosoite
+          tai katuosoite elementtiä</td>
+      </tr>
+      <tr>
+        <th>#PCDATA</th>
+        <td>&lt;!ELEMENT
+          puhelin (#PCDATA&gt;</td>
+        <td>mitä tahansa merkkejä</td>
+      </tr>
+      <tr>
+        <th>EMPTY</th>
+        <td>&lt;!ELEMENT
+          kuva EMPTY&gt;</td>
+        <td>ei sisältöä</td>
+      </tr>
+      <tr>
+        <th>ANY</th>
+        <td>&lt;!ELEMENT
+          dokumentti ANY&gt;</td>
+        <td>mitä tahansa merkkejä ja elementtejä</td>
+      </tr>
+      <tr>
+        <th>+</th>
+        <td>&lt;!ELEMENT
+          henkilo (nimi, osoite, puhelin+)&gt;</td>
+        <td>1 tai useampi</td>
+      </tr>
+      <tr>
+        <th>*</th>
+        <td>&lt;!ELEMENT
+          henkilo (nimi, osoite, puhelin*)&gt;</td>
+        <td>0 tai useampi</td>
+      </tr>
+      <tr>
+        <th>?</th>
+        <td>&lt;!ELEMENT
+          henkilo (nimi, osoite, puhelin+)&gt;</td>
+        <td>0 tai yksi</td>
+      </tr>
+      <tr>
+        <th>alisarjat</th>
+        <td>&lt;!ELEMENT
+          henkilo (nimi, (puhelin, gsm*)*&gt;</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>yhdistelmäsisältö</th>
+        <td>&lt;!ELEMENT
+          kuvaus (#PCDATA | aihe)*&gt;</td>
+        <td>voi sisältää dataa ja elementtejä</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5><b>Attribuutit</b></h5>
+  <table>
+    <tbody>
+      <tr>
+        <th colspan="3">Pakollisuus</th>
+      </tr>
+      <tr>
+        <td>#IMPLIED</td>
+        <td>&lt;!ELEMENT nimi
+          (#PCDATA)&gt;<br />
+          &lt;!ATTLIST nimi<br />
+          sp CDATA
+          #IMPLIED&gt;</td>
+        <td>valinnainen, ei oletusarvoa</td>
+      </tr>
+      <tr>
+        <td>#REQUIRED</td>
+        <td>&lt;!ELEMENT nimi
+          (#PCDATA)&gt;<br />
+          &lt;!ATTLIST nimi<br />
+          sp CDATA
+          #REQUIRED&gt;</td>
+        <td>pakollinen, ei oletusarvoa, mutta
+          sille on määritettävä jokin arvo</td>
+      </tr>
+      <tr>
+        <td>#FIXED</td>
+        <td>&lt;!ELEMENT
+          nimi (#PCDATA)&gt;<br />
+          &lt;!ATTLIST nimi<br />
+          sp CDATA #FIXED
+          &quot;mies&quot;&gt;</td>
+        <td>attribuutille määritetään
+          oletusarvo, merkkauksessa ei ole pakko antaa, jäsentäjä lisää sen.
+          Käyttäjä ei voi antaa muuta arvoa</td>
+      </tr>
+      <tr>
+        <td>oletusaravo</td>
+        <td>&lt;!ELEMENT nimi
+          (#PCDATA)&gt;<br />
+          &lt;!ATTLIST nimi<br />
+          sp CDATA
+          &quot;mies&quot;&gt;</td>
+        <td>jos elementille ei anneta
+          attribuuttia, jäsentäjä lisää oletusarvon. Käyttäjä voi antaa myös muun
+          arvon</td>
+      </tr>
+      <tr>
+        <th colspan="3">Tyypit</th>
+      </tr>
+      <tr>
+        <td>CDATA</td>
+        <td>merkkitietoa, ei saa sisältää merkkausta</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Lueteltu tyyppi</td>
+        <td>&lt;!ELEMENT nimi
+          (#PCDATA)&gt;<br />
+          &lt;!ATTLIST nimi<br />
+          sp (mies |
+          nainen) &quot;mies&quot;&gt;</td>
+        <td>vaihtoehtoiset arvot lueteltu.</td>
+      </tr>
+      <tr>
+        <td>ID</td>
+        <td>ainutkertainen nimi, kahdella attribuutilla ei
+          saa olla samaa arvoa</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>IDREF</td>
+        <td>attribuutin arvo on jonkin toisen elementin
+          tunniste ID</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>IDREFS</td>
+        <td>viittaa yhteen tai useampaan ID-arvoon</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>NMTOKEN</td>
+        <td>attribuutin arvo vain yksi sana, jonka olta
+          xml-nimi</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>NMTOKENS</td>
+        <td>attribuutin arvo voi sisältää välilyöntejä eli
+          useita sanoja</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>ENTITY</td>
+        <td>ulkoinen binaarinen tieto</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>NOTAATIO</td>
+        <td>Muun kuin XML-muotoisen tiedon sijoittamiseen</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th colspan="3">ENTITEETIT</th>
+      </tr>
+      <tr>
+        <td>Sisäinen yleisentiteetti</td>
+        <td>määritetään Dtd:ssä, käytetään
+          xml-dokumentissa</td>
+        <td>esim. pitkien sanojen lyhenteet,
+          ettei tarvitse toistuvasti kirjoittaa koko nimeä merkkauksessa</td>
+      </tr>
+      <tr>
+        <td>Ulkoinen<br />
+          yleisentiteetti</td>
+        <td>useiden samanrakenteisten
+          xml-dokumenttien yhdistämiseen</td>
+        <td>merkkauksessa aloitetaan
+          &amp;-merkillä</td>
+      </tr>
+      <tr>
+        <td>Ennalta määritetyt entit.</td>
+        <td>&amp;, &lt;, &gt;, ' &quot;</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Sisäinen parametrientiteetti</td>
+        <td>määritetään Dtd:assä, käytetään
+          Dtd:ssä</td>
+        <td>aloitetaan %-merkillä</td>
+      </tr>
+      <tr>
+        <td>Ulkoinen parametrientiteetti</td>
+        <td>laajojen Dtd:n muodostamiseen
+          pienemmistä palasista</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Ulkoinen binäärientiteetti</td>
+        <td>Ei-xml-muotoista jäsentämätöntä
+          teitoa esim. ääntä, kuvaa</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <hr />
+
+<a name="svg"> <h1>SVG</h1></a>
+  <p>SVG on lyhenne sanoista Scalable Vector Graphics ja on yksi vektorigrafiikan tiedostomuoto. SVG-kuvat on tehty XML-kielellä mutta niitä on mahdollista muokata eräillä kuvanmuokkausohjelmilla (esim. Adobe Illustrator). </p>
+  <p>Viime vuosina tuki SVG-kuvien esittämiselle on laajentunut, esimerkiksi viimeisimmät www-selaimet pystyvät esittämään kuvat oikein. </p>
+  <p><a href="http://upload.wikimedia.org/wikipedia/commons/1/15/Svg.svg">http://upload.wikimedia.org/wikipedia/commons/1/15/Svg.svg</a> </p>
+  <p>Selaintuki tällä hetkellä Mozilla/Firefox ja Opera 9, IE 8 vaatii Adobe SVGViewer -lisäosan mutta IE 9 ei. </p>
+  <p>Mitä hyötyä SVG:stä on? </p>
+  <ul>
+    <li>SVG tiedostot XML- muotoa, eli helposti muokattavissa ohjelmilla jotka voivat käsitellä tekstiä (= ohjelmakoodissa)</li>
+    <li>SVG tiedostot pienempiä ja paremmin pakattavissa kuin esimerkiksi JPEG tai GIF kuvat</li>
+    <li>SVG kuvat täysin vektorigrafiikkaa ja skaalattavissa, kuvia voidaan zoomata ilman laadun muutosta.</li>
+    <li>SVG toimii yhteen Java teknologian ja erilaisten rajapintojen kanssa.</li>
+  </ul>
+  <p>Kuvien käyttö riippuu tilanteesta, toisiin asioihin ne sopivat paremmin ja toisiin huonommin. </p>
+  <h5>Esimerkki</h5>
+  <p>SVG-kuva jossa piirretään ympyrä sekä suorakulmio.</p>
+  <pre>
+&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;
+&lt;!DOCTYPE svg PUBLIC &quot;-//W3C//DTD SVG 1.1//EN&quot; 
+&quot;http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd&quot;&gt;
+&lt;svg width=&quot;100%&quot; height=&quot;100%&quot; version=&quot;1.1&quot; 
+xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt; 
+&lt;rect width=&quot;200&quot; height=&quot;200&quot; x="10" y="10" fill="green" /&gt; 
+&lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot; strokewidth=&quot;2&quot; fill=&quot;red&quot;/&gt; 
+&lt;/svg&gt;
+</pre>
+  <p>Muita muotoja: </p>
+  <p>Ellipsi:</p>
+  <pre>
+&lt;ellipse cx=&quot;300&quot; cy=&quot;150&quot; rx=&quot;200&quot; ry=&quot;80&quot; 
+style=&quot;fill:rgb(200,100,50); stroke:rgb(0,0,100);stroke-width:2&quot;/&gt; 
+</pre>
+  <p>Sijoittelu pois yläkulmasta</p>
+  <pre>
+&lt;rect x=&quot;20&quot; y=&quot;20&quot; width=&quot;250&quot; height=&quot;250&quot; 
+style=&quot;fill:blue;stroke:pink;stroke-width:5; fill-opacity:0.1;strokeopacity:0.9&quot;/&gt; 
+</pre>
+  <p>Pyöristetyt kulmat:</p>
+  <pre>
+&lt;rect x=&quot;20&quot; y=&quot;20&quot; rx=&quot;20&quot; ry=&quot;20&quot; width=&quot;250&quot; height=&quot;100&quot; 
+style=&quot;fill:red;stroke:black; stroke-width:5;opacity:0.5&quot;/&gt; 
+</pre>
+  <h5>Teksti</h5>
+  <p>Teksti esitet&auml;&auml;n text- elementin avulla. Tekstin tyylin voit m&auml;&auml;ritell&auml; CSS-tiedoston tapaan svg-tiedoston alkuun.</p>
+  <pre class="koodi">&lt;text class=&quot;oma&quot; x=&quot;80&quot; y=&quot;10&quot;&gt;Hei, t&auml;ss&auml; omaa teksti&auml;!&lt;/text&gt;   </pre>
+  <p>Tyylin m&auml;&auml;rittely tyylille 'oma':</p>
+  <pre class="koodi">&lt;style type=&quot;text/css&quot;&gt;
+&lt;![CDATA[
+.oma {font-weight:bold; fill:blue; font-family: verdana; text-decoration:none;}
+]]&gt;
+&lt;/style&gt;   </pre>
+  <p>Voit kokeilla k&auml;&auml;nt&auml;&auml; teksti&auml; transform -attribuutin avulla:</p>
+  <pre class="koodi">transform=&quot;rotate(80)&quot;   </pre>
+
+  
+  
+  </div>
+
+<script type="text/javascript" src="footer.js"> </script>

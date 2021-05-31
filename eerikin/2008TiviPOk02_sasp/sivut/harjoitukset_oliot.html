@@ -1,0 +1,77 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Harjoitukset: luokat ja oliot</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+<h1>PHP-harjoitus 14,luokat ja oliot</h1>
+<h2>14.1 Ympyrä</h2>
+<p>
+Suunnittele ja piirrä Visiolla luokka Ympyra, jonka tietoina ovat ympyrän säde ja muodostettavan ympyrän järjestysnumero.
+Metodi laske_pinta_ala palauttaa ympyrän pinta-alan (=Pii * säde *säde) ja laske_piiri palauttaa ympyrän piirin (= 2 * Pii * säde).</p>
+<p>Lisää myös metodit palauta_nro(), joka palauttaa järjestysnumeron sekä palauta_sade(), joka nimensä mukaan palauttaa säteen.</p>
+<p>
+Vihjeitä: Laadi ensin konstruktori (muodostin) Ympyra($sade), joka sijoittaa parametrin ympyrän arvoksi ja lisää numeron. Käytä numeroinnissa apuna pääohjelmassa muuttujaa, joka antaa seuraavan järjestysnumeron. 
+</p>
+<p>Lisää pääohjelmalla kaksi ympyrää.</p>
+<p>Laadi näkymätiedosto, joka tulostaa ympyröistä järjestysnumeron, piirin ja alan.</p>
+<p>
+Kommentoi ohjelma. </p>
+<p>
+Testaa harjoitus ja lisää se työkansioosi. Laita luokkakaavio kuvana mukaan.</p>
+
+
+
+
+
+<h2>14.2 Kirja ja Kirjahylly</h2>
+
+<p> 
+Määrittele, piirrä Visiolla ja toteuta PHP:lla luokat Kirja ja Kirjahylly. </p>
+
+<p>Kirjalla on attribuutit tekijä, nimi ja hinta. Tee attribuuteille saantimetodit. Tee luokalle myös metodi alennaHintaa, joka alentaa kirjan hintaa 10%. </p>
+<p>
+Tee ohjelma, joka kysyy käyttäjältä kirjan tiedot ja luo niiden perusteella Kirja-luokan olion, tulostaa alkuperäisen ja alennetun hinnan. </p>
+
+
+<p>Kirjahyllyllä on attribuutteina nimi ja kirjat (taulukko). Se luodaan antamalla kirjahyllylle nimi. Tee luokalle metodit listaa_kirjat ja lisaa_kirja.</p>
+
+<p>
+Kommentoi ohjelma. </p>
+<p>
+Testaa harjoitus ja lisää se työkansioosi. Laita luokkakaavio kuvana mukaan.</p>
+
+
+
+
+<h2>14.3 Characer</h2>
+
+<p>character.php, Hahmon malli
+<ul>
+<li>Attribuutit: tee hahmolle samat yksityiset (private) attribuutit mitä tietokantasi taulussa olevalla hamolla on. Näitä olivat name, classID sekä </li>
+<li>laadi julkinen (public) rakennin joka arpoo hahmolle luokan ja muuttijiin sopivat lukuarvot.</li>
+<li>Laadi julkinen metodi setNimi($name) (tai setName($name)) joka asettaa hahmolle parametrina tulevan muuttujan nimeksi.</li>
+<li>Laadi julkinen metodi tallenna_hahmo() joka tallettaa hahmon tietokantaasi. </li>
+<li>Laadi julkinen metodi tulosta_hahmo() joka tulosta hahmon tiedot näkyviin echo-riveillä.</li>
+</ul>
+
+<p>index.php
+<ul>
+<li>Lisää alkuun require "character.php".</li>
+<li>Luo täällä uusi hahmo. Aseta hahmolle jokin merkkijono nimeksi. </li>
+<li>Lisää loppuun require "character.view.php".</li>
+</ul>
+
+
+<p>character.view.php
+<ul>
+<li>Käytetään täällä hahmon metodeja tallenna_hahmo() ja tulosta_hahmo().</li>
+</ul>
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo 6</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+
+<div id="sisalto">
+
+<h1>Demo 6, laskin, lomake, lomakkeenkäsittelija samassa tiedostossa</h1>
+<p>
+Laadi tiedosto demo6.php, jonka avulla voit tehdä yksinkertaisia laskutoimituksia. Alla on kuva html-näkymästä.</p>
+<p><img src="../kuvat/demo6.png" alt="kuva laskimesta"></p>
+
+<p>Tee ensin laskutoimitukset if-lauseilla ja testaa toiminta.</p>
+<p>Muuta sitten koodia niin, että ohjelma käyttää switch-case-rakennetta.</p>
+<hr>
+<h3>Lähdekoodi</h3>
+<code><span style="color: #000000">
+&lt;h1&gt;Laskin&lt;/h1&gt;
+<br />&lt;form&nbsp;method="post"&gt;
+<br />
+<br />&lt;label&nbsp;for="luku1"&gt;Luku&nbsp;1&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="number"&nbsp;name="luku1"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&lt;label&nbsp;for="luku2"&gt;Luku&nbsp;2&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="number"&nbsp;name="luku2"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&lt;input&nbsp;type="submit"&nbsp;name="laske"&nbsp;value="+"&gt;
+<br />&lt;input&nbsp;type="submit"&nbsp;name="laske"&nbsp;value="-"&gt;
+<br />&lt;input&nbsp;type="submit"&nbsp;name="laske"&nbsp;value="*"&gt;
+<br />&lt;input&nbsp;type="submit"&nbsp;name="laske"&nbsp;value="/"&gt;
+<br />&lt;/form&gt;
+<br />
+<br />&lt;h3&gt;Vastaus&lt;/h3&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #FF8000">//&nbsp;tarkistetaan&nbsp;onko&nbsp;lomake&nbsp;lähettetty&nbsp;ja&nbsp;onko&nbsp;siinä&nbsp;tarvittavat&nbsp;tiedot
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"luku1"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"luku2"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"laske"</span><span style="color: #007700">]))&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$luku1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"luku1"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$luku2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"luku2"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$laske&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"laske"</span><span style="color: #007700">]);
+<br />
+<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*if($laske&nbsp;==&nbsp;"+")&nbsp;$vastaus&nbsp;=&nbsp;$luku1&nbsp;+&nbsp;$luku2;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if($laske&nbsp;==&nbsp;"-")&nbsp;$vastaus&nbsp;=&nbsp;$luku1&nbsp;-&nbsp;$luku2;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if($laske&nbsp;==&nbsp;"*")&nbsp;$vastaus&nbsp;=&nbsp;$luku1&nbsp;*&nbsp;$luku2;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if($laske&nbsp;==&nbsp;"/")&nbsp;$vastaus&nbsp;=&nbsp;$luku1&nbsp;/&nbsp;$luku2;*/
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">switch(</span><span style="color: #0000BB">$laske</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"+"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$vastaus&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$luku1&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$luku2</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"-"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$vastaus&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$luku1&nbsp;</span><span style="color: #007700">-&nbsp;</span><span style="color: #0000BB">$luku2</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"*"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$vastaus&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$luku1&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">$luku2</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"/"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$vastaus&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$luku1&nbsp;</span><span style="color: #007700">/&nbsp;</span><span style="color: #0000BB">$luku2</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;h4&gt;</span><span style="color: #0000BB">$vastaus</span><span style="color: #DD0000">&lt;/h4&gt;"</span><span style="color: #007700">;
+<br />}
+<br />
+<br />
+<br />
+<br /></span>
+</span>
+</code>
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

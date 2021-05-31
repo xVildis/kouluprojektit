@@ -41,7 +41,7 @@ if (!$ok) {
 else {
 	require "./partials/navi.php";
 	?>
-	
+	<br>
 	<form method="post">
 	<input type="submit" name="logoff" value="Kirjaudu ulos" />
 	</form>
@@ -56,7 +56,7 @@ else {
 	
 	$sallitut = array("demo1","demo2","demo3","demo4","demo4_lomakkeenkasittelija","demo5","demo6"
 	,"demo7","demo8","demo9","demo10","demo11","demo12","demo13","harj1","harj2","harj3","harj4","harj5"
-	,"harj6","harj11", "harj7","harj8","harj9","demo12c","demo12b","demo12a","harj13","harj14","harj15");
+	,"harj6","harj11", "harj7","harj8","harj9","harj10","demo12c","demo12b","demo12a","harj13","harj14","harj15");
 	
 	if(in_array($sivu, $sallitut)) {
 		$polku = "./$kansio/$sivu.php";

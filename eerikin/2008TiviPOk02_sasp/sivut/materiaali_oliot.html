@@ -1,0 +1,220 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Luokat ja oliot</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+<h1>Luokat ja oliot</h1>
+<p>Olio-ohjelmoinnin peruskäsitteet ovat luokka ja olio. Luokka määrittelee, millaista tietoa olio sisältää (luokan muuttujat) ja miten sitä voi käsitellä (luokan funktiot eli 
+metodit). Käytännössä luokkaa voi ajatella muuttujan tyyppinä ja oliota voi ajatella muuttujan arvona.</p>
+<p>
+Olio-ohjelmointi helpottaa tavallisesti ohjelmistojen ylläpitoa, päivitystä ja koodin uudelleenkäyttöä. Lausekielissä ongelmien ollessa isoja on päädyttty tapauskohtaisiin ratkaisuihin (algoritmeihin). Niissä ohjelma on jaettu osa-algoritmeiksi (aliohjelmiksi, joissa aliohjelmat välittävät toisilleen parametreinä). Siirrettävyys voi olla huono, jos ratkaisut on tehty kiireessä.
+</p>
+<p>
+Valmiista olioista voi myös periyttää uusia olioita ja kirjoittaa niihin tarvittavat lisäominaisuudet. Uusia olioita voi luoda.
+</p>
+<p>
+OLIO<br>
+<ul>
+<li>tietojäsenet (ominaisuudet) - public, private, protected</li>
+<li>sisäiset toiminnot (metodit - private, static tai protected)</li>
+<li>julkiset toiminnot (public)</li>
+</ul>
+</p>
+
+<h2>TERMEJÄ</h2>
+
+<h3>Luokka, class</h3>
+
+<p>Samankaltaisten olioiden malli.<br>
+<br>
+Luokka määritellään tavallisesti varatun sanan class avulla.<br>
+<p>
+<strong>Muunnin (suojausmääre)</strong> kuvaa luokan ominaisuuksia. Yleisimmät  ovat:
+<table class="levea">
+<tr>
+<td class="kapea">public</td><td>Luokka on periytyvä ja sen ominaisuuksia ja metodeja voidaan kutsua ulkoa.<br>Luokkakaaviossa public-määre esitetään +-merkillä.</td></tr>
+<tr><td class="kapea">final</td><td>Luokka ei periydy. Luokan ominaisuuksia ja metodeja voidaan kutsua ulkoa</td></tr>
+<td class="kapea">protected</td><td>Muuttujaa tai metodia voi käsitellä vain luokan sisällä tai luokan perineiden luokkien sisällä.<br>Luokkakaaviossa public-määre esitetään #-merkillä.</td></tr>
+<td class="kapea">private</td><td>Muuttujaa tai metodia voi käsitellä vain luokan sisällä. Jos private-määreisen muuttujan haluaa näyttää pääohjelmassa, tulee sitä varten tehdä  erillinen (public) saantimetodi.<br>Luokkakaaviossa public-määre esitetään - -merkillä.</td></tr>
+<tr><td class="kapea">abstract</td><td>Luokasta voidaan tehdä olioita ainoastaan periyttämällä. Luokan metodit eivät sisällä ohjelmakoodia.</td></tr>
+<td class="kapea">static</td><td>Static-määreen saavat muuttujat eivät liity olioihin vaan luokkiin. Staattisia muuttujia ja metodeja käytetään luokan nimen kautta, esimerkiksi Luokannimi::metodi(), tietysti riippuen metodien ja muuttujien näkyvyydestä. Vain public-näkyvyydellä määritetyt muuttujat ja metodit ovat suoraan käytettävissä. <br>Staattiset attribuutit ja metodit esitetään UML-luokkakaaviossa alaviivan kera.</td></tr>
+</table>
+
+<p><strong>Viittaustyyppi</strong></p>
+<p>Viittaustyyppiset muuttujat tallentavat niihin liittyvän tiedon viitteen taakse, ja itse muuttuja toimii vain viitteenä tiedon sisältävään paikkaan. </p>
+<p>
+Viittaustyyppisistä muuttujista puhutaan olioina, ja ne luodaan new-kutsulla. Muuttujan arvo asetetaan vieläkin sijoitusoperaattorilla =, mutta komento new luo olion ja palauttaa viitteen olioon. Tämä viite asetetaan muuttujan arvoksi.</p>
+
+<h3>Olio, ilmentymä, instance</h3>
+<p>
+Ilmentymä on olio, joka toteuttaa luokan käytännössä.
+</p>
+
+<p>
+Olio-ohjelmoinnissa luokkien käyttö on ainoa tapa saada ohjelma tekemään jotain järkevää, sillä kaikki toiminnallinen koodi kirjoitetaan normaalisti olioiden metodeihin.
+</p>
+
+
+
+<h2>PHP oliokielenä</h2>
+<p>PHP tukee olio-ohjelmointia versiosta 4 alkaen. Luokkien määrittely onnistuu kuten missä tahansa yleisesti käytetyssä olio-ohjelmointikielessä. Luokkien määrittelyn jälkeen niitä voidaan käyttää PHP-koodissa. Olion luomiseksi on ensin määriteltävä malli, josta se  voidaan luoda ja tämä malli on luokka. Luokka esitellään class- avainsanalla. Kun luokka on luotu sitä käytetään pohjana, josta voidaan luoda tarvittava määrä olioita luokan ilmentymiksi. Olio  (object)  luodaan new – lauseella.</p>
+<pre>
+<p class="esim">
+
+class Opiskelija
+{
+	//ominaisuudet
+	private $nimi;
+
+	public function __construct($nimi)
+	{
+		$this->nimi =$nimi;
+	}
+
+	public function esittele()
+	{
+		echo "Opiskelijan nimi on {$this->nimi}";
+	}
+}
+
+$opiskelija1 = new Opiskelija("Leena");//tässä luodaan olio
+$opiskelija2 = new Opiskelija("Urmas");
+
+
+$opiskelija1 ->esittele();
+$opiskelija2 ->esittele();
+
+</p></pre>
+<h3>
+Luokan tietojäsenet eli ominaisuudet (attribuutit, muuttujat)</h3>
+<p>
+Esimerkissä luokan ominaisuus on muuttuja $nimi. Ominaisuuksia käytetään luokkaan liittyvän tiedon tallentamiseen. Ominaisuudet voivat olla toisen luokan olioita. </p>
+<p>
+
+
+<h3>Luokan toiminnot eli metodit (funktiot)</h3>
+<p>
+Metodi on funktio, joka on määritelty luokan sisällä ja antaa toimintakyvyn olioille. Metodi näyttää tavalliselta funktiolta ja käyttäytyy samalla tavalla, mutta metodi määritellään aina luokan sisällä. Olion metodia kutsutaan nuolioperaattorilla ( ->) ja metodeilla on pääsy luokan jäsenmuuttujiin. Tavallisesti luokilla on ainakin ominaisuuksien asetus (set)- ja saantimetodit (get).</p>
+<p>
+Metodin sisältämä ohjelmakoodi kirjoitetaan heti metodin esittelyn yhteyteen luokan määrittelyn sisälle. Sille tulee antaa nimi ja ohjelmoida toiminta. Sille voidaan myös määritellä parametreja, joissa olion metodille välitetään tietoa olion ulkopuolelta.
+</p>
+<p>
+Metodit voivat olla static, public tai private.
+</p>
+
+<p>Funktio __construct on luokan rakentaja eli konstruktori, jota kutsutaan aina, kun luokasta muodostetaan olio. Tavallisesti konstruktori asettaa alkuarvot luokan muuttujille. Esimerkiksi luokassa Opiskelija konstruktorille annetaan nimi, joka sijoitetaan luokan muuttujaan $nimi.</p>
+
+<p>
+Nuolioperaattorin avulla ( - >) voidaan käyttää olion jäseniä, olion ominaisuuksia muutetaan juuri nuolioperaattorilla.</p>
+<p>
+$this erikoismuuttujaa käytetään viittaamaan luokan nykyiseen olioon. Se on kuin persoonapronomini. Yhdistämällä $this ja -> operaattori voidaan  käsitellä luokan metodia tai ominaisuuksia luokan sisällä. </p>
+
+<p>
+Oliopohjainen ohjelmointi ei ole PHP-kielessä ja sen hyvässä hyödyntämisessä välttämätöntä eikä pakollista. PHP:n kannalta olioiden edut liittyvät koodien parempaan organisointiin, laajennettavuuteen ja uudelleenkäytettävyyteen - siis koodin laatuun. </p>
+
+<h3>
+Olioiden periytyminen</h3>
+<p>PHP tukee myös periyttämistä. Luokka voi periä, korvata ja laajentaa toisen luokan toiminnallisuutta.</p>
+<p>
+Perimällä jokin luokka saadaan luokan yliluokkaan (superclass) liitetyt ominaisuudet ja toiminta käyttöön ilman erillistä määrittelyä. Perittyä luokkaa kutsutaan aliluokaksi (subclass).</p>
+<p>
+Jos jokin toista luokkaa laajentava luokka ei sisällä omaa muodostinta, käytetään kantaluokan muodostinta olioiden luomisessa. Kantaluokan muodostinta kutsutaan automaattisesti aina, kun lapsiluokan olio luodaan. </p>
+
+<h3>
+Hierarkkinen rakenne
+</h3>
+<p>
+Esim.
+<pre>
+<p class="esim">
+Eliö
+	Eläin
+		Nisäkäs
+			Ihminen
+				Postinkantaja
+					Pekka
+</p>
+</pre>
+
+<h3>Kuinka periminen tehdään?</h3>
+<p>Aikaisemmin määrittelimme seuraavan luokan Opiskelija:</p>
+
+<pre>
+<p class="esim">
+class Opiskelija
+{
+	//ominaisuudet
+	private $nimi;
+
+	public function __construct($nimi)
+	{
+	$this->nimi =$nimi;
+	}
+
+	public function esittele()
+	{
+	echo "Opiskelijan nimi on {$this->nimi}";
+	}
+}
+
+</p>
+</pre>
+
+
+<p>Perimme seuraavassa luokan ominaisuudet ja metodit uuteen aliluokkaan "Datanomiopiskelija".</p>
+
+<pre>
+<p class="esim">
+class Datanomiopiskelija extends Opiskelija
+{
+	//ominaisuudet
+	private $koulutusohjelma;
+
+	public function __construct($nimi,$koulutusohjelma)
+
+	{
+		parent::__construct($nimi);
+		$this->koulutusohjelma =$koulutusohjelma;
+	}
+
+
+	public function esittele()
+	{
+		parent::esittele();
+		echo " Koulutusohjelma on {$this->koulutusohjelma}";
+	}
+}
+
+//pääohjelma testaamaan luokkaa
+
+$opiskelija1 = new Datanomiopiskelija("Leena","ohjelmistotuotanto");//tässä luodaan olio
+$opiskelija2 = new Datanomiopiskelija("Urmas","käytön tuki");
+
+$opiskelija1 ->esittele();
+$opiskelija2 ->esittele();
+
+</p>
+</pre>
+
+<h3>Metodien ylikirjoittaminen ja ylikuormittaminen</h3>
+<p>
+Metodin <strong>ylikirjoittamisella</strong> tarkoitetaan sitä, että uudessa luokassa voidaan määritellä samanniminen metodi jonkun perityn metodin kanssa. Tällöin peritty metodi kirjoitetaan yli uudella metodilla.</p>
+<p>
+Kun metodi ylikirjoitetaan, täytyy uudella metodilla olla täsmälleen <strong>sama nimi ja samat parametrit (syöttöparametrit ja palautusparametri)</strong> kuin ylikirjoitettavalla metodilla.
+</p>
+<p>
+Jos parametrit eroavat, on kysymyksessä metodin <strong>ylikuormitus</strong> eikä ylikirjoittaminen.
+</p>
+<p>
+Ylikuormitettaessa metodia kääntäjä etsii parhaiten kutsuun sopivan metodin ja yhdistää kutsun siihen.
+</p>
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

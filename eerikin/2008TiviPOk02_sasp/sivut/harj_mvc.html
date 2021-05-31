@@ -1,0 +1,92 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MVC-malli</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+<h1>PHP-harjoitus 15, MVC ja PDO</h1>
+<p>Alla on näyttökartta järjestelmän toiminnasta:</p>
+<p><img src="../kuvat/nayttokartta_mvc.png" alt="Näyttökartta" class="pieni"></p>
+</p>
+
+<p>Tarkoituksena on tehdä sovellus jolla voi 
+
+<ul>
+<li>Lisätä uusia uutisia</li>
+<li>Hakea näkyviin listauksen uutisista (linkit muokkaa ja poista)</li>
+<li>Muokata uutisia lomakkeella</li>
+<li>Poistaa uutisen linkin avulla</li>
+
+</ul>
+
+<h2>Vaihe 1</h2>
+<p>Laadi sopiva kansiorakenne työllesi.</p>
+<p>Toteuta tietokanta. Tee ensin taulu uutinen, jossa ovat kentät uutinenID integer(10), otsikko varchar (50), sisalto text, kirjoituspvm date, poistamispvm date, kirjoittaja varchar (50).</p>
+<p>Tee toinen taulu kayttajat, johon tulevat ainakin seuraavat kentät: kayttajaID integer(10), kayttajatunnus varchar (50) ja salasana varchar(255).</p>
+<p>Toteuta yhteystiedosto sekä kaksi mallitiedostoa (models, sisältävät SQL-lauseet):</p>
+<h4>Uutinen.php</h4>
+<p>Luo siihen seuraavat funktiot ja testaa niiden toiminta (voit myös vaihtaa nimet englanniksi) :</p>
+<ul>
+    <li>haeKaikkiUutiset()</li>
+    <li>haeUutinen($id)</li>
+    <li>lisaaUutinen($data)</li>
+    <li>muokkaaUutista($data)</li>
+    <li>poistaUutinen($id)</li>
+</ul>
+
+<h4>Kayttaja.php</h4>
+<ul>
+    <li>haeKaikkiKayttajat()</li>
+    <li>lisaaKayttaja($data)</li>
+    <li>poistaKayttaja($id)</li>
+    <li>tarkistaLogin($nickname,$password) - toteutusesimerkki kirjautumisdemossa</li>
+    <li>haeId($nickname)</li>
+</ul>
+
+
+<h2>Vaihe 2</h2>
+<p>Laadi tarvittavat näkymätiedostot osineen työllesi</p>
+<ul>
+    <li>index.view.php</li>
+    <li>admin.view.php</li>
+    <li>lisaauutinenform.view.php</li>
+    <li>muokkaauutistaform.view.php (vanhojen tietojen näyttämisen voi siirtää myöhemmäksi)</li>
+    <li>kirjauduform.view.php</li>
+    <li>lisaakayttajaform.view.php</li>
+    <li>HUOM. Käyttäjän muokkaus ei ole tarpeen</li>
+</ul>
+
+<h2>Vaihe 3</h2>
+<p>Laadi reittitedosto index.php sekä tarvittavat kontrolleri- ja helper-tiedostot.</p>
+
+<h2>Vaihe 4</h2>
+<p>Lisää mieleisesi ulkoasu</p>
+
+<h2>Vaihe 5</h2>
+<p>Relaatio uutinen - kayttajat</p>
+
+<p>Jotta käyttäjä näkisi vain omat uutisensa (ei voisi poistaa tai muokata muiden uutisia) niin tarvitaan relaatio
+<ul>
+<li>lisää kenttä kayttajaID taululle uutinen</li>
+<li>lisää INDEX ja Relaationäkymässä relaatio</li>
+</ul>
+Miten tämä muuttaa toimintaa?
+<ul>
+<li>kun kirjaudutaan niin kutsutaan esim. haeKayttajanUutiset($id) -funktiota</li>
+<li>funktiossa haet kaikki käyttäjän uutiset 
+(select * from uutinen where kayttajaID=?)</li>
+<li>kun lisätään uutinen niin pitää lisätä id mukaan</li>
+</ul>
+
+<p>Mistä id löytyy?
+saat kirjautuneen käyttäjän id:n sessiosta: $_SESSION["id"]
+
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<document>
+  <meta>
+    <class>84.2</class>
+    <language id="fi">suomi</language>
+  </meta>
+  <department>
+    <name id="100">Metso</name>
+  </department>
+  <info>
+    <author id="123">Kivi, Aleksis</author>
+    <year>1878</year>
+    <keywords>
+      <keyword>Kaunokirjallisuus</keyword>
+      <keyword>1800-luku</keyword>
+      <keyword>Häme</keyword>
+    </keywords>
+    <description>Seitsemän veljestä on Aleksis Kiven kirjoittama romaani, ja sitä pidetään yhtenä suomalaisen kirjallisuuden suurimmista merkkiteoksista.</description>
+  </info>
+</document>

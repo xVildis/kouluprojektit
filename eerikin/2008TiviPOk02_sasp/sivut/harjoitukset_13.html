@@ -1,0 +1,67 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Harjoitukset 13</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+
+<div id="sisalto">
+<h1>Harjoitus 13: Lomakkeet & tiedostot</h1>
+
+<h2>H13.1. Rekisteröityminen</h2>
+<p>Tee lomake jolla voidaan syöttää seuraavat tiedot:
+<ul>
+<li>nimi</li>
+<li>käyttäjätunnus</li>
+<li>salasana (password)</li>
+<li>syntymäaika (date)</li>
+<li>puhelinnumero (tel)</li>
+<li>sähköposti (email)</li>
+<li>käyttäjän kotisivu (url)</li>
+<li>esittely (textarea)</li>
+</ul>
+<p>Pakollisia (required) kenttiä ovat nimi, käyttäjätunnus, salasana ja sähköposti.
+
+<p>Tee lomakkeelle PHP:lla lomakkeenkäsittelijä jossa tarkistat syötteen ja tulostat sen sivulla näkyviin käyttäjälle. Käsittele kaikki syöte htmlspecialchars()-funktion kautta.
+
+<p>Salasanan tulee olla pituudeltaan vähintään kuusi merkkiä ja sen tulee sisältää jokin luku. Jos salasana ei ole kunnollinen niin näytä käyttäjälle lomake ja varoitusviesti ("Syötä monimutkaisempi salasana.").
+
+<h2>H13.2. Tiedoston kirjoittaminen</h2>
+<p>Tutki miten <a href="https://www.w3schools.com/php/php_file_create.asp" target="_blank">tiedoston kirjoittaminen</a> tapahtuu. Kokeile tehdä esimerkin kaltainen lomake jolla voit kirjoittaa php/temp -kansioon txt-tiedoston.
+<form>
+<label for="nimi">Tiedoston nimi</label><br />
+<input type="text" value="" /><br />
+<label for="nimi">Sisältö</label><br />
+<textarea rows="4" cols="50">
+</textarea><br />
+<input type="submit" value="Kirjoita" />
+</form>
+
+
+<h2>13.3. Tiedostojen lataaminen</h2>
+
+<p>Tutki miten <a href="https://www.w3schools.com/php/php_file_upload.asp" target="_blank">tedoston lataaminen palvelimelle</a> tapahtuu. Laadi lomake jonka avulla voidaan siirtää php/temp-kansioon jokin kuvatiedosto (png, jpg).
+
+<form action="upload.php" method="post" enctype="multipart/form-data">
+  Valitse kuvatiedosto:
+  <input type="file" name="fileToUpload" id="fileToUpload">
+  <input type="submit" value="Lataa kuva" name="submit">
+</form>
+
+<h2>13.4. Kuvagalleria</h2>
+
+<p>Tee PHP-sivu joka näyttää kansiossa php/temp olevat kuvat.
+<p><img src="../kuvat/harj13_files.png" />
+
+<h2>H13.5 Palautelomake</h2>
+
+<p>Suunnittele palautelomake jolla voidaan pyytää kotisivun kävilöiltä palautetta. Mieti mitä kenttiä palautelomakkeella voisi olla. Kun käyttäjä lähettää lomakkeen Lähetä palaute-painikkeella niin uusi palaute tallennetaan CSV-tiedostoon uudelle riville. CSV-tiedostossa jokainen kenttä on erotettu erotinmerkillä, käytä erotinmerkkinä ";".
+<p>PHP:ssa on näppärä fuktio <a href="https://www.w3schools.com/php/func_filesystem_fputcsv.asp" target="_blank">fputcsv</a> jolla voit luoda helposti CSV-tiedoston. Avaa tiedosto nyt Append-muodossa jotta uusi palaute ei tuhoa vanhoja tietoja.
+
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

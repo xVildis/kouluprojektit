@@ -1,0 +1,751 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo 15, MVC-malli</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+<h1>Demo 15, MVC-malli</h1>
+<p>Alla oleva kuva esittää lopputulokseksi tulevaa pikkuriikistä järjestelmää, jolla voidaan ylläpitää pelaajien tietoja.</p>
+<p><img src="../kuvat/nayttokartta.png" alt ="käsitteellinen sivukartta" class="keskikoko"></p>
+
+<h2>Kansiot</h2>
+<p>Tiedostot organisoidaan uudestaan, ne sijoitetaan seuraavaan kansiorakennelmaan:</p>
+<p><img src="../kuvat/kansiorakenne.png" alt="kansiot" class="keskikoko"></p>
+
+
+<h2>MVC</h2>
+<h3>Tietokanta ja yhteys</h3>
+<p><a href="./mvc_db.sql">Tietokanta harjoitukseen</a></p>
+<h4>./database/connection.php (soveltaen omilla tiedoilla)</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />$dsn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"mysql:host=samarium;dbname=tietokanta"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$user&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$passwd&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"salasana"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #0000BB">$pdo&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #0000BB">$dsn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$passwd</span><span style="color: #007700">);
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h4>./database/models/Player.php</h4>
+<p>Aloitamme siirtämällä SQL-koodi funktioina  tiedostoon ./database/Player.php</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #FF8000">/*&nbsp;&nbsp;
+<br />CREATE&nbsp;TABLE&nbsp;IF&nbsp;NOT&nbsp;EXISTS&nbsp;`players`&nbsp;(
+<br />&nbsp;&nbsp;`playerID`&nbsp;int(10)&nbsp;NOT&nbsp;NULL&nbsp;AUTO_INCREMENT,
+<br />&nbsp;&nbsp;`nickname`&nbsp;varchar(15)&nbsp;NOT&nbsp;NULL,
+<br />&nbsp;&nbsp;`password`&nbsp;varchar(255)&nbsp;NOT&nbsp;NULL,
+<br />&nbsp;&nbsp;`email`&nbsp;varchar(50)&nbsp;NOT&nbsp;NULL,
+<br />&nbsp;&nbsp;`current_character`&nbsp;varchar(15)&nbsp;NOT&nbsp;NULL,
+<br />&nbsp;&nbsp;`money`&nbsp;decimal(10,0)&nbsp;NOT&nbsp;NULL&nbsp;DEFAULT&nbsp;'500',
+<br />&nbsp;&nbsp;`lastLogin`&nbsp;date&nbsp;NOT&nbsp;NULL,
+<br />&nbsp;&nbsp;`banned`&nbsp;tinyint(1)&nbsp;NOT&nbsp;NULL&nbsp;DEFAULT&nbsp;'0',
+<br />&nbsp;&nbsp;`teamID`&nbsp;int(10)&nbsp;DEFAULT&nbsp;NULL,
+<br />&nbsp;&nbsp;PRIMARY&nbsp;KEY&nbsp;(`playerID`),
+<br />&nbsp;&nbsp;KEY&nbsp;`teamID`&nbsp;(`teamID`)
+<br />)&nbsp;ENGINE=InnoDB&nbsp;&nbsp;DEFAULT&nbsp;CHARSET=utf8&nbsp;AUTO_INCREMENT=6&nbsp;;
+<br />*/
+<br />
+<br /></span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./database/connection.php"</span><span style="color: #007700">;
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//Kohta&nbsp;1&nbsp;ota&nbsp;yhteys
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;players"</span><span style="color: #007700">;</span><span style="color: #FF8000">//Kohta&nbsp;2&nbsp;rakenna&nbsp;SQL
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//Kohta&nbsp;3&nbsp;suorita&nbsp;sql
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchAll</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ASSOC</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$players</span><span style="color: #007700">;
+<br />
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">getPlayerById</span><span style="color: #007700">(</span><span style="color: #0000BB">$id</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;players&nbsp;WHERE&nbsp;playerID&nbsp;=&nbsp;?"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindValue</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchAll</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ASSOC</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$player</span><span style="color: #007700">;
+<br />}
+<br />
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">getPlayerByNickname</span><span style="color: #007700">(</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;players&nbsp;WHERE&nbsp;nickname&nbsp;=&nbsp;?"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindValue</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchAll</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ASSOC</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$player</span><span style="color: #007700">;
+<br />}
+<br />
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">addPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;players&nbsp;(nickname,password,email,current_character,lastLogin)&nbsp;VALUES&nbsp;(?,?,?,?,?)"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//palauttaa&nbsp;true&nbsp;tai&nbsp;false
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;</span><span style="color: #0000BB">$ok</span><span style="color: #007700">;
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">editPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=</span><span style="color: #DD0000">"UPDATE&nbsp;players&nbsp;SET&nbsp;nickname&nbsp;=&nbsp;?,&nbsp;email&nbsp;=&nbsp;?,&nbsp;current_character&nbsp;=&nbsp;?,&nbsp;banned&nbsp;=&nbsp;?&nbsp;WHERE&nbsp;playerID&nbsp;=&nbsp;?"</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//palauttaa&nbsp;true&nbsp;tai&nbsp;false
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;</span><span style="color: #0000BB">$ok</span><span style="color: #007700">;
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">deletePlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$id</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"DELETE&nbsp;FROM&nbsp;players&nbsp;WHERE&nbsp;playerID&nbsp;=&nbsp;?"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindValue</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$ok</span><span style="color: #007700">;
+<br />}
+<br />
+<br /></span><span style="color: #FF8000">//funktio&nbsp;tarkistaa,&nbsp;löytyykö&nbsp;käyttäjä&nbsp;tietokannasta
+<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">loginPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">,</span><span style="color: #0000BB">$password</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//yhteys
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;nickname,password&nbsp;FROM&nbsp;players&nbsp;WHERE&nbsp;nickname&nbsp;=&nbsp;?"</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$pdo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindValue</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stm</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchAll</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ASSOC</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//tarkistetaan,&nbsp;vastaavatko&nbsp;salasanat&nbsp;toisiaan
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$player</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">password_verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$password</span><span style="color: #007700">,</span><span style="color: #0000BB">$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"password"</span><span style="color: #007700">]))&nbsp;&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">TRUE</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;return&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;return&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">;
+<br />}</span>
+</span>
+</code>
+<h4>Testitiedosto</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./database/models/Player.php"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">/*************************************&nbsp;*/
+<br /></span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//kutsuu&nbsp;funktiota,&nbsp;pitäisi&nbsp;saada&nbsp;arvokseen&nbsp;funktion&nbsp;hakemat&nbsp;pelaajat
+<br />
+<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;pre&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$players</span><span style="color: #007700">);
+<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/pre&gt;"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">/**************************************&nbsp;*/
+<br />
+<br /></span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getPlayerById</span><span style="color: #007700">(</span><span style="color: #0000BB">2</span><span style="color: #007700">);
+<br />
+<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;pre&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$player</span><span style="color: #007700">);
+<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/pre&gt;"</span><span style="color: #007700">;
+<br />
+<br />
+<br /></span><span style="color: #FF8000">/****************************************&nbsp;*/
+<br /></span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getPlayerByNickname</span><span style="color: #007700">(</span><span style="color: #DD0000">"Armas"</span><span style="color: #007700">);
+<br />
+<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;pre&gt;"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$player</span><span style="color: #007700">);
+<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/pre&gt;"</span><span style="color: #007700">;
+<br />
+<br />
+<br /></span><span style="color: #FF8000">/*****************************************&nbsp;*/
+<br />
+<br /></span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"untoliini"</span><span style="color: #007700">,</span><span style="color: #DD0000">"pasusasa"</span><span style="color: #007700">,</span><span style="color: #DD0000">"eh@gmail.com"</span><span style="color: #007700">,</span><span style="color: #DD0000">"olio"</span><span style="color: #007700">,</span><span style="color: #DD0000">"2020-12-12"</span><span style="color: #007700">);
+<br /></span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">addPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);
+<br />if(</span><span style="color: #0000BB">$ok</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Lisätty"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Ei&nbsp;onnaa"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">/***************************************&nbsp;*/
+<br />
+<br /></span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"uusinimi"</span><span style="color: #007700">,</span><span style="color: #DD0000">"uusi@gmail.com"</span><span style="color: #007700">,</span><span style="color: #DD0000">"ötökkä"</span><span style="color: #007700">,</span><span style="color: #0000BB">1</span><span style="color: #007700">,</span><span style="color: #0000BB">7</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">editPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);
+<br />if(</span><span style="color: #0000BB">$ok</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Muutettu"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Ei&nbsp;onnaa"</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">/***************************************&nbsp;*/
+<br />
+<br /></span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">deletePlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">8</span><span style="color: #007700">);
+<br />if(</span><span style="color: #0000BB">$ok</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Poistettu"</span><span style="color: #007700">;
+<br />else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Ei&nbsp;onnaa"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+</span>
+</code>
+<h3>Kohta A - index.php - reititys</h2>
+<p>Tehdään reititys edelleen aikaisempaan tapaan eli $_GET kertoo, mikä sivu sisällytetään - tämä tapahtuu index-sivussa. Index-sivu ei kuitenkaan tulosta mitään, vain require (kontrolleri tai view)on sallittu.</p>
+<p>Muu koodi jaetaan kolmeen erilaiseen kategoriaan: mallit (models), kontrollerit ja näkymät (views). Tässä kohdassa laadimme vain yhden mallin jokaista tietokannan taulua varten, samaten yhden kontrollerin taulua kohti.</p>
+<p>Yhteysfunktiota voit käyttää sellaisenaan.</p>
+
+<h4>./index.php</h4>
+<p>index-sivu ohjaa kaikki pyynnöt eteenpäin.</p>
+<p>Lähdekoodi:</p>
+
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />session_start</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//aloittaa&nbsp;istunnon
+<br />//pyynnöt&nbsp;ovat&nbsp;muotoa&nbsp;index.php?action=edit&amp;id=5
+<br />
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"action"</span><span style="color: #007700">]))&nbsp;</span><span style="color: #0000BB">$action&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"action"</span><span style="color: #007700">];
+<br />else&nbsp;</span><span style="color: #0000BB">$action&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"index"</span><span style="color: #007700">;</span><span style="color: #FF8000">//mitä&nbsp;tehdään
+<br />
+<br /></span><span style="color: #0000BB">$method&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtolower</span><span style="color: #007700">(</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">"REQUEST_METHOD"</span><span style="color: #007700">]);&nbsp;</span><span style="color: #FF8000">//onko&nbsp;post&nbsp;vai&nbsp;get
+<br />//otetaan&nbsp;kirjastot&nbsp;käyttöön
+<br /></span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./controllers/playercontroller.php"</span><span style="color: #007700">;
+<br />require&nbsp;</span><span style="color: #DD0000">"./helpers/auth.php"</span><span style="color: #007700">;
+<br />
+<br />switch(</span><span style="color: #0000BB">$action</span><span style="color: #007700">)&nbsp;{
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"index"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">indexcontroller</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//funktio,&nbsp;joka&nbsp;hakee&nbsp;etusivun&nbsp;tarvitsemat&nbsp;asiat
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"register"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">$method</span><span style="color: #007700">==</span><span style="color: #DD0000">"get"</span><span style="color: #007700">)
+<br />&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/registerform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;</span><span style="color: #0000BB">postregistercontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"login"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">$method&nbsp;</span><span style="color: #007700">==</span><span style="color: #DD0000">"get"</span><span style="color: #007700">)
+<br />&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/loginform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;</span><span style="color: #0000BB">postlogincontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"admin"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">islogged</span><span style="color: #007700">())&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">admincontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/loginform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"logout"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">islogged</span><span style="color: #007700">())&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">logoutcontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;</span><span style="color: #0000BB">indexcontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"deleteplayer"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">islogged</span><span style="color: #007700">())&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">deleteplayercontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/loginform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #DD0000">"editplayer"</span><span style="color: #007700">:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">islogged</span><span style="color: #007700">())&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">$method&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #DD0000">"get"</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">geteditplayercontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;</span><span style="color: #0000BB">posteditplayercontroller</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/loginform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;break;
+<br />
+<br />
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;default:
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"404"</span><span style="color: #007700">;
+<br />}
+<br /></span>
+</span>
+</code>
+
+<h3>Kohta B etusivu</h3>
+<p>Laadi etusivu pelaajille (listaa näkyville kaikki pelaajat).</p>
+<p>Käytä ratkaisussa MVC-mallia. Siis: index-sivu ohjaa pyynnön oikealle näkymälle tai kontrollerille (controllers), joka keskustelee tietokantafunktioiden kanssa (models).</p>
+<p>Tässä</p>
+<ul>
+<li>luodaan reitti pyyntöä index.php varten (reittitiedosto näkyy yläpuolella kohdassa A)</li>
+<li>luodaan kontrolleriin ./controllers/playercontroller.php funktio getAllPlayers(), joka suorittaa varsinaisen ohjelman: 
+sisällyttää Player.php:n, hakee pelaajan tiedot muuttujaan ja kutsuu sitten näkymää</li>
+<li>lisätään yhteys (connection.php)  ./database/models/Player.php-tiedostoon, jotta se on käytössä kaikissa tietokantayhteyttä vaativissa kohdissa</li>
+<li>luodaan ./database/models/Player.php tiedostoon funktion getAllPlayers(), joka palauttaa kaikki pelaajat. Alla olevassa ratkaisussa näkyy tiedosto kokonaan valmiina.</li>
+<li>luodaan näkymätiedosto ./views/index.view.php, se sisällyttää myös ./views/partials-kansiossa olevat tiedostot head.php ja end.php</li>
+</ul>
+<h4>./controllers/playercontroller.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./database/models/Player.php"</span><span style="color: #007700">;
+<br />require&nbsp;</span><span style="color: #DD0000">"./helpers/helper.php"</span><span style="color: #007700">;
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">indexcontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//var_dump($players);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./views/index.view.php"</span><span style="color: #007700">;
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">admincontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//var_dump($players);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./views/admin.view.php"</span><span style="color: #007700">;
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">postregistercontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password2"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"email"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"character"</span><span style="color: #007700">])&nbsp;&nbsp;&amp;&amp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password"</span><span style="color: #007700">]&nbsp;===&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password2"</span><span style="color: #007700">])&nbsp;&nbsp;&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Formi&nbsp;perillä"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$nickname&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$password&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanitpassword</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$email&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"email"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$current_character&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"character"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$lastLogin&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">date</span><span style="color: #007700">(</span><span style="color: #DD0000">'Y-m-d'</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">,</span><span style="color: #0000BB">$password</span><span style="color: #007700">,</span><span style="color: #0000BB">$email</span><span style="color: #007700">,</span><span style="color: #0000BB">$current_character</span><span style="color: #007700">,</span><span style="color: #0000BB">$lastLogin</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">addPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">$ok</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Rekisteröinti&nbsp;onnistui"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//hakee&nbsp;kaikki&nbsp;pelaajat&nbsp;kannasta
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"./views/index.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Rekisteröinti&nbsp;ei&nbsp;onnistu..."</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/registerform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Tiedoissa&nbsp;vikaa..."</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/registerform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">postlogincontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password"</span><span style="color: #007700">]))&nbsp;&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$nickname&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$password&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"password"</span><span style="color: #007700">]);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ok&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">loginPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">,</span><span style="color: #0000BB">$password</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//tietokantamallissa
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$ok</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=</span><span style="color: #0000BB">getPlayerByNickname</span><span style="color: #007700">(</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ip&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">"REMOTE_ADDR"</span><span style="color: #007700">];
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//asetetaan&nbsp;istuntomuuttujan&nbsp;arvot
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"id"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"ip"</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$ip</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/admin.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Käyttäjää&nbsp;ei&nbsp;löydy"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/loginform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Täytä&nbsp;kaikki&nbsp;tiedot!"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/loginform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;}
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">logoutcontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"ip"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"id"</span><span style="color: #007700">]))&nbsp;&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">session_unset</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//poistaa&nbsp;istuntomuuttujat
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">session_destroy</span><span style="color: #007700">();</span><span style="color: #FF8000">//poistaa&nbsp;koko&nbsp;istunnon
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:./index.php"</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:./index.php"</span><span style="color: #007700">);
+<br />
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">deleteplayercontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">]))&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$playerID&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">deletePlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$playerID</span><span style="color: #007700">))&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">=</span><span style="color: #DD0000">"Pelaaja&nbsp;on&nbsp;poistettu"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">=</span><span style="color: #DD0000">"Pelaaja&nbsp;ei&nbsp;poistunut"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/admin.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:./index.php?action=admin"</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;myös&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{&nbsp;$players&nbsp;=&nbsp;getAllPlayers();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$message&nbsp;=&nbsp;"ei&nbsp;poistettavaa&nbsp;id:tä";
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;"./views/admin.view.php";
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}*/
+<br /></span><span style="color: #007700">}
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;hakee&nbsp;id:n&nbsp;mukaan&nbsp;pelaajan&nbsp;tiedot&nbsp;kannasta&nbsp;ja&nbsp;antaa&nbsp;ne&nbsp;muokkauslomakkeelle
+<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">geteditplayercontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">]))&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$playerID</span><span style="color: #007700">=</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$player&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getPlayerById</span><span style="color: #007700">(</span><span style="color: #0000BB">$playerID</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$player</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/editplayerform.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">=</span><span style="color: #DD0000">"Ei&nbsp;valittuna&nbsp;pelaajaa"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./admin.view.php"</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">posteditplayercontroller</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"email"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"character"</span><span style="color: #007700">]))&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$playerID&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$nickname&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$email&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"email"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$current_character&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"character"</span><span style="color: #007700">]);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">"banned"</span><span style="color: #007700">]))&nbsp;</span><span style="color: #0000BB">$banned&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;</span><span style="color: #0000BB">$banned</span><span style="color: #007700">=</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">$nickname</span><span style="color: #007700">,</span><span style="color: #0000BB">$email</span><span style="color: #007700">,</span><span style="color: #0000BB">$current_character</span><span style="color: #007700">,</span><span style="color: #0000BB">$banned</span><span style="color: #007700">,</span><span style="color: #0000BB">$playerID</span><span style="color: #007700">);
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: #0000BB">editPlayer</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">))&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Muokkaus&nbsp;on&nbsp;tehty"</span><span style="color: #007700">;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Muokkaus&nbsp;ei&nbsp;onnistunut"</span><span style="color: #007700">;&nbsp;&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Lomakkeelta&nbsp;puuttuu&nbsp;tietoja"</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">getAllPlayers</span><span style="color: #007700">();
+<br />&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;</span><span style="color: #DD0000">"./views/admin.view.php"</span><span style="color: #007700">;
+<br />}
+<br />
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h4>./views/index.view.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/head.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;h1&gt;Kaikki&nbsp;pelaajat&lt;/h1&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$message</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">foreach(</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$player</span><span style="color: #007700">)&nbsp;{&nbsp;</span><span style="color: #0000BB">?&gt;
+<br /></span>&lt;h4&gt;<span style="color: #0000BB">&lt;?=$player</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">];</span><span style="color: #0000BB">?&gt;</span>&lt;/h4&gt;
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">}
+<br />include&nbsp;</span><span style="color: #DD0000">"./views/partials/end.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h4>./views/partials/head.php (adminhead.php, end.php)</h4>
+
+
+<h4>./views/partials/adminhead.php</h4>
+<code><span style="color: #000000">
+&lt;!DOCTYPE&nbsp;html&gt;
+<br />&lt;html&gt;
+<br />&lt;head&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta&nbsp;charset="utf-8"&nbsp;/&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta&nbsp;http-equiv="X-UA-Compatible"&nbsp;content="IE=edge"&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Pelaajahallinta&lt;/title&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta&nbsp;name="viewport"&nbsp;content="width=device-width,&nbsp;initial-scale=1"&gt;
+<br />&lt;/head&gt;
+<br />&lt;body&gt;
+<br />
+<br />&lt;a&nbsp;href="./index.php?action=logout"&gt;Kirjaudu&nbsp;ulos&lt;/a&gt;&lt;br&gt;
+<br />&lt;hr&gt;</span>
+</code>
+<h4>./views/partials/head.php</h4>
+<code><span style="color: #000000">
+&lt;!DOCTYPE&nbsp;html&gt;
+<br />&lt;html&gt;
+<br />&lt;head&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta&nbsp;charset="utf-8"&nbsp;/&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta&nbsp;http-equiv="X-UA-Compatible"&nbsp;content="IE=edge"&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Pelaajahallinta&lt;/title&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta&nbsp;name="viewport"&nbsp;content="width=device-width,&nbsp;initial-scale=1"&gt;
+<br />&lt;/head&gt;
+<br />&lt;body&gt;
+<br />
+<br />&lt;a&nbsp;href="./index.php?action=register"&gt;Rekisteröidy&lt;/a&gt;&lt;br&gt;
+<br />&lt;a&nbsp;href="./index.php?action=login"&gt;Kirjaudu&lt;/a&gt;&lt;br&gt;
+<br />&lt;hr&gt;</span>
+</code>
+<h4>./views/partials/end.php</h4>
+<code><span style="color: #000000">
+&lt;/body&gt;
+<br />&lt;/html&gt;</span>
+</code>
+
+<h3>Kohta C pelaajan lisääminen</h3>
+<p>Toteuta pelaajan lisääminen MVC-mallilla</p>
+<p>Tässä</p>
+<ul>
+<li>luodaan reitit ./index.php?action=register get- ja post-pyynnöille (reittitiedosto näkyy yläpuolella) - 
+jos method on get, se kutsuu lomaketta ja jos post playercontroller.php:n register()-funktiota</li>
+<li>luodaan näkymätiedosto ./views/registerform.view.php</li>
+<li>luodaan aputiedosto ./helpers/helper.php, joho sijoitetaan validointi- ja sanitointifunktioita (sanit($input) sanitoi merkkijonosyötteitä ja sanitpassword($pasword) muuntaa salasanan suojatuksi (hash)</li>
+<li>luodaan kontrolleriin ./controllers/playercontroller.php metodi postregistercontroller(), joka suorittaa varsinaisen ohjelman: 
+sanitoi tiedot, sijoittaa ne taulukkomuuttujaan ja kutsuu sitten funktiota, joka lisää tiedot kantaan</li>
+<li>luodaan ./database/models/Player.php tiedostoon funktion addplayer($data)</li>
+<li>Ylempänä kohdassa B näkyvät tiedostot Player.php ja playercontroller.php  valmiina</li>
+</ul>
+
+
+<h4>./views/registerform.view.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/head.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;h1&gt;Rekisteröidy&lt;/h1&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$message</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;form&nbsp;method&nbsp;="post"&gt;
+<br />&lt;label&nbsp;for="nickname"&gt;Nickname&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type&nbsp;="text"&nbsp;name&nbsp;="nickname"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&lt;label&nbsp;for&nbsp;="password"&gt;Salasana&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="password"&nbsp;name="password"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&lt;label&nbsp;for="password2"&gt;Salasana&nbsp;uudelleen&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="password"&nbsp;name="password2"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&lt;label&nbsp;for="email"&gt;Email&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="email"&nbsp;name="email"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&lt;label&nbsp;for="character"&gt;Hahmo&lt;/label&gt;&lt;br&gt;
+<br />&lt;select&nbsp;name="character"&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&nbsp;value="hirviö"&gt;hirviö&lt;/option&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&nbsp;value&nbsp;="keiju"&gt;keiju&lt;/option&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&nbsp;value="olio"&gt;olio&lt;/option&gt;
+<br />&lt;/select&gt;&lt;br&gt;&lt;br&gt;
+<br />
+<br />&lt;input&nbsp;type="submit"&nbsp;value="Rekisteröi&nbsp;pelaaja"&gt;
+<br />&lt;/form&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/end.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+</span>
+</code>
+<h4>./helpers/helper.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />
+<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">sanit</span><span style="color: #007700">(</span><span style="color: #0000BB">$input</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$input&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">trim</span><span style="color: #007700">(</span><span style="color: #0000BB">$input</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//poistaa&nbsp;tyhjät&nbsp;välilyönnit&nbsp;alusta&nbsp;ja&nbsp;lopusta
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$input&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">filter_var</span><span style="color: #007700">(</span><span style="color: #0000BB">$input</span><span style="color: #007700">,</span><span style="color: #0000BB">FILTER_SANITIZE_STRING</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$input</span><span style="color: #007700">;
+<br />}
+<br />
+<br />function&nbsp;</span><span style="color: #0000BB">sanitpassword</span><span style="color: #007700">(</span><span style="color: #0000BB">$password</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$password&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">password_hash</span><span style="color: #007700">(</span><span style="color: #0000BB">$password</span><span style="color: #007700">,</span><span style="color: #0000BB">PASSWORD_DEFAULT</span><span style="color: #007700">);
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$password</span><span style="color: #007700">;
+<br />}</span>
+</span>
+</code>
+
+
+<h3>Kohta D Kirjautuminen</h3>
+<p>Kirjautumisessa käytetään hyväksi istuntoa: kun käyttäjä on kirjoittanut käyttäjätunnuksen ja salasanan lomakkeelle, 
+niiden olemassaolo tarkistetaan tietokannasta. Jos tiedot löytyvät, asetetaan istuntomuuttujaan id ja käyttäjän ip.</p>
+<p>Periaate tiedostotasolla näkyy seuraavassa sekvenssikaaviossa:</p>
+<p><a href="../kuvat/sekvauth.png" target="_blank" ><img src="../kuvat/sekvauth.png" width="400" alt="sekvenssi login -toimintoon"></a></p>
+
+
+<p>Tässä</p>
+<ul>
+<li>luodaan reitit (./index.php?action=login) get- ja post-pyynnöille (reittitiedosto näkyy yläpuolella) - jos method on get, se kutsuu lomaketta 
+ja jos post playercontroller.php:n postlogincontroller()-funktiota</li>
+<li>luodaan näkymätiedosto ./views/loginform.view.php</li>
+<li>luodaan kontrolleriin ./controllers/playercontroller.php metodi login(), joka suorittaa varsinaisen ohjelman: 
+sanitoi tiedot, kutsuu funktiota loginPlayer($account_name, $password)</li>
+<li>luodaan ./database/models/Player.php tiedostoon funktio loginplayer($account_name, $password), 
+joka tarkistaa, onko tietojen mukainen pelaaja olemassa. Ylempänä näkyy tiedosto valmiina.</li>
+<li>jos pelaaja löytyy,  funktio postlogincontroller() hakee pelaajan tiedot Player.php:n funktiolla getPlayerByName($account_name) 
+ja asettaa kaksi istuntomuuttujaa (id ja ip), hakee kaikkien pelaajien tiedot (sama kuin index.php:ssa) sekä kutsuu admin.view.php:ta</li>
+</ul>
+
+<h4>./views/loginform.view.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/head.php"</span><span style="color: #007700">;
+<br />if(isset(</span><span style="color: #0000BB">$message</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;form&nbsp;method&nbsp;="post"&gt;
+<br />
+<br />&lt;label&nbsp;for="nickname"&gt;Käyttäjätunnus&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="text"&nbsp;name="nickname"&gt;&lt;br&gt;
+<br />
+<br />&lt;label&nbsp;for="password"&gt;Salasana&lt;/label&gt;&lt;br&gt;
+<br />&lt;input&nbsp;type="password"&nbsp;name="password"&gt;&lt;br&gt;
+<br />
+<br />&lt;input&nbsp;type="submit"&nbsp;value="Kirjaudu"&gt;
+<br />&lt;/form&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/end.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h4>./views/admin.view.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/adminhead.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>&lt;h1&gt;Hallintapaneeli&lt;/h1&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$message</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">foreach(</span><span style="color: #0000BB">$players&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$player</span><span style="color: #007700">)&nbsp;{&nbsp;</span><span style="color: #0000BB">?&gt;
+<br /></span>&lt;h4&gt;<span style="color: #0000BB">&lt;?=$player</span><span style="color: #007700">[</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">];</span><span style="color: #0000BB">?&gt;</span>&lt;/h4&gt;
+<br />&lt;a&nbsp;href="./index.php?action=editplayer&amp;playerID=<span style="color: #0000BB">&lt;?=&nbsp;$player</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];</span><span style="color: #0000BB">?&gt;</span>"&gt;Muokkaa&lt;/a&gt;&lt;br&gt;
+<br />&lt;a&nbsp;href="./index.php?action=deleteplayer&amp;playerID=<span style="color: #0000BB">&lt;?=&nbsp;$player</span><span style="color: #007700">[</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];</span><span style="color: #0000BB">?&gt;</span>"&gt;Poista&lt;/a&gt;&lt;br&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">}
+<br />include&nbsp;</span><span style="color: #DD0000">"./views/partials/end.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h3>Kohta E, tarkista kirjautumisen olemassaolo</h3>
+<p>Tässä</p>
+<ul>
+<li>Laaditaan booleanin palauttava funktio islogged() tiedostoon ./helpers/auth.php. 
+Funktio tarkistaa, onko olemassa istuntomuuttuja $_SESSION ja siinä kentät "ip" ja "id" sekä vastaako istunnon ip käyttäjän ip:tä.</li>
+<li>Autentikointia vaativiin reitteihin lisätään tarkistus islogged(), joka onnistuessaan vie oikeaan kontrolleriin ja epäonnistuessaan kutsuu kirjautumislomaketta</li>
+</ul>
+
+<h4>./helpers/auth.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">islogged</span><span style="color: #007700">()
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;if(isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"id"</span><span style="color: #007700">],</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"ip"</span><span style="color: #007700">])&nbsp;&amp;&amp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">"ip"</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">"REMOTE_ADDR"</span><span style="color: #007700">])&nbsp;&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">TRUE</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;return&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">;
+<br />}</span>
+</span>
+</code>
+<h3>Kohta F, kirjaudu ulos</h3>
+<p>Tässä</p>
+<ul>
+<li>Lisätään reitti logout, joka ohjaa playercontrollerin logoutcontroller()-funktioon</li>
+<li>Funktio poistaa istuntomuuttujat ja istunnon sekä ohjaa lukijan aloitussivulle.</li>
+</ul>
+
+
+<h3>Kohta G, poista pelaaja</h3>
+<p>Tässä</p>
+<ul>
+<li>luodaan reitti get-pyynnölle (reittitiedosto näkyy yläpuolella kohdassa A) - kutsulinkki on olemassa admin.view.php:ssa</li>
+<li>luodaan kontrollerifunktio deletecontroller(), joka suorittaa varsinaisen ohjelman eli kutsuu  funktiota, joka poistaa tiedot kannasta</li>
+<li>luodaan ./database/models/Player.php tiedostoon funktion deletePlayer($id). Ylempänä näkyy tiedosto kokonaan valmiina.</li>
+
+</ul>
+
+
+
+<h3>Kohta H</h3>
+<p>Toteuta pelaajan muokkaaminen MVC-mallilla.</p>
+
+<p>Tässä</p>
+<ul>
+<li>luodaan reitit get- ja post-pyynnöille (reittitiedosto näkyy yläpuolella) - jos method on get, se hakee pelaajan tiedot tietokannasta (getPlayerById) ja kutsuu lomaketta, johon ne tulostetaan. Ja jos metodi on post posteditplayercontroller.php:ta</li>
+<li>luodaan näkymätiedosto ./views/editplayerform.view.php</li>
+<li>luodaan kontrolleriin plyercontroller.php funktiot geteditplayercontroller() ja posteditplayercontroller(), jotka suorittavat varsinaisen ohjelman: 
+sisällyttävät Player.php:n, get... hakee tiedot lomakkeelle, post sanitoi tiedot, sijoittaa ne taulukkomuuttujaan ja kutsuu sitten funktiota, joka päivittää tiedot kantaan</li>
+<li>luodaan ./database/models/Player.php tiedostoon funktiot editPlayer($data) ja getPlayerById($id). Ylempänä näkyy tiedosto kokonaan valmiina.</li>
+
+</ul>
+
+
+<h4>./views/editplayerform.view.php</h4>
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/adminhead.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>&lt;h1&gt;Hallintapaneeli&lt;/h1&gt;
+<br />
+<br /><span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">if(isset(</span><span style="color: #0000BB">$message</span><span style="color: #007700">))&nbsp;echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;
+<br /></span>
+<br />&lt;form&nbsp;method&nbsp;="post"&gt;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type&nbsp;="hidden"&nbsp;name="playerID"&nbsp;value="<span style="color: #0000BB">&lt;?=&nbsp;$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"playerID"</span><span style="color: #007700">];</span><span style="color: #0000BB">?&gt;</span>"&gt;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;label&nbsp;for="nickname"&gt;Nickname&lt;/label&gt;&lt;br&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type&nbsp;="text"&nbsp;name&nbsp;="nickname"&nbsp;value&nbsp;="<span style="color: #0000BB">&lt;?=&nbsp;$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"nickname"</span><span style="color: #007700">];</span><span style="color: #0000BB">?&gt;</span>"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&nbsp;&nbsp;&nbsp;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;label&nbsp;for="email"&gt;Email&lt;/label&gt;&lt;br&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type="email"&nbsp;name="email"&nbsp;value&nbsp;="<span style="color: #0000BB">&lt;?=&nbsp;$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"email"</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">?&gt;</span>"&nbsp;required&gt;&lt;br&gt;
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;label&nbsp;for="character"&gt;Hahmo&lt;/label&gt;&lt;br&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;select&nbsp;name="character"&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&nbsp;value="hirviö"<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"current_character"</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #DD0000">"hirviö"</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&nbsp;selected"</span><span style="color: #007700">;</span><span style="color: #0000BB">?&gt;</span>&gt;hirviö&lt;/option&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&nbsp;value&nbsp;="keiju"<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"current_character"</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #DD0000">"keiju"</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&nbsp;selected"</span><span style="color: #007700">;</span><span style="color: #0000BB">?&gt;</span>&gt;keiju&lt;/option&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&nbsp;value="olio"<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"current_character"</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #DD0000">"olio"</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&nbsp;selected"</span><span style="color: #007700">;</span><span style="color: #0000BB">?&gt;</span>&gt;olio&lt;/option&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;label&nbsp;for="banned"&gt;Bannattu&lt;/label&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type&nbsp;="checkbox"&nbsp;name="banned"&nbsp;<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$player</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">][</span><span style="color: #DD0000">"banned"</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;echo&nbsp;</span><span style="color: #DD0000">"value=\"0\""</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;echo&nbsp;</span><span style="color: #DD0000">"value=\"1\"&nbsp;checked"</span><span style="color: #007700">;</span><span style="color: #0000BB">?&gt;</span>&gt;&lt;br&gt;
+<br />
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type="submit"&nbsp;value="Muuta&nbsp;pelaajaa"&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;/form&gt;
+<br />
+<br />
+<br />
+<br /><span style="color: #0000BB">&lt;?php&nbsp;
+<br /></span><span style="color: #007700">include&nbsp;</span><span style="color: #DD0000">"./views/partials/end.php"</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

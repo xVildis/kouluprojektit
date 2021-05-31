@@ -1,0 +1,8 @@
+<?php
+$xml=simplexml_load_file("menu.xml") or die("Error: tiedosto!");
+
+foreach($xml->children() as $ruoka) {
+  echo $ruoka->nimi . "<br>";
+}
+
+?>

@@ -1,0 +1,193 @@
+  <!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo: luokat</title>
+	<LINK REL=stylesheet type="text/css" href="style.css">
+</head>
+
+<script type="text/javascript" src="header2.js"> </script>
+<div id="sisalto">
+
+<h1>Demo: olio-ohjelmoinnin perusteita</h1>
+<p><img src="../kuvat/kaavio.jpg" class="keskikoko" alt="Demon kuva luokkakaaviona"></p>
+<p>Luokkakaaviossa pisteviivan yläpuolella näkyvät luokan ominaisuudet. - -merkki nimen edessä tarkoittaa private-määrettä eli niitä ei vuoraan käsitellä luokan ulkopuolella.</p>
+<p>Katkoviivan alapuolella ovat luokan toiminnot, määre on public ja esitellään +  -merkillä.</p>
+
+<p>Demossa toteutetaan luokat ja erotetaan ulkoasun tuottaminen omaksi tiedostokseen. Tätä lähestymistapaa kehitämme myöhemmin pidemmälle.</p>
+
+<h2>Luokka Opiskelija (opiskelija.php)</h2>
+<p class="esim">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Opiskelija
+<br /></span><span style="color: #007700">{
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$nimi</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$email</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$puh</span><span style="color: #007700">;
+<br />
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$nimi</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$email</span><span style="color: #007700">)&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">nimi&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$nimi</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">email&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$email</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">haeNimi</span><span style="color: #007700">()&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">nimi</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">haeEmail</span><span style="color: #007700">()&nbsp;{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">email</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+<br />}
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h2>Luokka Opetusryhma (opetusryhma.php)</h2>
+<p class="esim">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php&nbsp;
+
+<br /></span><span style="color: #007700">class&nbsp;&nbsp;</span><span style="color: #0000BB">Opetusryhma
+
+<br /></span><span style="color: #007700">{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$ryhmannimi</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$aloitusvuosi</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$oma_opettaja</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$opiskelijat&nbsp;</span><span style="color: #007700">=&nbsp;array();
+
+<br />
+
+<br />
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$ryhmannimi</span><span style="color: #007700">,</span><span style="color: #0000BB">$aloitusvuosi</span><span style="color: #007700">)
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ryhmannimi&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ryhmannimi</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">aloitusvuosi&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$aloitusvuosi</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+
+<br />
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">lisaa</span><span style="color: #007700">(</span><span style="color: #0000BB">$opiskelija</span><span style="color: #007700">)&nbsp;{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">opiskelijat</span><span style="color: #007700">[]&nbsp;=&nbsp;</span><span style="color: #0000BB">$opiskelija</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">haeRyhmannimi&nbsp;</span><span style="color: #007700">()
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ryhmannimi</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//näytä,&nbsp;miksi&nbsp;ei&nbsp;voi&nbsp;käyttää&nbsp;suoraa&nbsp;viittausta,&nbsp;publicin&nbsp;ja&nbsp;privaten&nbsp;ero
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}
+
+<br />
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">nimilista</span><span style="color: #007700">()&nbsp;{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$nimet&nbsp;</span><span style="color: #007700">=&nbsp;array();
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach(</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">opiskelijat&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$opiskelija</span><span style="color: #007700">)&nbsp;{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$nimet</span><span style="color: #007700">[]&nbsp;=&nbsp;</span><span style="color: #0000BB">$opiskelija</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">haeNimi</span><span style="color: #007700">();
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$nimet</span><span style="color: #007700">;
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;}
+
+<br />}
+
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code>
+<h2>Tiedosto index.php</h2>
+<p>Tämä tiedosto kutsuu muita tiedostoja (jatkossa sen sisältö jakaantuu kahteen eri tiedostoon (kontrolleriin ja reitittimieen).</p>
+<p class="esim">
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+
+<br />
+
+<br /></span><span style="color: #007700">require&nbsp;</span><span style="color: #DD0000">"opiskelija.php"</span><span style="color: #007700">;
+
+<br />require&nbsp;</span><span style="color: #DD0000">"opetusryhma.php"</span><span style="color: #007700">;
+
+<br />
+
+<br /></span><span style="color: #0000BB">$opetusryhma&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Opetusryhma</span><span style="color: #007700">(</span><span style="color: #DD0000">'TiViDO'</span><span style="color: #007700">,</span><span style="color: #0000BB">2019</span><span style="color: #007700">);
+
+<br /></span><span style="color: #0000BB">$opetusryhma</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">lisaa</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">Opiskelija</span><span style="color: #007700">(</span><span style="color: #DD0000">"Jaakko"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"jaakko@netti.fi"</span><span style="color: #007700">));
+
+<br /></span><span style="color: #0000BB">$opetusryhma</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">lisaa</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">Opiskelija</span><span style="color: #007700">(</span><span style="color: #DD0000">"Jorma"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"jorma@gmail.com"</span><span style="color: #007700">));
+
+<br /></span><span style="color: #0000BB">$opetusryhma</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">lisaa</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">Opiskelija</span><span style="color: #007700">(</span><span style="color: #DD0000">"Jaana"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"jaana67@gmail.com"</span><span style="color: #007700">));
+
+<br /></span><span style="color: #0000BB">$ryhma&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$opetusryhma</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">haeRyhmannimi</span><span style="color: #007700">();
+
+<br /></span><span style="color: #0000BB">$opiskelijat&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$opetusryhma</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">nimilista</span><span style="color: #007700">();
+
+<br />
+
+<br />require&nbsp;</span><span style="color: #DD0000">'opetusryhma.view.php'</span><span style="color: #007700">;
+
+<br /></span><span style="color: #0000BB">?&gt;
+</span>
+<br /></span>
+</code></p>
+
+<h2>Tiedosto (opetusryhma.view.php)</h2>
+<p>Tämä tiedosto rakentaa kaiken html:n, muiden tehtävä on muokata tietoja taustalla.</p>
+<p>Huomaa nopea tapa kirjoittaa 	&lt;?php echo korvautuu 	&lt;?= merkeillä.</p>
+
+<p class="esim">
+<code><span style="color: #000000">
+&lt;html&gt;
+
+<br />&lt;head&gt;
+
+<br />&lt;title&gt;Oliodemo&lt;/title&gt;
+
+<br />&lt;/head&gt;
+
+<br />&lt;body&gt;
+
+<br />
+
+<br />&lt;h1&gt;Ryhmä&nbsp;<span style="color: #0000BB">&lt;?=$ryhma</span><span style="color: #007700">;</span><span style="color: #0000BB">?&gt;</span>&lt;/h1&gt;
+
+<br />&lt;h2&gt;Opiskelijaluettelo&lt;/h2&gt;
+
+<br /><span style="color: #0000BB">&lt;?php
+
+<br /></span><span style="color: #007700">foreach(</span><span style="color: #0000BB">$opiskelijat&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$opiskelija</span><span style="color: #007700">)
+
+<br />{
+
+<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$opiskelija</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;"</span><span style="color: #007700">;
+
+<br />}
+
+<br /></span><span style="color: #0000BB">?&gt;
+</span>
+<br />&lt;/body&gt;
+
+<br />&lt;/html&gt;</span>
+</code></p>
+
+</div>
+
+<script type="text/javascript" src="footer.js"> </script>

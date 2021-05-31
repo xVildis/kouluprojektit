@@ -1,11 +1,19 @@
 <?php
 require "./partials/yhteys.php";
 
-// ota aluksi mukaan yhteys.php
 
-// tämän jälkeen hae tietokannasta kaikki tapahtumat
-// katso mallia demo9:stä tai harj7:sta
+$sql = "SELECT * FROM h10_tapahtumat";
+$tapahtumat = $pdo->query($sql)->fetchAll();
 
-// näytä tiedot taulukossa
+echo "<table style='width:30%'>";
+foreach($tapahtumat as $tapahtuma) {
+    echo "<tr>";
+    echo "<td>".$tapahtuma["tapahtumaID"]."</td>";
+    echo "<td><a href='./h10_edit.php'>".$tapahtuma["nimi"]."</a></td>";
+    echo "<td>".$tapahtuma["paivays"]."</td>";
+    echo "<td><a href='h10_delete.php?id=".$tapahtuma["tapahtumaID"]."'>Poista Tapahtuma<a/></td>";
+    echo "</tr>";
+}
+echo "</table> ";
 
 ?>
