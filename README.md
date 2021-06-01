@@ -14,7 +14,8 @@
 
 - Harjoitukset 15 | 0 / 2 (mvc)
 
-- Harjoitukset 16 | 0 / 2 (ajax)
+- Harjoitukset 16 | 2 / 2 (ajax)
+
 
 ---
 
@@ -29,9 +30,9 @@
 ---
 
 
-- Harjoitustyö 1 (arvostelut)
+- Harjoitustyö 1 (arvostelut) (todella nopea)
 
-- Harjoitustyö 2 (liikunta) (mahdoton, liian iso)
+- Harjoitustyö 2 (liikunta) (yli puolet tehty)
 
 ### Verkkokauppa
 

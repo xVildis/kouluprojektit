@@ -21,6 +21,7 @@ else if (isset($_POST["password"])) {
     }
 	elseif($_POST["password"] == "vildis") {
 		echo "salasana oikein";
+		//var_dump($_SERVER["REQUEST_URI"]);
 		header('Location: '.$_SERVER["REQUEST_URI"].'/kesken');
 	}
     else {
