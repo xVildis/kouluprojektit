@@ -8,7 +8,7 @@
     <!ATTLIST toivotus tyyli (toiveikas|uhkaava) #IMPLIED>
 ]>
 <kortti tyyppi="sahko">
-    <lahettaja>Eerikki Maula</lahettaja>
+    <lahettaja>Viljami Sillanpää</lahettaja>
     <saaja>Joulupukki</saaja>
-    <toivotus tyyli="toiveikas">Hei rakas joulupukki! Lähestyn sinua näin joulun lähestyessä toivomuslistan kera..</toivotus>
+    <toivotus tyyli="toiveikas">Hei joulupukki! Lähestyn sinua näin joulun lähestyessä toivomuslistan kera..</toivotus>
 </kortti>

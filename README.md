@@ -2,19 +2,15 @@
 
 ### Koodaus
 
-- Harjoitukset 10 |  1 / 4 (tapahtumat tietokanta)
+- Harjoitukset 10 | 1 / 4 (tapahtumat tietokanta)
 
-- Harjoitukset 11 |  2 / 5 (hahmo tietokanta)
-
-- Harjoitukset 13 | 1 / 5 (lomakkeet & tiedostot)
+- Harjoitukset 11 | 2 / 5 (hahmo tietokanta)
 
 - Harjoitukset 12 | 0 / 2 (sirkus)
 
+- Harjoitukset 13 | 1 / 5 (lomakkeet & tiedostot)
+
 - Harjoitukset 14 | 0 / 3 (luokat)
-
-- Harjoitukset 15 | 0 / 2 (mvc)
-
-- Harjoitukset 16 | 2 / 2 (ajax)
 
 
 ---
@@ -39,3 +35,10 @@
 
 ### Muut
 
+- Excel pivot
+
+- Access loppuun
+
+- Vuosihuolto
+
+- Lan teht
