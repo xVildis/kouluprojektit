@@ -1,4 +1,4 @@
-?php
+<?php
 include "./views/partials/head.php";
 ?>
 

@@ -45,7 +45,7 @@ function muokkaaUutista($data)
 {
     global $pdo;
 
-    $sql ="UPDATE uutinen SET otsikko = ?, sisalto = ?, kirjoituspvm = ?, poistamispvm = ?, kirjoittaja = ? WHERE uutinenID = ?";
+    $sql = "UPDATE uutinen SET otsikko = ?, sisalto = ?, kirjoituspvm = ?, poistamispvm = ?, kirjoittaja = ? WHERE uutinenID = ?";
 
     $stm = $pdo->prepare($sql);
     $ok = $stm->execute($data); //palauttaa true tai false

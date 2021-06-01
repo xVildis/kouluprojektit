@@ -4,8 +4,7 @@ echo "<a href='./luokkaharj/'>Luokkaharjoitus</a>";
 echo "<h2>XML-Harjoitus 1</h2>";
 echo "<a href='../xml/xmlharj1.php'>XML-Harjoitus 1</a>";
 echo "<h2>MVC Harjoitus</h2>";
-echo "<a href='../mvcharj/'>MVC Harjoitus</a>";
-
+echo "<a href='./uutiset/'>MVC Harjoitus</a>";
 
 $paths = array("harj", "demo", "partials", "isot");
 foreach($paths as $path) {
@@ -29,7 +28,8 @@ foreach($paths as $path) {
         while (false !== ($file = readdir($handle))) {
             if ('.' === $file) continue;
             if ('..' === $file) continue;
-            
+            if (is_dir($file)) continue;
+
             echo "<a href='./?sivu=".preg_replace("(\.php)", "", $file)."&kansio=$path'>".ucfirst(preg_replace("(\.php)", "", $file))."</a><br>";
         }
         closedir($handle);
