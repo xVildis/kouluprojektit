@@ -32,8 +32,12 @@ class Character {
 	}
 	// tallenna hahmo
 	public function tallenna_hahmo() {
+		GLOBAL $pdo;
 		// katso mallia harjoituksesta 11.2, 
 		// siellä tehtiin insert-kysely
+		$sql = "INSERT INTO characters VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$stmt = $pdo->query($sql);
+		$stmt->bindParam(1, $this->name);
 	}
 }
 
