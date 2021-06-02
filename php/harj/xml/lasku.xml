@@ -10,7 +10,6 @@
     <!ELEMENT sahkoposti (#PCDATA)>
     <!ELEMENT puhelinnumero (#PCDATA)>
 
-    <!-- sama kuin lähettäjä, puuttuu iban-->
     <!ELEMENT vastaanottaja (#PCDATA)>
 
 ]>
@@ -29,7 +28,11 @@
         <iban></iban>
     </lahettaja>
     <vastaanottaja>
-
+        <nimi></nimi>
+        <laskutusosoite></laskutusosoite>
+        <postiosoite></postiosoite>
+        <sahkoposti></sahkoposti>
+        <puhelinnumero></puhelinnumero>
     </vastaanottaja>
     <tuotteet>
         <tuote>

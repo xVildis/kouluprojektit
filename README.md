@@ -10,7 +10,7 @@
 
 - Harjoitukset 13 | 1 / 5 (lomakkeet & tiedostot)
 
-- Harjoitukset 14 | 0 / 3 (luokat)
+- Harjoitukset 14 | 0 / 3 (luokkaharj)
 
 
 ---
@@ -35,10 +35,10 @@
 
 ### Muut
 
-- Excel pivot
-
 - Access loppuun
 
 - Vuosihuolto
 
 - Lan teht
+
+- Harjotustyö
