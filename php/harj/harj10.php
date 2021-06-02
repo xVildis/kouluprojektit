@@ -9,7 +9,7 @@ echo "<table style='width:30%' id='table'>";
 foreach($tapahtumat as $tapahtuma) {
     echo "<tr>";
     echo "<td>".$tapahtuma["tapahtumaID"]."</td>";
-    echo "<td><a href='./h10_edit.php?id=".$tapahtuma["tapahtumaID"]."'>".$tapahtuma["nimi"]."</a></td>";
+    echo "<td><a href='./harj/h10_edit.php?id=".$tapahtuma["tapahtumaID"]."'>".$tapahtuma["nimi"]."</a></td>";
     echo "<td>".$tapahtuma["paivays"]."</td>";
     echo "<td><a href='./harj/h10_delete.php?id=".$tapahtuma["tapahtumaID"]."'>Poista Tapahtuma<a/></td>";
     echo "</tr>";
