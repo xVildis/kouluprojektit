@@ -1,0 +1,14 @@
+n Verkkokaupan suunnitelma
+n Verkkokauppa sivuston suunnittelu
+n Lomakkeen ja kartan lisääminen sivustollesi
+n WordPress – Setmore ajanvarauskalenteri
+n WordPress - upotus ja linkitys
+n WordPress - Ulkoinen dokumentti (PDF-tiedoston linkitys dokumenttiin ja upotus)
+n WordPress - shortcode
+n WordPress - lapsiteeman tekemiseen
+
+y WordPress kalenteritapahtumien tekeminen
+y Verkkokauppa -sivuston luominen
+y Teema, WooCommerce -lisäosa ja tuotteita vähintään 5 kpl
+y Google hakukonsoli – Google Search Console
+y Verkkoliiketoiminnan suunnittelu (Lean-Canvas-malli)
