@@ -2,11 +2,13 @@
 echo "<h2>Luokkaharj</h2>";
 echo "<a href='./harj/luokkaharj/'>Luokkaharjoitus</a>";
 echo "<h2>XML-Harjoitus 1</h2>";
-echo "<a href='../xml/xmlharj1.php'>XML-Harjoitus 1</a>";
+echo "<a href='./harj/xml/xmlharj1.php'>XML-Harjoitus 1</a>";
 echo "<h2>MVC Harjoitus</h2>";
-echo "<a href='./uutiset/'>MVC Harjoitus</a>";
+echo "<a href='./harj/uutiset/'>MVC Harjoitus</a>";
+echo "<h2>Arvostelu</h2>";
+echo "<a href='./isot/arvostelu/'>Arvostelu</a>";
 
-$paths = array("harj", "demo", "partials", "isot");
+$paths = array("harj", "demo", "partials");
 foreach($paths as $path) {
 
     switch($path){
@@ -18,9 +20,6 @@ foreach($paths as $path) {
         break;
         case "partials":
             echo "<h2>Partials</h2>";
-        break;
-        case "isot":
-            echo "<h2>Isot</h2>";
         break;
     }
 
