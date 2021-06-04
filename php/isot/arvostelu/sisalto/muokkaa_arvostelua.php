@@ -38,7 +38,6 @@ if($mode == "poista")
 
 if($mode == "muokkaa") {
     if(!empty($_POST["otsikko"]) && !empty($_POST["kpl"]) && !empty($_POST["arvosana"])) {
-        $lisayspvm = date('Y-m-j');
         $otsikko = $_POST['otsikko'];
         $otsikko = putsaa($otsikko);
         $kpl = $_POST['kpl'];
@@ -48,10 +47,13 @@ if($mode == "muokkaa") {
 
         $kid = $_SESSION["kid"];
 
-        $sql = "UPDATE arvostelu SET otsikko=:otsikko, teksti=:kpl, kokonaisarvio=:arv, arvostelijaId=:kid WHERE arvosteluId=:jid";
+        $sql = "UPDATE arvostelut SET otsikko=:otsikko, teksti=:kpl, kokonaisarvio=:arv WHERE arvosteluId=:jid";
 
         $kysely = $yhteys->prepare($sql);
-        $kysely->execute(array(":otsikko" => $otsikko, ":arv" => $arv, ":kpl" => $kpl,":kid" => $kid,":jid" => $jid));
+        $kysely->execute(array(":otsikko" => $otsikko, 
+                               ":arv" => $arv, 
+                               ":kpl" => $kpl,
+                               ":jid" => $jid));
 
         if($kysely) {
             echo "Tiedot muutettu!<br>";
