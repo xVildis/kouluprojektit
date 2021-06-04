@@ -65,7 +65,8 @@ if($mode == "muokkaa") {
         $kysely = $yhteys->prepare($sql);
         $kysely->execute(array($jid));
         $rivi = $kysely->fetch(PDO::FETCH_ASSOC); 
-        if(!$rivi) echo "Juttua ei löydy ";
+        if(!$rivi) 
+            echo "Juttua ei löydy ";
         else {
             $jid = $rivi["arvosteluId"];
             $aika = $rivi["aika"];
