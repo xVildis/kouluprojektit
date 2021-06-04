@@ -75,7 +75,7 @@ if($mode == "muokkaa") {
             $kpl = $rivi["teksti"];
             $kid = $rivi["arvostelijaId"];
             ?>
-            <form action="./admin.php?sivu=muokkaa_juttua&mode=muokkaa&jid=<?php echo $jid;?>" method="post">
+            <form action="./admin.php?sivu=muokkaa_arvostelua&mode=muokkaa&jid=<?php echo $jid;?>" method="post">
                 <p>
                 <label for="otsikko">* Otsikko</label><br>
                 <input type="text" name="otsikko" value="<?=$otsikko?>">
