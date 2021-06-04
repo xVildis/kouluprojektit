@@ -11,8 +11,6 @@ $istuntosalasana = $_SESSION["salasana"];//otetaan muuttujaan salasana, joka kä
 $tiedotok = false;
 if(!empty($_POST["ktunnus"]) && !empty($_POST["vanhasalasana"]) && muunna_salasana($_POST["vanhasalasana"]) == $istuntosalasana) {
     //otetaan lähetetyt tiedot muuttujiin
-    $etunimi = putsaa($_POST["etunimi"]);
-    $sukunimi = putsaa($_POST["sukunimi"]);
 
     $tiedotok = true;
 

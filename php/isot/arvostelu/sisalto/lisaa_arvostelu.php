@@ -26,7 +26,7 @@ if (!empty($_POST["otsikko"]) && !empty($_POST["kpl"] && !empty($_POST["arvosana
     $kysely->execute(array($otsikko, $kpl, $arvio, $aid, $kid, $lisayspvm)); 
 
     if($kysely != FALSE) 
-        header("Location: ../");
+        header("Location: ./");
     else 
         echo "Lisäys ei onnistunut, yritä myöhemmin uudelleen";
 }
